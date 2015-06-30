@@ -1,4 +1,4 @@
-package com.mac.themac;
+package com.mac.themac.activity;
 
 import android.app.Activity;
 import android.content.Intent;

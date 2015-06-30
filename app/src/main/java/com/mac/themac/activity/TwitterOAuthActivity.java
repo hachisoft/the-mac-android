@@ -1,4 +1,4 @@
-package com.mac.themac;
+package com.mac.themac.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import com.mac.themac.R;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterException;

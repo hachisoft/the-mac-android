@@ -1,4 +1,4 @@
-package com.mac.themac;
+package com.mac.themac.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,8 +20,10 @@ import com.facebook.CallbackManager;
 import com.facebook.login.LoginManager;
 import com.facebook.login.widget.LoginButton;
 import com.firebase.client.AuthData;
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.auth.UserRecoverableAuthException;
@@ -31,6 +32,9 @@ import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
+import com.mac.themac.R;
+import com.mac.themac.TheMACApplication;
+import com.mac.themac.model.User;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -128,6 +132,10 @@ public class LoginActivity extends Activity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        /* Create the Firebase ref that is used for all authentication with Firebase */
+        mFirebaseRef = ((TheMACApplication)getApplication()).getFirebaseRef();
+
         /* Load the view and display it */
         setContentView(R.layout.activity_login);
 
@@ -213,9 +221,6 @@ public class LoginActivity extends Activity implements
          *               GENERAL               *
          ***************************************/
         mLoggedInStatusTextView = (TextView) findViewById(R.id.login_status);
-
-        /* Create the Firebase ref that is used for all authentication with Firebase */
-        mFirebaseRef = new Firebase(getResources().getString(R.string.firebase_url));
 
         /* Setup the progress dialog that is displayed later when authenticating with Firebase */
         mAuthProgressDialog = new ProgressDialog(this);
@@ -367,6 +372,23 @@ public class LoginActivity extends Activity implements
             if (name != null) {
                 mLoggedInStatusTextView.setText("Logged in as " + name + " (" + authData.getProvider() + ")");
             }
+
+            final User loggedInUser = new User(authData);
+
+            //Retrieve firebase user, create one if doesn't exist
+            final Firebase loggedInUserRef = mFirebaseRef.child("users/" + loggedInUser.id());
+
+            loggedInUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    loggedInUser.updateFirebaseData(loggedInUserRef, dataSnapshot);
+                }
+
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+                    showErrorDialog(firebaseError.getMessage());
+                }
+            });
         } else {
             /* No authenticated user show all the login buttons */
             mFacebookLoginButton.setVisibility(View.VISIBLE);
@@ -378,7 +400,7 @@ public class LoginActivity extends Activity implements
         }
         this.mAuthData = authData;
         /* invalidate options menu to hide/show the logout button */
-        //supportInvalidateOptionsMenu();
+        invalidateOptionsMenu();
     }
 
     /**

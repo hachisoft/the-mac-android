@@ -17,7 +17,7 @@ public class TheMACApplication extends Application{
 
         //initialize Firebase
         Firebase.setAndroidContext(this);
-        Firebase mFirebase = new Firebase("https://luminous-heat-7934.firebaseio.com/");
+        mFirebase = new Firebase( getString(R.string.firebase_url));
 
         //initialize Facebook
         FacebookSdk.sdkInitialize(this);
