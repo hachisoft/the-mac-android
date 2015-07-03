@@ -1,56 +1,61 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:gravity="bottom"
-    android:background="@color/red"
+    android:gravity="center"
     tools:context="com.mac.themac.activity.LoginActivity">
 
-    <TextView
-        android:id="@+id/login_status"
-        android:visibility="gone"
-        android:layout_width="match_parent"
+
+    <ViewSwitcher
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:textAlignment="center"
-        android:layout_marginTop="20dp" />
+        android:id="@+id/viewSwitcher" >
 
-    <com.facebook.login.widget.LoginButton
-        android:id="@+id/login_with_facebook"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/login_with_facebook"
-        />
+        <RelativeLayout android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            android:gravity="center">
 
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/login_with_google"
-        android:text="@string/login_with_google"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageViewLogin"
+                android:src="@drawable/main"/>
 
-    <Button
-        android:id="@+id/login_with_twitter"
-        android:text="@string/login_with_twitter"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+            <include android:id="@+id/login_buttons"
+                layout="@layout/login_buttons"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:layout_centerInParent="true"/>
 
-    <Button
-        android:id="@+id/login_with_password"
-        android:text="@string/login_with_password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"/>
+        </RelativeLayout>
 
-    <Button
-        android:id="@+id/login_anonymously"
-        android:text="@string/login_anonymously"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"/>
+        <LinearLayout android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-</LinearLayout>
+            <TextView
+                android:id="@+id/login_status"
+                android:layout_width="match_parent"
+                android:textAlignment="center"
+                android:layout_marginTop="20dp"
+                android:layout_height="wrap_content"/>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageViewLoggedIn"
+                android:src="@drawable/main"/>
+
+            <include android:id="@+id/bottom_action_bar"
+                layout="@layout/bottom_action_bar"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:layout_gravity="bottom"/>
+
+        </LinearLayout>
+    </ViewSwitcher>
+
+</RelativeLayout>

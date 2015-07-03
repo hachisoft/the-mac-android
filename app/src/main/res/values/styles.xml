@@ -3,6 +3,12 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="android:Theme.NoTitleBar">
         <!-- Customize your theme here. -->
+        <item name="android:background">#ffad0d0d</item>
     </style>
 
+    <style name="ButtonTheme" parent="android:Widget.Holo.Light.Button">
+        <item name="android:background">#00000000</item>
+        <item name="android:layout_margin">0dp</item>
+        <item name="android:scaleType">fitCenter</item>
+    </style>
 </resources>

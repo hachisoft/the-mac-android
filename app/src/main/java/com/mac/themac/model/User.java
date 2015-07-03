@@ -17,7 +17,8 @@ public class User {
     private String mName;
     private String mEmail;
     private boolean mIsAdmin;
-    private boolean mIsHead;
+    private boolean mIsDeptHead;
+    private boolean mIsLeader;
     private Date mCreated;
 
     public User(AuthData authData) {
@@ -25,7 +26,8 @@ public class User {
         mProvider = authData.getProvider();
         mCreated = new Date();
         mIsAdmin = false;
-        mIsHead = false;
+        mIsDeptHead = false;
+        mIsLeader = false;
 
         Map<String, Object> authKeyValueMappings = authData.getProviderData();
 
@@ -56,12 +58,16 @@ public class User {
         return mIsAdmin;
     }
 
-    public boolean getIsHead() {
-        return mIsHead;
+    public boolean getIsDeptHead() {
+        return mIsDeptHead;
     }
 
     public Date getCreated() {
         return mCreated;
+    }
+
+    public boolean getIsLeader(){
+        return mIsLeader;
     }
     /////////////////////////////////////////////////////////
 
@@ -79,16 +85,7 @@ public class User {
             //Update any existing key-mapping
             for (DataSnapshot userProp : userData) {
                 switch (userProp.getKey()) {
-                    case "isAdmin":
-                        if (userProp.getValue() == null || !userProp.getValue().equals(this.getIsAdmin())) {
-                            loggedInUserRef.child("isAdmin").setValue(this.getIsAdmin());
-                        }
-                        break;
-                    case "isHead":
-                        if (userProp.getValue() == null || !userProp.getValue().equals(this.getIsHead())) {
-                            loggedInUserRef.child("isHead").setValue(this.getIsHead());
-                        }
-                        break;
+
                     case "name":
                         if (userProp.getValue() == null || !userProp.getValue().equals(this.getName())) {
                             loggedInUserRef.child("name").setValue(this.getName());
@@ -110,6 +107,12 @@ public class User {
             }
             if(!dataSnapshot.hasChild("email")){
                 loggedInUserRef.child("email").setValue(this.getEmail());
+            }
+            if(!dataSnapshot.hasChild("isDeptHead")){
+                loggedInUserRef.child("isDeptHead").setValue(this.getIsDeptHead());
+            }
+            if(!dataSnapshot.hasChild("isLeader")){
+                loggedInUserRef.child("isLeader").setValue(this.getIsLeader());
             }
         }
     }

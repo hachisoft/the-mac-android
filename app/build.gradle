@@ -22,6 +22,7 @@ android {
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/LICENSE-FIREBASE.txt'
         exclude 'META-INF/NOTICE'
+        exclude 'META-INF/services/javax.annotation.processing.Processor'
     }
 }
 
@@ -32,4 +33,5 @@ dependencies {
     compile 'com.google.android.gms:play-services:7.5.0'
     compile 'org.twitter4j:twitter4j-core:4.0.2'
     compile 'com.facebook.android:facebook-android-sdk:4.1.0'
+    compile 'com.jakewharton:butterknife:7.0.1'
 }

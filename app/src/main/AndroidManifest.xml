@@ -19,20 +19,37 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-
         <activity android:name=".activity.TwitterOAuthActivity" />
         <activity android:name="com.facebook.FacebookActivity" />
         <activity
             android:name=".activity.LoginActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".activity.GoogleOAuthActivity"
             android:label="@string/title_activity_google_oauth" >
+        </activity>
+        <activity
+            android:name=".activity.MyAccountActivity"
+            android:label="@string/title_activity_my_account" >
+        </activity>
+        <activity
+            android:name=".activity.EventsActivity"
+            android:label="@string/title_activity_events" >
+        </activity>
+        <activity
+            android:name=".activity.BillActivity"
+            android:label="@string/title_activity_bill" >
+        </activity>
+        <activity
+            android:name=".activity.TennisCourtsActivity"
+            android:label="@string/title_activity_tennis_courts" >
         </activity>
 
         <meta-data

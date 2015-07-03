@@ -62,7 +62,7 @@ public class TwitterOAuthActivity extends Activity {
             protected RequestToken doInBackground(Void... params) {
                 RequestToken token = null;
                 try {
-                    token = mTwitter.getOAuthRequestToken("oauth://cb");
+                    token = mTwitter.getOAuthRequestToken("oauth://mac.twitter");
                 } catch (TwitterException te) {
                     Log.e(TAG, te.toString());
                 }
@@ -74,7 +74,7 @@ public class TwitterOAuthActivity extends Activity {
                 mTwitterView.setWebViewClient(new WebViewClient() {
                     @Override
                     public void onPageFinished(final WebView view, final String url) {
-                        if (url.startsWith("oauth://cb")) {
+                        if (url.startsWith("oauth://mac.twitter")) {
                             getTwitterOAuthTokenAndLogin(token, Uri.parse(url).getQueryParameter("oauth_verifier"));
                         }
                     }
@@ -85,7 +85,7 @@ public class TwitterOAuthActivity extends Activity {
     }
 
     private void getTwitterOAuthTokenAndLogin(final RequestToken requestToken, final String oauthVerifier) {
-        // once a user authorizes the application, get the auth token and return to the MainActivity
+        // once a user authorizes the application, get the auth token and return to the LoginActivity
         new AsyncTask<Void, Void, AccessToken>() {
             @Override
             protected AccessToken doInBackground(Void... params) {

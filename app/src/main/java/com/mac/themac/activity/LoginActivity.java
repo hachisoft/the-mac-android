@@ -35,10 +35,14 @@ import com.google.android.gms.plus.Plus;
 import com.mac.themac.R;
 import com.mac.themac.TheMACApplication;
 import com.mac.themac.model.User;
+import com.mac.themac.utility.FirebaseHelper;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * This application demos the use of the Firebase Login feature. It currently supports logging in
@@ -50,7 +54,7 @@ import java.util.Map;
  * Facebook provides its own API via the {@link com.facebook.login.widget.LoginButton}.
  * Google provides its own API via the {@link com.google.android.gms.common.api.GoogleApiClient}.
  * Twitter requires us to use a Web View to authenticate, see
- * {@link com.firebase.samples.logindemo.TwitterOAuthActivity}
+ * {@link com.mac.themac.activity.TwitterOAuthActivity}
  * Email/Password is provided using {@link com.firebase.client.Firebase}
  * Anonymous is provided using {@link com.firebase.client.Firebase}
  */
@@ -64,13 +68,13 @@ public class LoginActivity extends Activity implements
      *              GENERAL                *
      ***************************************/
     /* TextView that is used to display information about the logged in user */
-    private TextView mLoggedInStatusTextView;
+    @Bind(R.id.login_status) TextView mLoggedInStatusTextView;
 
     /* A dialog that is presented until the Firebase authentication finished. */
     private ProgressDialog mAuthProgressDialog;
 
     /* A reference to the Firebase */
-    private Firebase mFirebaseRef;
+    private FirebaseHelper mFBHelper;
 
     /* Data from the authenticated user */
     private AuthData mAuthData;
@@ -82,7 +86,8 @@ public class LoginActivity extends Activity implements
      *              FACEBOOK               *
      ***************************************/
     /* The login button for Facebook */
-    private LoginButton mFacebookLoginButton;
+    @Bind(R.id.login_with_facebook) LoginButton mFacebookLoginButton;
+
     /* The callback manager for Facebook */
     private CallbackManager mFacebookCallbackManager;
     /* Used to track user logging in/out off Facebook */
@@ -110,41 +115,36 @@ public class LoginActivity extends Activity implements
     private ConnectionResult mGoogleConnectionResult;
 
     /* The login button for Google */
-    private SignInButton mGoogleLoginButton;
+    @Bind(R.id.login_with_google) SignInButton mGoogleLoginButton;
 
     /* *************************************
      *              TWITTER                *
      ***************************************/
     public static final int RC_TWITTER_LOGIN = 2;
 
-    private Button mTwitterLoginButton;
+    @Bind(R.id.login_with_twitter) Button mTwitterLoginButton;
 
     /* *************************************
      *              PASSWORD               *
      ***************************************/
-    private Button mPasswordLoginButton;
-
-    /* *************************************
-     *            ANONYMOUSLY              *
-     ***************************************/
-    private Button mAnonymousLoginButton;
+    @Bind(R.id.login_with_password) Button mPasswordLoginButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         /* Create the Firebase ref that is used for all authentication with Firebase */
-        mFirebaseRef = ((TheMACApplication)getApplication()).getFirebaseRef();
+        mFBHelper = ((TheMACApplication)getApplication()).getFirebaseHelper();
 
         /* Load the view and display it */
         setContentView(R.layout.activity_login);
+        ButterKnife.bind(this);
 
         /* *************************************
          *              FACEBOOK               *
          ***************************************/
         /* Load the Facebook login button and set up the tracker to monitor access token changes */
         mFacebookCallbackManager = CallbackManager.Factory.create();
-        mFacebookLoginButton = (LoginButton) findViewById(R.id.login_with_facebook);
         mFacebookAccessTokenTracker = new AccessTokenTracker() {
             @Override
             protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
@@ -157,7 +157,6 @@ public class LoginActivity extends Activity implements
          *               GOOGLE                *
          ***************************************/
         /* Load the Google login button */
-        mGoogleLoginButton = (SignInButton) findViewById(R.id.login_with_google);
         mGoogleLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -186,7 +185,6 @@ public class LoginActivity extends Activity implements
         /* *************************************
          *                TWITTER              *
          ***************************************/
-        mTwitterLoginButton = (Button) findViewById(R.id.login_with_twitter);
         mTwitterLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -197,7 +195,6 @@ public class LoginActivity extends Activity implements
         /* *************************************
          *               PASSWORD              *
          ***************************************/
-        mPasswordLoginButton = (Button) findViewById(R.id.login_with_password);
         mPasswordLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -205,27 +202,10 @@ public class LoginActivity extends Activity implements
             }
         });
 
-        /* *************************************
-         *              ANONYMOUSLY            *
-         ***************************************/
-        /* Load and setup the anonymous login button */
-        mAnonymousLoginButton = (Button) findViewById(R.id.login_anonymously);
-        mAnonymousLoginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                loginAnonymously();
-            }
-        });
-
-        /* *************************************
-         *               GENERAL               *
-         ***************************************/
-        mLoggedInStatusTextView = (TextView) findViewById(R.id.login_status);
-
         /* Setup the progress dialog that is displayed later when authenticating with Firebase */
         mAuthProgressDialog = new ProgressDialog(this);
         mAuthProgressDialog.setTitle("Loading");
-        mAuthProgressDialog.setMessage("Authenticating with Firebase...");
+        mAuthProgressDialog.setMessage("Authenticating with Multnomah Athletic Club...");
         mAuthProgressDialog.setCancelable(false);
         mAuthProgressDialog.show();
 
@@ -238,7 +218,7 @@ public class LoginActivity extends Activity implements
         };
         /* Check if the user is authenticated with Firebase already. If this is the case we can set the authenticated
          * user and hide hide any login buttons */
-        mFirebaseRef.addAuthStateListener(mAuthStateListener);
+        mFBHelper.addAuthStateListener(mAuthStateListener);
     }
 
     @Override
@@ -250,7 +230,7 @@ public class LoginActivity extends Activity implements
         }
 
         // if changing configurations, stop tracking firebase session.
-        mFirebaseRef.removeAuthStateListener(mAuthStateListener);
+        mFBHelper.removeAuthStateListener(mAuthStateListener);
     }
 
     /**
@@ -308,7 +288,7 @@ public class LoginActivity extends Activity implements
     private void logout() {
         if (this.mAuthData != null) {
             /* logout of Firebase */
-            mFirebaseRef.unauth();
+            mFBHelper.unauth();
             /* Logout of any of the Frameworks. This step is optional, but ensures the user is not logged into
              * Facebook/Google+ after logging out of Firebase. */
             if (this.mAuthData.getProvider().equals("facebook")) {
@@ -337,10 +317,10 @@ public class LoginActivity extends Activity implements
             mAuthProgressDialog.show();
             if (provider.equals("twitter")) {
                 // if the provider is twitter, we must pass in additional options, so use the options endpoint
-                mFirebaseRef.authWithOAuthToken(provider, options, new AuthResultHandler(provider));
+                mFBHelper.getFirebaseRef().authWithOAuthToken(provider, options, new AuthResultHandler(provider));
             } else {
                 // if the provider is not twitter, we just need to pass in the oauth_token
-                mFirebaseRef.authWithOAuthToken(provider, options.get("oauth_token"), new AuthResultHandler(provider));
+                mFBHelper.getFirebaseRef().authWithOAuthToken(provider, options.get("oauth_token"), new AuthResultHandler(provider));
             }
         }
     }
@@ -350,13 +330,14 @@ public class LoginActivity extends Activity implements
      */
     private void setAuthenticatedUser(AuthData authData) {
         if (authData != null) {
-            /* Hide all the login buttons */
+
+            /* Hide all the login buttons*/
             mFacebookLoginButton.setVisibility(View.GONE);
             mGoogleLoginButton.setVisibility(View.GONE);
             mTwitterLoginButton.setVisibility(View.GONE);
             mPasswordLoginButton.setVisibility(View.GONE);
-            mAnonymousLoginButton.setVisibility(View.GONE);
             mLoggedInStatusTextView.setVisibility(View.VISIBLE);
+
             /* show a provider specific status text */
             String name = null;
             if (authData.getProvider().equals("facebook")
@@ -374,14 +355,15 @@ public class LoginActivity extends Activity implements
             }
 
             final User loggedInUser = new User(authData);
-
+            final Activity loginActivity = this;
             //Retrieve firebase user, create one if doesn't exist
-            final Firebase loggedInUserRef = mFirebaseRef.child("users/" + loggedInUser.id());
+            final Firebase loggedInUserRef = mFBHelper.getFirebaseRef().child("users/" + loggedInUser.id());
 
             loggedInUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     loggedInUser.updateFirebaseData(loggedInUserRef, dataSnapshot);
+                    mFBHelper.set_loggedInUser(loggedInUser);
                 }
 
                 @Override
@@ -390,12 +372,12 @@ public class LoginActivity extends Activity implements
                 }
             });
         } else {
-            /* No authenticated user show all the login buttons */
+
+            /* No authenticated user show all the login buttons*/
             mFacebookLoginButton.setVisibility(View.VISIBLE);
             mGoogleLoginButton.setVisibility(View.VISIBLE);
             mTwitterLoginButton.setVisibility(View.VISIBLE);
             mPasswordLoginButton.setVisibility(View.VISIBLE);
-            mAnonymousLoginButton.setVisibility(View.VISIBLE);
             mLoggedInStatusTextView.setVisibility(View.GONE);
         }
         this.mAuthData = authData;
@@ -447,11 +429,11 @@ public class LoginActivity extends Activity implements
     private void onFacebookAccessTokenChange(AccessToken token) {
         if (token != null) {
             mAuthProgressDialog.show();
-            mFirebaseRef.authWithOAuthToken("facebook", token.getToken(), new AuthResultHandler("facebook"));
+            mFBHelper.getFirebaseRef().authWithOAuthToken("facebook", token.getToken(), new AuthResultHandler("facebook"));
         } else {
             // Logged out of Facebook and currently authenticated with Firebase using Facebook, so do a logout
             if (this.mAuthData != null && this.mAuthData.getProvider().equals("facebook")) {
-                mFirebaseRef.unauth();
+                mFBHelper.unauth();
                 setAuthenticatedUser(null);
             }
         }
@@ -515,7 +497,7 @@ public class LoginActivity extends Activity implements
                 mGoogleLoginClicked = false;
                 if (token != null) {
                     /* Successfully got OAuth token, now login with Google */
-                    mFirebaseRef.authWithOAuthToken("google", token, new AuthResultHandler("google"));
+                    mFBHelper.getFirebaseRef().authWithOAuthToken("google", token, new AuthResultHandler("google"));
                 } else if (errorMessage != null) {
                     mAuthProgressDialog.hide();
                     showErrorDialog(errorMessage);
@@ -567,7 +549,7 @@ public class LoginActivity extends Activity implements
      */
     public void loginWithPassword() {
         mAuthProgressDialog.show();
-        mFirebaseRef.authWithPassword("test@firebaseuser.com", "test1234", new AuthResultHandler("password"));
+        mFBHelper.getFirebaseRef().authWithPassword("test@firebaseuser.com", "test1234", new AuthResultHandler("password"));
     }
 
     /* ************************************
@@ -576,6 +558,6 @@ public class LoginActivity extends Activity implements
      */
     private void loginAnonymously() {
         mAuthProgressDialog.show();
-        mFirebaseRef.authAnonymously(new AuthResultHandler("anonymous"));
+        mFBHelper.getFirebaseRef().authAnonymously(new AuthResultHandler("anonymous"));
     }
 }
