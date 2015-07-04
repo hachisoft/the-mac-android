@@ -1,5 +1,6 @@
 package com.mac.themac.activity;
 
+import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -8,7 +9,7 @@ import android.view.MenuItem;
 
 import com.mac.themac.R;
 
-public class BillActivity extends AppCompatActivity {
+public class BillActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

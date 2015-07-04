@@ -62,7 +62,7 @@ import butterknife.OnClick;
  * Email/Password is provided using {@link com.firebase.client.Firebase}
  * Anonymous is provided using {@link com.firebase.client.Firebase}
  */
-public class LoginActivity extends AppCompatActivity implements
+public class LoginActivity extends Activity implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         Firebase.AuthStateListener{

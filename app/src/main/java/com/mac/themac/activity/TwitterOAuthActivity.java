@@ -2,6 +2,7 @@ package com.mac.themac.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -71,15 +72,39 @@ public class TwitterOAuthActivity extends Activity {
 
             @Override
             protected void onPostExecute(final RequestToken token) {
-                mTwitterView.setWebViewClient(new WebViewClient() {
-                    @Override
-                    public void onPageFinished(final WebView view, final String url) {
-                        if (url.startsWith("oauth://mac.twitter")) {
-                            getTwitterOAuthTokenAndLogin(token, Uri.parse(url).getQueryParameter("oauth_verifier"));
+
+                if(token != null) {
+                    mTwitterView.setWebViewClient(new WebViewClient() {
+                        private boolean isRedirected;
+
+                        @Override
+                        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+
+                            if (!isRedirected) {
+                                //Do something you want when starts loading
+                            }
+                            isRedirected = false;
                         }
-                    }
-                });
-                mTwitterView.loadUrl(token.getAuthorizationURL());
+                        @Override
+                        public void onPageFinished(final WebView view, final String url) {
+                            if (url.startsWith("oauth://mac.twitter") && !isRedirected) {
+                                getTwitterOAuthTokenAndLogin(token, Uri.parse(url).getQueryParameter("oauth_verifier"));
+                            }
+                        }
+
+                        @Override
+                        public boolean shouldOverrideUrlLoading(WebView view, String url){
+                            view.loadUrl(url);
+                            isRedirected = true;
+                            return true;
+                        }
+                    });
+                    mTwitterView.loadUrl(token.getAuthorizationURL());
+                }else{
+                    Intent resultIntent = new Intent();
+                    setResult(LoginActivity.RC_TWITTER_LOGIN, resultIntent);
+                    finish();
+                }
             }
         }.execute();
     }
@@ -101,9 +126,11 @@ public class TwitterOAuthActivity extends Activity {
             @Override
             protected void onPostExecute(AccessToken token) {
                 Intent resultIntent = new Intent();
-                resultIntent.putExtra("oauth_token", token.getToken());
-                resultIntent.putExtra("oauth_token_secret", token.getTokenSecret());
-                resultIntent.putExtra("user_id", token.getUserId() + "");
+                if(token != null) {
+                    resultIntent.putExtra("oauth_token", token.getToken());
+                    resultIntent.putExtra("oauth_token_secret", token.getTokenSecret());
+                    resultIntent.putExtra("user_id", token.getUserId() + "");
+                }
                 setResult(LoginActivity.RC_TWITTER_LOGIN, resultIntent);
                 finish();
             }
