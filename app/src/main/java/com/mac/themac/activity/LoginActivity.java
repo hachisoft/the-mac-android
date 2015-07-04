@@ -7,12 +7,15 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
@@ -43,6 +46,7 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * This application demos the use of the Firebase Login feature. It currently supports logging in
@@ -58,9 +62,10 @@ import butterknife.ButterKnife;
  * Email/Password is provided using {@link com.firebase.client.Firebase}
  * Anonymous is provided using {@link com.firebase.client.Firebase}
  */
-public class LoginActivity extends Activity implements
+public class LoginActivity extends AppCompatActivity implements
         GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener {
+        GoogleApiClient.OnConnectionFailedListener,
+        Firebase.AuthStateListener{
 
     private static final String TAG = LoginActivity.class.getSimpleName();
 
@@ -128,6 +133,14 @@ public class LoginActivity extends Activity implements
      *              PASSWORD               *
      ***************************************/
     @Bind(R.id.login_with_password) Button mPasswordLoginButton;
+
+    @Bind(R.id.viewSwitcher) ViewSwitcher mViewSwitcher;
+
+    @OnClick(R.id.btnMore)
+    public void logOut(View view){
+        TheMACApplication.theApp.getFirebaseHelper().unauth();
+        mViewSwitcher.setDisplayedChild(mViewSwitcher.indexOfChild(findViewById(R.id.login_view)));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -364,6 +377,7 @@ public class LoginActivity extends Activity implements
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     loggedInUser.updateFirebaseData(loggedInUserRef, dataSnapshot);
                     mFBHelper.set_loggedInUser(loggedInUser);
+                    mViewSwitcher.setDisplayedChild(mViewSwitcher.indexOfChild(findViewById(R.id.logged_in_view)));
                 }
 
                 @Override
@@ -395,6 +409,13 @@ public class LoginActivity extends Activity implements
                 .setPositiveButton(android.R.string.ok, null)
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
+    }
+
+    @Override
+    public void onAuthStateChanged(AuthData authData) {
+        if(authData == null) {
+            mViewSwitcher.setDisplayedChild(mViewSwitcher.indexOfChild(findViewById(R.id.login_view)));
+        }
     }
 
     /**

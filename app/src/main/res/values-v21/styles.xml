@@ -1,29 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <!-- Base application theme. -->
-    <style name="AppThemeNoActionBar" parent="@style/Theme.AppCompat.NoActionBar">
+    <style name="AppThemeNoActionBar" parent="android:Theme.Material.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="android:background">#ffad0d0d</item>
         <!-- Main theme colors -->
         <!--   your app branding color for the app bar -->
-        <item name="colorPrimary">@color/primary</item>
+        <item name="android:colorPrimary">@color/primary</item>
         <!--   darker variant for the status bar and contextual app bars -->
-        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="android:colorPrimaryDark">@color/primary_dark</item>
         <!--   theme UI controls like checkboxes and text fields -->
-        <item name="colorAccent">@color/accent</item>
+        <item name="android:colorAccent">@color/accent</item>
+        <item name="android:navigationBarColor">@color/primary_dark</item>
     </style>
-    <style name="AppThemeWithActionBar" parent="@style/Theme.AppCompat">
+    <style name="AppThemeWithActionBar" parent="android:Theme.Material">
         <!-- Customize your theme here. -->
         <item name="android:background">#ffad0d0d</item>
         <!-- Main theme colors -->
         <!--   your app branding color for the app bar -->
-        <item name="colorPrimary">@color/primary</item>
+        <item name="android:colorPrimary">@color/primary</item>
         <!--   darker variant for the status bar and contextual app bars -->
-        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="android:colorPrimaryDark">@color/primary_dark</item>
         <!--   theme UI controls like checkboxes and text fields -->
-        <item name="colorAccent">@color/accent</item>
+        <item name="android:colorAccent">@color/accent</item>
     </style>
-
     <style name="ButtonTheme" parent="android:Widget.Holo.Light.Button">
         <item name="android:background">#00000000</item>
         <item name="android:layout_margin">0dp</item>

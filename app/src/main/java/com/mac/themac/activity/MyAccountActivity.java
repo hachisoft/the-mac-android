@@ -2,6 +2,7 @@ package com.mac.themac.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,7 +19,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MyAccountActivity extends Activity implements Firebase.AuthStateListener{
+public class MyAccountActivity extends AppCompatActivity implements Firebase.AuthStateListener{
 
     /* A reference to the Firebase */
     private FirebaseHelper _FBHelper;

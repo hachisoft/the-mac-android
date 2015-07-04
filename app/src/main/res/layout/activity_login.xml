@@ -1,7 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="fill_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
     tools:context="com.mac.themac.activity.LoginActivity">
@@ -15,7 +15,8 @@
         <RelativeLayout android:layout_width="match_parent"
             android:layout_height="fill_parent"
             android:orientation="vertical"
-            android:gravity="center">
+            android:gravity="center"
+            android:id="@+id/login_view">
 
             <ImageView
                 android:layout_width="match_parent"
@@ -23,7 +24,7 @@
                 android:id="@+id/imageViewLogin"
                 android:src="@drawable/main"/>
 
-            <include android:id="@+id/login_buttons"
+            <include
                 layout="@layout/login_buttons"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
@@ -34,26 +35,28 @@
 
         <LinearLayout android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
-
+            android:orientation="vertical"
+            android:gravity="center"
+            android:id="@+id/logged_in_view">
             <TextView
                 android:id="@+id/login_status"
                 android:layout_width="match_parent"
                 android:textAlignment="center"
-                android:layout_marginTop="20dp"
-                android:layout_height="wrap_content"/>
+                android:layout_height="0dp"
+                android:layout_weight="0.05"/>
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:id="@+id/imageViewLoggedIn"
-                android:src="@drawable/main"/>
+                android:src="@drawable/main"
+                android:layout_weight="0.85"/>
 
             <include android:id="@+id/bottom_action_bar"
                 layout="@layout/bottom_action_bar"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_width="fill_parent"
-                android:layout_gravity="bottom"/>
+                android:layout_weight="0.10"/>
 
         </LinearLayout>
     </ViewSwitcher>
