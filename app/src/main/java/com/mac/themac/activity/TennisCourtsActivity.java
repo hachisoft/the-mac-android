@@ -6,15 +6,62 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.mac.themac.R;
+import com.mac.themac.TheMACApplication;
+import com.mac.themac.model.User;
+import com.mac.themac.utility.FirebaseHelper;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class TennisCourtsActivity extends Activity {
+
+    /* A reference to the Firebase */
+    private FirebaseHelper _FBHelper;
+
+    @Bind(R.id.btnTennisCourts)
+    ImageButton _btnTennis;
+
+    @OnClick({R.id.btnMore, R.id.txtMore})
+    public void launchMore(){
+        TheMACApplication.startActivity(this, MoreActivity.class);
+    }
+
+    @OnClick({R.id.btnMyAccount, R.id.txtMyAccount})
+    public void launchMyAccount(){
+        TheMACApplication.startActivity(this, MyAccountActivity.class);
+    }
+
+    @OnClick({R.id.btnBill, R.id.txtBill})
+    public void launchBill(){
+        TheMACApplication.startActivity(this, BillActivity.class);
+    }
+
+    @OnClick({R.id.btnFind, R.id.txtFind})
+    public void launchFind(){
+        TheMACApplication.startActivity(this, FindEventsActivity.class);
+    }
+
+    @OnClick({R.id.btnTennisCourts, R.id.txtTennisCourts})
+    public void launchTennisCourts(){
+        _btnTennis.setPressed(true);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tennis_courts);
+
+        ButterKnife.bind(this);
+
+        _FBHelper = TheMACApplication.theApp.getFirebaseHelper();
+
+        User loggedInUser = _FBHelper.getLoggedInUser();
+        _btnTennis.setPressed(true);
     }
 
     @Override

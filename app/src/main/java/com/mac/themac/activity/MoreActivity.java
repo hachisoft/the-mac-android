@@ -1,6 +1,7 @@
 package com.mac.themac.activity;
 
 import android.app.Activity;
+import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,17 +17,17 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class BillActivity extends Activity {
+public class MoreActivity extends Activity {
 
     /* A reference to the Firebase */
     private FirebaseHelper _FBHelper;
 
-    @Bind(R.id.btnBill)
-    ImageButton _btnBill;
+    @Bind(R.id.btnMore)
+    ImageButton _btnMore;
 
     @OnClick({R.id.btnMore, R.id.txtMore})
     public void launchMore(){
-        TheMACApplication.startActivity(this, MoreActivity.class);
+        _btnMore.setPressed(true);
     }
 
     @OnClick({R.id.btnMyAccount, R.id.txtMyAccount})
@@ -36,7 +37,7 @@ public class BillActivity extends Activity {
 
     @OnClick({R.id.btnBill, R.id.txtBill})
     public void launchBill(){
-        _btnBill.setPressed(true);
+        TheMACApplication.startActivity(this, BillActivity.class);
     }
 
     @OnClick({R.id.btnFind, R.id.txtFind})
@@ -52,20 +53,20 @@ public class BillActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bill);
+        setContentView(R.layout.activity_more);
 
         ButterKnife.bind(this);
 
         _FBHelper = TheMACApplication.theApp.getFirebaseHelper();
 
         User loggedInUser = _FBHelper.getLoggedInUser();
-        _btnBill.setPressed(true);
+        _btnMore.setPressed(true);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_bill, menu);
+        getMenuInflater().inflate(R.menu.menu_more, menu);
         return true;
     }
 

@@ -3,7 +3,7 @@
     <!-- Base application theme. -->
     <style name="AppThemeNoActionBar" parent="android:Theme.Material.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="android:background">#ffad0d0d</item>
+        <item name="android:background">@color/appBackground</item>
         <!-- Main theme colors -->
         <!--   your app branding color for the app bar -->
         <item name="android:colorPrimary">@color/primary</item>
@@ -15,7 +15,7 @@
     </style>
     <style name="AppThemeWithActionBar" parent="android:Theme.Material">
         <!-- Customize your theme here. -->
-        <item name="android:background">#ffad0d0d</item>
+        <item name="android:background">@color/appBackground</item>
         <!-- Main theme colors -->
         <!--   your app branding color for the app bar -->
         <item name="android:colorPrimary">@color/primary</item>
@@ -25,8 +25,29 @@
         <item name="android:colorAccent">@color/accent</item>
     </style>
     <style name="ButtonTheme" parent="android:Widget.Holo.Light.Button">
-        <item name="android:background">#00000000</item>
-        <item name="android:layout_margin">0dp</item>
+        <item name="android:background">@color/primary_dark</item>
+        <item name="android:layout_marginBottom">0dp</item>
         <item name="android:scaleType">fitCenter</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="ActionbarText" parent="android:Widget.Holo.Light">
+        <item name="android:background">@color/primary_dark</item>
+        <item name="android:textSize">10dp</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_alignParentBottom">true</item>
+    </style>
+
+    <style name="ActionButtonLayout" parent="android:Widget.Holo.Light">
+        <item name="android:background">@color/primary_dark</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">0.2</item>
+        <item name="android:gravity">center</item>
     </style>
 </resources>

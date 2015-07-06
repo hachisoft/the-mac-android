@@ -1,120 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
-    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:gravity="center"
     android:layout_gravity="bottom"
-    android:layout_weight="1">
+    android:background="@color/primary_dark">
 
     <LinearLayout
-        android:layout_width="0dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_weight=".2"
-        android:gravity="center">
+        android:gravity="center"
+        android:layout_gravity="bottom">
 
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/btnMyAccount"
-            style="@style/ButtonTheme"
-            android:src="@drawable/btn_find"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="My Account"
-            android:textSize="10dp"/>
+        <RelativeLayout
+            style="@style/ActionButtonLayout">
 
+            <ImageButton
+                android:id="@+id/btnMyAccount"
+                style="@style/ButtonTheme"
+                android:src="@drawable/btn_myaccount"
+                />
+            <TextView
+                android:id="@+id/txtMyAccount"
+                style="@style/ActionbarText"
+                android:text="My Account"/>
+
+        </RelativeLayout>
+        <RelativeLayout
+            style="@style/ActionButtonLayout">
+
+            <ImageButton
+                android:id="@+id/btnBill"
+                style="@style/ButtonTheme"
+                android:src="@drawable/btn_bill"/>
+
+            <TextView
+                android:id="@+id/txtBill"
+                style="@style/ActionbarText"
+                android:text="Bill"/>
+
+        </RelativeLayout>
+        <RelativeLayout
+            style="@style/ActionButtonLayout">
+
+            <ImageButton
+                android:id="@+id/btnTennisCourts"
+                android:src="@drawable/btn_tennis"
+                style="@style/ButtonTheme"/>
+
+            <TextView
+                android:id="@+id/txtTennisCourts"
+                style="@style/ActionbarText"
+                android:text="Tennis Courts"/>
+
+        </RelativeLayout>
+        <RelativeLayout
+            style="@style/ActionButtonLayout">
+
+            <ImageButton
+                android:id="@+id/btnFind"
+                android:src="@drawable/btn_find"
+                style="@style/ButtonTheme"/>
+
+            <TextView
+                android:id="@+id/txtFind"
+                style="@style/ActionbarText"
+                android:text="Find Event"/>
+
+        </RelativeLayout>
+        <RelativeLayout
+
+            style="@style/ActionButtonLayout">
+
+            <ImageButton
+                android:id="@+id/btnMore"
+                style="@style/ButtonTheme"
+                android:src="@drawable/btn_more"/>
+
+            <TextView
+                android:id="@+id/txtMore"
+                style="@style/ActionbarText"
+                android:text="More..."/>
+
+        </RelativeLayout>
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_weight=".2"
-        android:gravity="center">
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/btnBill"
-            style="@style/ButtonTheme"
-            android:src="@drawable/btn_bill"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Bill"
-            android:textSize="10dp"/>
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_weight=".2"
-        android:gravity="center">
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/btnTennisCourts"
-            style="@style/ButtonTheme"
-            android:src="@drawable/btn_bill"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Tennis Courts"
-            android:textSize="10dp"/>
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_weight=".2"
-        android:gravity="center">
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/btn_bill"
-            style="@style/ButtonTheme"
-            android:id="@+id/btnEvents"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Find Event"
-            android:textSize="10dp"/>
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_weight=".2"
-        android:gravity="center">
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/btnMore"
-            style="@style/ButtonTheme"
-            android:src="@drawable/btn_bill"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="More..."
-            android:textSize="10dp"/>
-
-    </LinearLayout>
-
-
-
-
-
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@color/primary"/>
 </LinearLayout>

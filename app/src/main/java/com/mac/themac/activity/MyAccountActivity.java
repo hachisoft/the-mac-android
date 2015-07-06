@@ -1,12 +1,12 @@
 package com.mac.themac.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.ImageButton;
 
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
@@ -24,8 +24,33 @@ public class MyAccountActivity extends Activity implements Firebase.AuthStateLis
     /* A reference to the Firebase */
     private FirebaseHelper _FBHelper;
 
-    @Bind(R.id.login_status)
-    TextView _loggedInStatus;
+    @Bind(R.id.btnMyAccount)
+    ImageButton _myAccount;
+
+    @OnClick({R.id.btnMore, R.id.txtMore})
+    public void launchMore(){
+        TheMACApplication.startActivity(this, MoreActivity.class);
+    }
+
+    @OnClick({R.id.btnMyAccount, R.id.txtMyAccount})
+    public void launchMyAccount(){
+        _myAccount.setPressed(true);
+    }
+
+    @OnClick({R.id.btnBill, R.id.txtBill})
+    public void launchBill(){
+        TheMACApplication.startActivity(this, BillActivity.class);
+    }
+
+    @OnClick({R.id.btnFind, R.id.txtFind})
+    public void launchFind(){
+        TheMACApplication.startActivity(this, FindEventsActivity.class);
+    }
+
+    @OnClick({R.id.btnTennisCourts, R.id.txtTennisCourts})
+    public void launchTennisCourts(){
+        TheMACApplication.startActivity(this, TennisCourtsActivity.class);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +61,7 @@ public class MyAccountActivity extends Activity implements Firebase.AuthStateLis
         _FBHelper = TheMACApplication.theApp.getFirebaseHelper();
 
         User loggedInUser = _FBHelper.getLoggedInUser();
-        if(loggedInUser != null) {
-            _loggedInStatus.setText(loggedInUser.getName() + "(" + loggedInUser.getProvider() + ")");
-        }
+        _myAccount.setPressed(true);
     }
 
     @OnClick(R.id.btnMore)

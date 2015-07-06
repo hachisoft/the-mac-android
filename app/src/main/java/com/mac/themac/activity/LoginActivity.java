@@ -7,8 +7,6 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -72,8 +70,8 @@ public class LoginActivity extends Activity implements
     /* *************************************
      *              GENERAL                *
      ***************************************/
-    /* TextView that is used to display information about the logged in user */
-    @Bind(R.id.login_status) TextView mLoggedInStatusTextView;
+    /* TextView that is used to display information about the logged in user
+    @Bind(R.id.login_status) TextView mLoggedInStatusTextView;*/
 
     /* A dialog that is presented until the Firebase authentication finished. */
     private ProgressDialog mAuthProgressDialog;
@@ -136,10 +134,29 @@ public class LoginActivity extends Activity implements
 
     @Bind(R.id.viewSwitcher) ViewSwitcher mViewSwitcher;
 
-    @OnClick(R.id.btnMore)
-    public void logOut(View view){
-        TheMACApplication.theApp.getFirebaseHelper().unauth();
-        mViewSwitcher.setDisplayedChild(mViewSwitcher.indexOfChild(findViewById(R.id.login_view)));
+    @OnClick({R.id.btnMyAccount, R.id.txtMyAccount})
+    public void launchMyAccount(){
+        TheMACApplication.startActivity(this, MyAccountActivity.class, false);
+    }
+
+    @OnClick({R.id.btnBill, R.id.txtBill})
+    public void launchBill(){
+        TheMACApplication.startActivity(this, BillActivity.class, false);
+    }
+
+    @OnClick({R.id.btnFind, R.id.txtFind})
+    public void launchFind(){
+        TheMACApplication.startActivity(this, FindEventsActivity.class, false);
+    }
+
+    @OnClick({R.id.btnTennisCourts, R.id.txtTennisCourts})
+    public void launchTennisCourts(){
+        TheMACApplication.startActivity(this, TennisCourtsActivity.class, false);
+    }
+
+    @OnClick({R.id.btnMore, R.id.txtMore})
+    public void launchMore(){
+        TheMACApplication.startActivity(this, MoreActivity.class, false);
     }
 
     @Override
@@ -349,7 +366,7 @@ public class LoginActivity extends Activity implements
             mGoogleLoginButton.setVisibility(View.GONE);
             mTwitterLoginButton.setVisibility(View.GONE);
             mPasswordLoginButton.setVisibility(View.GONE);
-            mLoggedInStatusTextView.setVisibility(View.VISIBLE);
+            //mLoggedInStatusTextView.setVisibility(View.VISIBLE);
 
             /* show a provider specific status text */
             String name = null;
@@ -364,7 +381,7 @@ public class LoginActivity extends Activity implements
                 Log.e(TAG, "Invalid provider: " + authData.getProvider());
             }
             if (name != null) {
-                mLoggedInStatusTextView.setText("Logged in as " + name + " (" + authData.getProvider() + ")");
+                //mLoggedInStatusTextView.setText("Logged in as " + name + " (" + authData.getProvider() + ")");
             }
 
             final User loggedInUser = new User(authData);
@@ -392,7 +409,7 @@ public class LoginActivity extends Activity implements
             mGoogleLoginButton.setVisibility(View.VISIBLE);
             mTwitterLoginButton.setVisibility(View.VISIBLE);
             mPasswordLoginButton.setVisibility(View.VISIBLE);
-            mLoggedInStatusTextView.setVisibility(View.GONE);
+            //mLoggedInStatusTextView.setVisibility(View.GONE);
         }
         this.mAuthData = authData;
         /* invalidate options menu to hide/show the logout button */

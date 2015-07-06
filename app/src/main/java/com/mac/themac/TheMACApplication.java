@@ -14,7 +14,9 @@ import com.mac.themac.utility.FirebaseHelper;
 public class TheMACApplication extends Application {
 
     public static TheMACApplication theApp = null;
+    public static int noAnimationNewTaskIntentFlag = Intent.FLAG_ACTIVITY_NO_ANIMATION;
     private FirebaseHelper mFirebaseHelper = null;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -42,15 +44,29 @@ public class TheMACApplication extends Application {
 
     public static void startActivity(Activity currentActivity, Class activityClass){
 
-        startActivity(currentActivity, activityClass, 0);
+        startActivity(currentActivity, activityClass, 0, true);
     }
 
-    public static void startActivity(Activity currentActivity, Class activityClass, int flags){
+    public static void startActivity(Activity currentActivity, Class activityClass, boolean finishCurrentActivity){
+
+        startActivity(currentActivity, activityClass, 0, finishCurrentActivity);
+    }
+
+    public static void startActivity(Activity currentActivity, Class activityClass, int flags, boolean finishCurrentActivity){
 
         //If needed handle back stack for activity and tasks here
         Intent intent = new Intent(currentActivity, activityClass);
         if(flags > 0) {
             intent.addFlags(flags);
+        }
+        else{
+            //add default flag
+            intent.addFlags(noAnimationNewTaskIntentFlag);
+        }
+
+        if(finishCurrentActivity){
+            currentActivity.finish();
+            currentActivity.overridePendingTransition(0, 0);
         }
         currentActivity.startActivity(intent);
     }
