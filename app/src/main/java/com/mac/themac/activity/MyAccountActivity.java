@@ -2,11 +2,14 @@ package com.mac.themac.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.firebase.client.AuthData;
@@ -16,17 +19,21 @@ import com.mac.themac.TheMACApplication;
 import com.mac.themac.model.User;
 import com.mac.themac.utility.FirebaseHelper;
 
+import org.w3c.dom.Text;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MyAccountActivity extends Activity implements Firebase.AuthStateListener{
+public class MyAccountActivity extends AppCompatActivity implements Firebase.AuthStateListener{
 
     /* A reference to the Firebase */
     private FirebaseHelper _FBHelper;
 
-    @Bind(R.id.btnMyAccount)
-    ToggleButton _myAccount;
+    @Bind(R.id.btnMyAccount) ToggleButton _myAccount;
+    @Bind(R.id.txtMemberId) TextView _memberId;
+    @Bind(R.id.txtMemberSince) TextView _memberSince;
+    @Bind(R.id.txtStatus) TextView _memberStatus;
 
     @OnClick(R.id.btnMore)
     public void launchMore(){
@@ -53,10 +60,19 @@ public class MyAccountActivity extends Activity implements Firebase.AuthStateLis
         TheMACApplication.startActivity(this, TennisCourtsActivity.class);
     }
 
+    @OnClick(R.id.btnMyProfile)
+    public void showMyProfile(View v){
+        getSupportActionBar().show();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_account);
+
+        if(getSupportActionBar() != null)
+            getSupportActionBar().hide();
+
         ButterKnife.bind(this);
 
         _FBHelper = TheMACApplication.theApp.getFirebaseHelper();
@@ -73,6 +89,7 @@ public class MyAccountActivity extends Activity implements Firebase.AuthStateLis
     @Override
     protected void onResume() {
         super.onResume();
+
         TheMACApplication.theApp.getFirebaseHelper().addAuthStateListener(this);
     }
 

@@ -19,7 +19,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class TennisCourtsActivity extends Activity {
+public class TennisCourtsActivity extends AppCompatActivity {
 
     /* A reference to the Firebase */
     private FirebaseHelper _FBHelper;
@@ -56,6 +56,8 @@ public class TennisCourtsActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tennis_courts);
+        if(getSupportActionBar() != null)
+            getSupportActionBar().hide();
 
         ButterKnife.bind(this);
 

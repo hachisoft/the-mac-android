@@ -18,7 +18,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppThemeNoActionBar" >
+        android:theme="@style/AppThemeWithActionBar" >
         <activity android:name=".activity.TwitterOAuthActivity" />
         <activity android:name="com.facebook.FacebookActivity" />
         <activity
@@ -33,32 +33,38 @@
         </activity>
         <activity
             android:name=".activity.GoogleOAuthActivity"
-            android:label="@string/title_activity_google_oauth" >
+            android:label="@string/title_activity_google_oauth"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".activity.MyAccountActivity"
             android:label="@string/title_activity_my_account"
-            android:parentActivityName=".activity.LoginActivity" >
+            android:parentActivityName=".activity.LoginActivity"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".activity.FindEventsActivity"
             android:label="@string/title_activity_events"
-            android:parentActivityName=".activity.LoginActivity" >
+            android:parentActivityName=".activity.LoginActivity"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".activity.BillActivity"
             android:label="@string/title_activity_bill"
-            android:parentActivityName=".activity.LoginActivity" >
+            android:parentActivityName=".activity.LoginActivity"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".activity.TennisCourtsActivity"
             android:label="@string/title_activity_tennis_courts"
-            android:parentActivityName=".activity.LoginActivity" >
+            android:parentActivityName=".activity.LoginActivity"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".activity.MoreActivity"
             android:label="@string/title_activity_more"
-            android:parentActivityName=".activity.LoginActivity" >
+            android:parentActivityName=".activity.LoginActivity"
+            android:screenOrientation="portrait" >
         </activity>
 
         <meta-data

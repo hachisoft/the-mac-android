@@ -19,7 +19,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class FindEventsActivity extends Activity {
+public class FindEventsActivity extends AppCompatActivity {
 
     /* A reference to the Firebase */
     private FirebaseHelper _FBHelper;
@@ -55,6 +55,8 @@ public class FindEventsActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_events);
+        if(getSupportActionBar() != null)
+            getSupportActionBar().hide();
 
         ButterKnife.bind(this);
 

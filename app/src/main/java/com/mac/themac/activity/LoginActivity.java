@@ -6,7 +6,9 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -61,7 +63,7 @@ import butterknife.OnClick;
  * Email/Password is provided using {@link com.firebase.client.Firebase}
  * Anonymous is provided using {@link com.firebase.client.Firebase}
  */
-public class LoginActivity extends Activity implements
+public class LoginActivity extends AppCompatActivity implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         Firebase.AuthStateListener{
@@ -174,7 +176,14 @@ public class LoginActivity extends Activity implements
 
         /* Load the view and display it */
         setContentView(R.layout.activity_login);
+
+        if(getSupportActionBar() != null)
+            getSupportActionBar().hide();
+
         ButterKnife.bind(this);
+
+        if(getActionBar() != null)
+            getActionBar().hide();
 
         /* *************************************
          *              FACEBOOK               *

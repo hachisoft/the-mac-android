@@ -2,6 +2,7 @@ package com.mac.themac.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -17,7 +18,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class BillActivity extends Activity {
+public class BillActivity extends AppCompatActivity {
 
     /* A reference to the Firebase */
     private FirebaseHelper _FBHelper;
@@ -53,6 +54,8 @@ public class BillActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bill);
+        if(getSupportActionBar() != null)
+            getSupportActionBar().hide();
 
         ButterKnife.bind(this);
 

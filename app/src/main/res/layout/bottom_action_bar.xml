@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.Toolbar
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
@@ -17,37 +18,37 @@
 
         <ToggleButton
                 android:id="@+id/btnMyAccount"
-                style="@style/ButtonTheme"
-                android:textOn="My Account"
-                android:textOff="My Account"
+                style="@style/ActionButton"
+                android:textOn="@string/my_account"
+                android:textOff="@string/my_account"
                 android:drawableTop="@drawable/btn_myaccount"/>
 
         <ToggleButton
             android:id="@+id/btnBill"
-            style="@style/ButtonTheme"
-            android:textOn="Bill"
-            android:textOff="Bill"
+            style="@style/ActionButton"
+            android:textOn="@string/bill"
+            android:textOff="@string/bill"
             android:drawableTop="@drawable/btn_bill"/>
 
         <ToggleButton
             android:id="@+id/btnTennisCourts"
-            style="@style/ButtonTheme"
-            android:textOn="Tennis Courts"
-            android:textOff="Tennis Courts"
+            style="@style/ActionButton"
+            android:textOn="@string/tennis_courts"
+            android:textOff="@string/tennis_courts"
             android:drawableTop="@drawable/btn_tennis"/>
 
         <ToggleButton
             android:id="@+id/btnFind"
-            style="@style/ButtonTheme"
-            android:textOn="Find Event"
-            android:textOff="Find Event"
+            style="@style/ActionButton"
+            android:textOn="@string/find_event"
+            android:textOff="@string/find_event"
             android:drawableTop="@drawable/btn_find"/>
 
         <ToggleButton
             android:id="@+id/btnMore"
-            style="@style/ButtonTheme"
-            android:textOn="Find Event"
-            android:textOff="Find Event"
+            style="@style/ActionButton"
+            android:textOn="@string/more"
+            android:textOff="@string/more"
             android:drawableTop="@drawable/btn_more"/>
 
     </LinearLayout>
@@ -55,4 +56,4 @@
         android:layout_width="fill_parent"
         android:layout_height="1dp"
         android:background="@color/primary"/>
-</LinearLayout>
+</android.support.v7.widget.Toolbar>

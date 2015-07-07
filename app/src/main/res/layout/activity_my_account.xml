@@ -4,14 +4,77 @@
     android:orientation="vertical"
     tools:context="com.mac.themac.activity.MyAccountActivity">
 
-    <TextView
-        android:layout_width="fill_parent"
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="My Account"
-        android:layout_weight="0.9"
-        android:id="@+id/textView"
-        android:gravity="center"/>
+        android:layout_weight="0.9">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/profileImg"
+            android:layout_gravity="center"
+            android:minHeight="100dp"
+            android:minWidth="90dp"
+            android:src="@drawable/profilepiclarge"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_gravity="center">
+
+            <TextView
+                style="@style/SmallDescriptionText"
+                android:text="Member:123456"
+                android:id="@+id/txtMemberId" />
+
+            <Space
+                android:layout_width="20px"
+                android:layout_height="20px" />
+
+            <TextView
+                style="@style/SmallDescriptionText"
+                android:text="Since: 01/01/2001"
+                android:id="@+id/txtMemberSince" />
+
+            <Space
+                android:layout_width="20px"
+                android:layout_height="20px" />
+
+            <TextView
+                style="@style/SmallDescriptionText"
+                android:text="Status: Active"
+                android:id="@+id/txtStatus" />
+        </LinearLayout>
+
+        <Button
+            style="@style/RowButton"
+            android:text="@string/my_profile"
+            android:id="@+id/btnMyProfile" />
+
+        <Button
+            style="@style/RowButton"
+            android:text="@string/my_interests"
+            android:id="@+id/btnMyInterests" />
+
+        <Button
+            style="@style/RowButton"
+            android:text="@string/my_reservations"
+            android:id="@+id/btnMyReservations" />
+
+        <Button
+            style="@style/RowButton"
+            android:text="@string/current_charges"
+            android:id="@+id/btnCurrentCharges" />
+
+        <Button
+            style="@style/RowButton"
+            android:text="@string/my_statement"
+            android:id="@+id/btnMyStatement" />
+    </LinearLayout>
 
     <include android:id="@+id/bottom_action_bar"
         layout="@layout/bottom_action_bar"

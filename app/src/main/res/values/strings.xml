@@ -23,4 +23,16 @@
     <string name="title_activity_tennis_courts">TennisCourtsActivity</string>
     <string name="title_activity_more">MoreActivity</string>
     <string name="title_activity_test">TestActivity</string>
+
+    <string name="my_profile">My Profile</string>
+    <string name="my_interests">My Interests</string>
+    <string name="my_reservations">My Reservations</string>
+    <string name="my_statement">My Statement</string>
+    <string name="current_charges">Current Charges</string>
+    <string name="my_account">My Account</string>
+    <string name="bill">Bill</string>
+    <string name="tennis_courts">Tennis Courts</string>
+    <string name="find_event">Find Event</string>
+    <string name="more">More...</string>
+
 </resources>
