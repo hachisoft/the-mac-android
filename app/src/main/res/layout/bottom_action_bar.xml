@@ -12,79 +12,44 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:layout_gravity="bottom">
+        android:layout_gravity="bottom"
+        style="@style/ActionButtonLayout">
 
-        <RelativeLayout
-            style="@style/ActionButtonLayout">
-
-            <ImageButton
+        <ToggleButton
                 android:id="@+id/btnMyAccount"
                 style="@style/ButtonTheme"
-                android:src="@drawable/btn_myaccount"
-                />
-            <TextView
-                android:id="@+id/txtMyAccount"
-                style="@style/ActionbarText"
-                android:text="My Account"/>
+                android:textOn="My Account"
+                android:textOff="My Account"
+                android:drawableTop="@drawable/btn_myaccount"/>
 
-        </RelativeLayout>
-        <RelativeLayout
-            style="@style/ActionButtonLayout">
+        <ToggleButton
+            android:id="@+id/btnBill"
+            style="@style/ButtonTheme"
+            android:textOn="Bill"
+            android:textOff="Bill"
+            android:drawableTop="@drawable/btn_bill"/>
 
-            <ImageButton
-                android:id="@+id/btnBill"
-                style="@style/ButtonTheme"
-                android:src="@drawable/btn_bill"/>
+        <ToggleButton
+            android:id="@+id/btnTennisCourts"
+            style="@style/ButtonTheme"
+            android:textOn="Tennis Courts"
+            android:textOff="Tennis Courts"
+            android:drawableTop="@drawable/btn_tennis"/>
 
-            <TextView
-                android:id="@+id/txtBill"
-                style="@style/ActionbarText"
-                android:text="Bill"/>
+        <ToggleButton
+            android:id="@+id/btnFind"
+            style="@style/ButtonTheme"
+            android:textOn="Find Event"
+            android:textOff="Find Event"
+            android:drawableTop="@drawable/btn_find"/>
 
-        </RelativeLayout>
-        <RelativeLayout
-            style="@style/ActionButtonLayout">
+        <ToggleButton
+            android:id="@+id/btnMore"
+            style="@style/ButtonTheme"
+            android:textOn="Find Event"
+            android:textOff="Find Event"
+            android:drawableTop="@drawable/btn_more"/>
 
-            <ImageButton
-                android:id="@+id/btnTennisCourts"
-                android:src="@drawable/btn_tennis"
-                style="@style/ButtonTheme"/>
-
-            <TextView
-                android:id="@+id/txtTennisCourts"
-                style="@style/ActionbarText"
-                android:text="Tennis Courts"/>
-
-        </RelativeLayout>
-        <RelativeLayout
-            style="@style/ActionButtonLayout">
-
-            <ImageButton
-                android:id="@+id/btnFind"
-                android:src="@drawable/btn_find"
-                style="@style/ButtonTheme"/>
-
-            <TextView
-                android:id="@+id/txtFind"
-                style="@style/ActionbarText"
-                android:text="Find Event"/>
-
-        </RelativeLayout>
-        <RelativeLayout
-
-            style="@style/ActionButtonLayout">
-
-            <ImageButton
-                android:id="@+id/btnMore"
-                style="@style/ButtonTheme"
-                android:src="@drawable/btn_more"/>
-
-            <TextView
-                android:id="@+id/txtMore"
-                style="@style/ActionbarText"
-                android:text="More..."/>
-
-        </RelativeLayout>
     </LinearLayout>
     <View
         android:layout_width="fill_parent"

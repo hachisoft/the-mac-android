@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ToggleButton;
 
 import com.mac.themac.R;
 import com.mac.themac.TheMACApplication;
@@ -24,31 +25,31 @@ public class TennisCourtsActivity extends Activity {
     private FirebaseHelper _FBHelper;
 
     @Bind(R.id.btnTennisCourts)
-    ImageButton _btnTennis;
+    ToggleButton _btnTennis;
 
-    @OnClick({R.id.btnMore, R.id.txtMore})
+    @OnClick(R.id.btnMore)
     public void launchMore(){
         TheMACApplication.startActivity(this, MoreActivity.class);
     }
 
-    @OnClick({R.id.btnMyAccount, R.id.txtMyAccount})
+    @OnClick(R.id.btnMyAccount)
     public void launchMyAccount(){
         TheMACApplication.startActivity(this, MyAccountActivity.class);
     }
 
-    @OnClick({R.id.btnBill, R.id.txtBill})
+    @OnClick(R.id.btnBill)
     public void launchBill(){
         TheMACApplication.startActivity(this, BillActivity.class);
     }
 
-    @OnClick({R.id.btnFind, R.id.txtFind})
+    @OnClick(R.id.btnFind)
     public void launchFind(){
         TheMACApplication.startActivity(this, FindEventsActivity.class);
     }
 
-    @OnClick({R.id.btnTennisCourts, R.id.txtTennisCourts})
+    @OnClick(R.id.btnTennisCourts)
     public void launchTennisCourts(){
-        _btnTennis.setPressed(true);
+        _btnTennis.setChecked(true);
     }
 
     @Override
@@ -61,7 +62,7 @@ public class TennisCourtsActivity extends Activity {
         _FBHelper = TheMACApplication.theApp.getFirebaseHelper();
 
         User loggedInUser = _FBHelper.getLoggedInUser();
-        _btnTennis.setPressed(true);
+        _btnTennis.setChecked(true);
     }
 
     @Override

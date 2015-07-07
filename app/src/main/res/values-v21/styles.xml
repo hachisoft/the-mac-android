@@ -24,13 +24,16 @@
         <!--   theme UI controls like checkboxes and text fields -->
         <item name="android:colorAccent">@color/accent</item>
     </style>
-    <style name="ButtonTheme" parent="android:Widget.Holo.Light.Button">
-        <item name="android:background">@color/primary_dark</item>
-        <item name="android:layout_marginBottom">0dp</item>
-        <item name="android:scaleType">fitCenter</item>
-        <item name="android:layout_width">fill_parent</item>
-        <item name="android:layout_height">wrap_content</item>
+    <style name="ButtonTheme" parent="android:Widget.Holo.Light">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:scaleType">center</item>
         <item name="android:gravity">center</item>
+        <item name="android:textSize">10dp</item>
+        <item name="android:focusable">false</item>
+        <item name="android:focusableInTouchMode">false</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">0.2</item>
     </style>
 
     <style name="ActionbarText" parent="android:Widget.Holo.Light">
@@ -45,9 +48,8 @@
     <style name="ActionButtonLayout" parent="android:Widget.Holo.Light">
         <item name="android:background">@color/primary_dark</item>
         <item name="android:orientation">vertical</item>
-        <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_weight">0.2</item>
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:gravity">center</item>
     </style>
 </resources>

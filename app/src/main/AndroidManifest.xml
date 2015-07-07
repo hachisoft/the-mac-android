@@ -27,6 +27,7 @@
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -37,27 +38,27 @@
         <activity
             android:name=".activity.MyAccountActivity"
             android:label="@string/title_activity_my_account"
-            android:parentActivityName=".activity.LoginActivity">
+            android:parentActivityName=".activity.LoginActivity" >
         </activity>
         <activity
             android:name=".activity.FindEventsActivity"
             android:label="@string/title_activity_events"
-            android:parentActivityName=".activity.LoginActivity">
+            android:parentActivityName=".activity.LoginActivity" >
         </activity>
         <activity
             android:name=".activity.BillActivity"
             android:label="@string/title_activity_bill"
-            android:parentActivityName=".activity.LoginActivity">
+            android:parentActivityName=".activity.LoginActivity" >
         </activity>
         <activity
             android:name=".activity.TennisCourtsActivity"
             android:label="@string/title_activity_tennis_courts"
-            android:parentActivityName=".activity.LoginActivity">
+            android:parentActivityName=".activity.LoginActivity" >
         </activity>
         <activity
             android:name=".activity.MoreActivity"
             android:label="@string/title_activity_more"
-            android:parentActivityName=".activity.LoginActivity">
+            android:parentActivityName=".activity.LoginActivity" >
         </activity>
 
         <meta-data
@@ -66,7 +67,6 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
 
     </application>
 

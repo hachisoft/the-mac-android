@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 import android.widget.ViewSwitcher;
 
 import com.facebook.AccessToken;
@@ -133,28 +134,33 @@ public class LoginActivity extends Activity implements
     @Bind(R.id.login_with_password) Button mPasswordLoginButton;
 
     @Bind(R.id.viewSwitcher) ViewSwitcher mViewSwitcher;
+    @Bind(R.id.btnMyAccount) ToggleButton mBtnMyAccount;
+    @Bind(R.id.btnBill) ToggleButton mBtnBill;
+    @Bind(R.id.btnTennisCourts) ToggleButton mBtnTennis;
+    @Bind(R.id.btnFind) ToggleButton mBtnFind;
+    @Bind(R.id.btnMore) ToggleButton mBtnMore;
 
-    @OnClick({R.id.btnMyAccount, R.id.txtMyAccount})
+    @OnClick(R.id.btnMyAccount)
     public void launchMyAccount(){
         TheMACApplication.startActivity(this, MyAccountActivity.class, false);
     }
 
-    @OnClick({R.id.btnBill, R.id.txtBill})
+    @OnClick(R.id.btnBill)
     public void launchBill(){
         TheMACApplication.startActivity(this, BillActivity.class, false);
     }
 
-    @OnClick({R.id.btnFind, R.id.txtFind})
+    @OnClick(R.id.btnFind)
     public void launchFind(){
         TheMACApplication.startActivity(this, FindEventsActivity.class, false);
     }
 
-    @OnClick({R.id.btnTennisCourts, R.id.txtTennisCourts})
+    @OnClick(R.id.btnTennisCourts)
     public void launchTennisCourts(){
         TheMACApplication.startActivity(this, TennisCourtsActivity.class, false);
     }
 
-    @OnClick({R.id.btnMore, R.id.txtMore})
+    @OnClick(R.id.btnMore)
     public void launchMore(){
         TheMACApplication.startActivity(this, MoreActivity.class, false);
     }
@@ -270,6 +276,7 @@ public class LoginActivity extends Activity implements
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         Map<String, String> options = new HashMap<String, String>();
         if (requestCode == RC_GOOGLE_LOGIN) {
             /* This was a request by the Google API */
@@ -310,6 +317,16 @@ public class LoginActivity extends Activity implements
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        mBtnMyAccount.setChecked(false);
+        mBtnBill.setChecked(false);
+        mBtnFind.setChecked(false);
+        mBtnMore.setChecked(false);
+        mBtnTennis.setChecked(false);
+        super.onResume();
     }
 
     /**

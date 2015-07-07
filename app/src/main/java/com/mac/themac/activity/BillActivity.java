@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ToggleButton;
 
 import com.mac.themac.R;
 import com.mac.themac.TheMACApplication;
@@ -21,30 +22,29 @@ public class BillActivity extends Activity {
     /* A reference to the Firebase */
     private FirebaseHelper _FBHelper;
 
-    @Bind(R.id.btnBill)
-    ImageButton _btnBill;
+    @Bind(R.id.btnBill) ToggleButton mBtnBill;
 
-    @OnClick({R.id.btnMore, R.id.txtMore})
+    @OnClick(R.id.btnMore)
     public void launchMore(){
         TheMACApplication.startActivity(this, MoreActivity.class);
     }
 
-    @OnClick({R.id.btnMyAccount, R.id.txtMyAccount})
+    @OnClick(R.id.btnMyAccount)
     public void launchMyAccount(){
         TheMACApplication.startActivity(this, MyAccountActivity.class);
     }
 
-    @OnClick({R.id.btnBill, R.id.txtBill})
+    @OnClick(R.id.btnBill)
     public void launchBill(){
-        _btnBill.setPressed(true);
+        mBtnBill.setChecked(true);
     }
 
-    @OnClick({R.id.btnFind, R.id.txtFind})
+    @OnClick(R.id.btnFind)
     public void launchFind(){
         TheMACApplication.startActivity(this, FindEventsActivity.class);
     }
 
-    @OnClick({R.id.btnTennisCourts, R.id.txtTennisCourts})
+    @OnClick(R.id.btnTennisCourts)
     public void launchTennisCourts(){
         TheMACApplication.startActivity(this, TennisCourtsActivity.class);
     }
@@ -59,7 +59,7 @@ public class BillActivity extends Activity {
         _FBHelper = TheMACApplication.theApp.getFirebaseHelper();
 
         User loggedInUser = _FBHelper.getLoggedInUser();
-        _btnBill.setPressed(true);
+        mBtnBill.setChecked(true);
     }
 
     @Override
