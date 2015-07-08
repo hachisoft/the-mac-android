@@ -17,12 +17,11 @@
     <string name="title_section1">Section 1</string>
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
-    <string name="title_activity_my_account">MyAccountActivity</string>
-    <string name="title_activity_events">EventsActivity</string>
-    <string name="title_activity_bill">BillActivity</string>
-    <string name="title_activity_tennis_courts">TennisCourtsActivity</string>
-    <string name="title_activity_more">MoreActivity</string>
-    <string name="title_activity_test">TestActivity</string>
+    <string name="title_activity_my_account">My Account</string>
+    <string name="title_activity_events">Find Event</string>
+    <string name="title_activity_bill">Bill</string>
+    <string name="title_activity_tennis_courts">Tennis Courts</string>
+    <string name="title_activity_more">More</string>
 
     <string name="my_profile">My Profile</string>
     <string name="my_interests">My Interests</string>
