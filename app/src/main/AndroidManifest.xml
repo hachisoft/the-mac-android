@@ -37,31 +37,31 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".activity.MyAccountActivity"
+            android:name=".activity.MyAccount"
             android:label="@string/title_activity_my_account"
             android:parentActivityName=".activity.LoginActivity"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".activity.FindEventsActivity"
+            android:name=".activity.FindEvents"
             android:label="@string/title_activity_events"
             android:parentActivityName=".activity.LoginActivity"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".activity.BillActivity"
+            android:name=".activity.Bill"
             android:label="@string/title_activity_bill"
             android:parentActivityName=".activity.LoginActivity"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".activity.TennisCourtsActivity"
+            android:name=".activity.TennisCourts"
             android:label="@string/title_activity_tennis_courts"
             android:parentActivityName=".activity.LoginActivity"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".activity.MoreActivity"
+            android:name=".activity.More"
             android:label="@string/title_activity_more"
             android:parentActivityName=".activity.LoginActivity"
             android:screenOrientation="portrait" >

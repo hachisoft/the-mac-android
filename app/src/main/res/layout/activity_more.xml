@@ -2,22 +2,81 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.mac.themac.activity.MoreActivity">
+    tools:context="com.mac.themac.activity.More">
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="More"
-        android:layout_weight="0.9"
-        android:id="@+id/textView"
-        android:gravity="center"/>
+    <LinearLayout android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/moreContainer">
 
-    <include android:id="@+id/bottom_action_bar"
-        layout="@layout/bottom_action_bar"
-        android:layout_height="0dp"
-        android:layout_width="fill_parent"
-        android:layout_gravity="bottom"
-        android:layout_weight="0.1"/>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.9"
+            android:id="@+id/scrollView2">
 
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left">
+
+                <Button
+                    android:id="@+id/btnMacInformation"
+                    style="@style/RowButton"
+                    android:text="@string/mac_information"
+                    android:drawableLeft="@drawable/ic_macinformation"/>
+
+                <Button
+                    android:id="@+id/btnMyAccountGrey"
+                    style="@style/RowButton"
+                    android:text="@string/my_account"
+                    android:drawableLeft="@drawable/ic_myaccount_grey" />
+
+                <Button
+                    android:id="@+id/btnTennisGrey"
+                    style="@style/RowButton"
+                    android:text="@string/tennis_courts"
+                    android:drawableLeft="@drawable/ic_tennis_grey"/>
+
+                <Button
+                    android:id="@+id/btnFindGrey"
+                    style="@style/RowButton"
+                    android:text="@string/find_event"
+                    android:drawableLeft="@drawable/ic_find_grey"/>
+
+                <Button
+                    android:id="@+id/btnClosures"
+                    style="@style/RowButton"
+                    android:text="@string/facility_closures"
+                    android:drawableLeft="@drawable/ic_closures"/>
+
+                <Button
+                    android:id="@+id/btnMensBar"
+                    style="@style/RowButton"
+                    android:text="@string/mens_bar"
+                    android:drawableLeft="@drawable/ic_closures"/>
+
+                <Button
+                    android:id="@+id/btnParking"
+                    style="@style/RowButton"
+                    android:text="@string/parking"
+                    android:drawableLeft="@drawable/ic_parking"/>
+
+                <Button
+                    android:id="@+id/btnDirectory"
+                    style="@style/RowButton"
+                    android:text="@string/directory"
+                    android:drawableLeft="@drawable/ic_directory1"/>
+
+            </LinearLayout>
+        </ScrollView>
+
+        <include android:id="@+id/bottom_action_bar"
+            layout="@layout/bottom_action_bar"
+            android:layout_height="0dp"
+            android:layout_width="fill_parent"
+            android:layout_weight="0.1"/>
+
+    </LinearLayout>
 </LinearLayout>

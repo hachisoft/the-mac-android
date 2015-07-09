@@ -6,7 +6,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -14,7 +13,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.ToggleButton;
 import android.widget.ViewSwitcher;
 
@@ -144,27 +142,27 @@ public class LoginActivity extends AppCompatActivity implements
 
     @OnClick(R.id.btnMyAccount)
     public void launchMyAccount(){
-        TheMACApplication.startActivity(this, MyAccountActivity.class, false);
+        TheMACApplication.startActivity(this, MyAccount.class, false);
     }
 
     @OnClick(R.id.btnBill)
     public void launchBill(){
-        TheMACApplication.startActivity(this, BillActivity.class, false);
+        TheMACApplication.startActivity(this, Bill.class, false);
     }
 
     @OnClick(R.id.btnFind)
     public void launchFind(){
-        TheMACApplication.startActivity(this, FindEventsActivity.class, false);
+        TheMACApplication.startActivity(this, FindEvents.class, false);
     }
 
     @OnClick(R.id.btnTennisCourts)
     public void launchTennisCourts(){
-        TheMACApplication.startActivity(this, TennisCourtsActivity.class, false);
+        TheMACApplication.startActivity(this, TennisCourts.class, false);
     }
 
     @OnClick(R.id.btnMore)
     public void launchMore(){
-        TheMACApplication.startActivity(this, MoreActivity.class, false);
+        TheMACApplication.startActivity(this, More.class, false);
     }
 
     @Override

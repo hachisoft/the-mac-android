@@ -1,21 +1,16 @@
 package com.mac.themac.fragment;
 
-import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 
 import com.mac.themac.R;
 
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link Profile.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link Profile#newInstance} factory method to
- * create an instance of this fragment.
+ * Created by Samir on 7/9/2015.
  */
-public class Profile extends FragmentWithTopActionBar {
+public class Interests extends FragmentWithTopActionBar {
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -35,8 +30,8 @@ public class Profile extends FragmentWithTopActionBar {
      * @return A new instance of fragment Profile.
      */
     // TODO: Rename and change types and number of parameters
-    public static Profile newInstance(String param1, String param2) {
-        Profile fragment = new Profile();
+    public static Interests newInstance(String param1, String param2) {
+        Interests fragment = new Interests();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -44,13 +39,13 @@ public class Profile extends FragmentWithTopActionBar {
         return fragment;
     }
 
-    public Profile() {
+    public Interests() {
         // Required empty public constructor
     }
 
     @Override
     public int getFragmentLayoutId() {
-        return R.layout.fragment_profile;
+        return R.layout.fragment_interests;
     }
 
     @Override
@@ -68,5 +63,4 @@ public class Profile extends FragmentWithTopActionBar {
             mListener.onFragmentInteraction(uri);
         }
     }
-
 }

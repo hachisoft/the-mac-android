@@ -1,9 +1,197 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" tools:context="com.mac.themac.fragment.profile">
+    android:layout_height="match_parent" tools:context="com.mac.themac.fragment.Profile">
 
 
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-        android:text="My Profile" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/profileImg"
+            android:layout_gravity="center"
+            android:minHeight="100dp"
+            android:minWidth="90dp"
+            android:src="@drawable/profilepiclarge"/>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_gravity="center">
+
+            <TextView
+                style="@style/SmallDescriptionText"
+                android:text="Member:123456"
+                android:id="@+id/txtMemberId" />
+
+            <Space
+                android:layout_width="20px"
+                android:layout_height="20px" />
+
+            <TextView
+                style="@style/SmallDescriptionText"
+                android:text="Since: 01/01/2001"
+                android:id="@+id/txtMemberSince" />
+
+            <Space
+                android:layout_width="20px"
+                android:layout_height="20px" />
+
+            <TextView
+                style="@style/SmallDescriptionText"
+                android:text="Status: Active"
+                android:id="@+id/txtStatus" />
+        </LinearLayout>
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/MediumRowHeaderText"
+                    android:text="@string/name"/>
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:text="@string/name"
+                    android:ems="10"
+                    android:id="@+id/editName"
+                    android:layout_column="2"/>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/MediumRowHeaderText"
+                    android:text="@string/gender"/>
+
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/selGender"
+                    android:layout_column="2"
+                    android:entries="@array/gender_array"
+                    android:prompt="@string/gender"/>
+
+            </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/MediumRowHeaderText"
+                    android:text="@string/date_of_birth"/>
+
+                <EditText
+                    style="@style/Widget.AppCompat.Spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="date"
+                    android:ems="10"
+                    android:id="@+id/pickDateOfBirth"
+                    android:layout_column="2"/>
+
+            </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/MediumRowHeaderText"
+                    android:text="@string/phone"/>
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="phone"
+                    android:text="@string/phone"
+                    android:ems="10"
+                    android:id="@+id/editPhone"
+                    android:layout_column="2"/>
+            </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/MediumRowHeaderText"
+                    android:text="@string/email"/>
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"
+                    android:text="@string/email"
+                    android:ems="10"
+                    android:id="@+id/editEmail"
+                    android:layout_column="2"/>
+            </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/MediumRowHeaderText"
+                    android:text="@string/address"/>
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="textAutoComplete"
+                    android:text="@string/address"
+                    android:ems="10"
+                    android:id="@+id/editAddress"
+                    android:layout_column="2"/>
+            </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    style="@style/MediumRowHeaderText"
+                    android:text="@string/occupation"/>
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="textAutoComplete"
+                    android:text="@string/occupation"
+                    android:ems="10"
+                    android:id="@+id/editOccupation"
+                    android:layout_column="2"/>
+            </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    style="@style/MediumRowHeaderText"
+                    android:text="@string/office_address"/>
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="textAutoComplete"
+                    android:text="@string/office_address"
+                    android:ems="10"
+                    android:id="@+id/editOfficeAddress"
+                    android:layout_column="2"/>
+            </TableRow>
+        </TableLayout>
+
+    </LinearLayout>
 
 </FrameLayout>
