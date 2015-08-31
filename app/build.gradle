@@ -6,15 +6,28 @@ android {
 
     defaultConfig {
         applicationId "com.mac.themac"
-        minSdkVersion 16
+        minSdkVersion 18
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"
+        //testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+    }
+
+    sourceSets{
+        main{
+            manifest.srcFile 'src/main/AndroidManifest.xml'
+        }
+        androidTest{
+            manifest.srcFile 'src/androidTest/AndroidManifest.xml'
         }
     }
 
@@ -29,9 +42,19 @@ android {
 dependencies {
     compile 'com.android.support:appcompat-v7:22.2.0'
     compile 'com.firebase:firebase-client-android:2.3.1+'
-    compile 'com.google.android.gms:play-services:7.5.0'
+    compile 'com.google.android.gms:play-services-plus:7.5.0'
+    compile 'com.google.android.gms:play-services-identity:7.5.0'
+    compile 'com.google.android.gms:play-services-base:7.5.0'
     compile 'org.twitter4j:twitter4j-core:4.0.2'
     compile 'com.facebook.android:facebook-android-sdk:4.1.0'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    //androidTestCompile 'com.android.support.test:runner:0.3'
+    // Set this dependency to use JUnit 4 rules
+    //androidTestCompile 'com.android.support.test:rules:0.3'
+    // Set this dependency to build and run Espresso tests
+    //androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2'
+    // Set this dependency to build and run UI Automator tests
+    //androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.1'
 }

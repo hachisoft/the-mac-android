@@ -7,14 +7,15 @@
         <!--   your app branding color for the app bar -->
         <item name="colorPrimary">@color/primary</item>
         <!--   darker variant for the status bar and contextual app bars -->
-        <item name="colorPrimaryDark">@android:color/black</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
         <!--   theme UI controls like checkboxes and text fields -->
         <item name="colorAccent">@color/accent</item>
-        <item name="actionBarStyle">@style/ActionBarTheme</item>
+        <!--<item name="actionBarStyle">@style/ActionBarTheme</item>-->
     </style>
     <style name="ActionBarTheme" parent="@style/Widget.AppCompat.Light.ActionBar">
         <item name="windowActionBarOverlay">true</item>
         <item name="background">@color/primary_dark</item>
+        <item name="android:background">@color/primary_dark</item>
     </style>
 
     <style name="ActionButton" parent="@style/Theme.AppCompat.Light">

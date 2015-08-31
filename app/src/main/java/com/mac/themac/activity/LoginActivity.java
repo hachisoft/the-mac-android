@@ -36,6 +36,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 import com.mac.themac.R;
 import com.mac.themac.TheMACApplication;
+import com.mac.themac.model.Login;
+import com.mac.themac.model.ProviderCount;
 import com.mac.themac.model.User;
 import com.mac.themac.utility.FirebaseHelper;
 
@@ -336,6 +338,13 @@ public class LoginActivity extends AppCompatActivity implements
         super.onResume();
     }
 
+
+    @OnClick(R.id.btnLogout)
+    public void onClickLogout(){
+        logout();
+        mViewSwitcher.setDisplayedChild(mViewSwitcher.indexOfChild(findViewById(R.id.login_view)));
+    }
+
     /**
      * Unauthenticate from Firebase and from providers where necessary.
      */
@@ -382,7 +391,7 @@ public class LoginActivity extends AppCompatActivity implements
     /**
      * Once a user is logged in, take the mAuthData provided from Firebase and "use" it.
      */
-    private void setAuthenticatedUser(AuthData authData) {
+    private void setAuthenticatedUser(final AuthData authData) {
         if (authData != null) {
 
             /* Hide all the login buttons*/
@@ -408,16 +417,39 @@ public class LoginActivity extends AppCompatActivity implements
                 //mLoggedInStatusTextView.setText("Logged in as " + name + " (" + authData.getProvider() + ")");
             }
 
-            final User loggedInUser = new User(authData);
+            final Login loginObj = new Login(authData);
             final Activity loginActivity = this;
             //Retrieve firebase user, create one if doesn't exist
-            final Firebase loggedInUserRef = mFBHelper.getFirebaseRef().child("users/" + loggedInUser.id());
+            final Firebase loggedInUserRef = mFBHelper.getFirebaseRef().child("logins/" + loginObj.id());
 
             loggedInUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    loggedInUser.updateFirebaseData(loggedInUserRef, dataSnapshot);
-                    mFBHelper.set_loggedInUser(loggedInUser);
+                    if(dataSnapshot.getValue() != null)
+                        loginObj.loadServerData(loggedInUserRef, dataSnapshot);
+                    else
+                        loginObj.saveServerData(loggedInUserRef, dataSnapshot);
+
+                    if(loginObj.getIsNotProvisioned() == true){ //Find and associate User
+
+                    }
+                    else{
+
+                    }
+
+                    /* This needs to be transferred to linked User
+                    if(authData.getProvider().compareToIgnoreCase("twitter") == 0) {
+                        loginObj.getProviderCounts().incrementCount(ProviderCount.FirebaseFieldName.twitter);
+                    }else if(authData.getProvider().compareToIgnoreCase("facebook") == 0) {
+                        loginObj.getProviderCounts().incrementCount(ProviderCount.FirebaseFieldName.facebook);
+                    }else if(authData.getProvider().compareToIgnoreCase("google") == 0) {
+                        loginObj.getProviderCounts().incrementCount(ProviderCount.FirebaseFieldName.google);
+                    }
+                    loginObj.getProviderCounts().saveServerData(
+                            loggedInUserRef.child(User.FirebaseContainerName.providerCounts.name()),
+                                    dataSnapshot.child(User.FirebaseContainerName.providerCounts.name()));
+
+                    mFBHelper.set_loggedInUser(UserObj); */
                     mViewSwitcher.setDisplayedChild(mViewSwitcher.indexOfChild(findViewById(R.id.logged_in_view)));
                 }
 

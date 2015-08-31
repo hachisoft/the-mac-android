@@ -54,6 +54,11 @@ public class MensBar extends FragmentWithTopActionBar {
     }
 
     @Override
+    protected int getTitleResourceId() {
+        return R.string.mens_bar;
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {

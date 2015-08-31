@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.mac.themac" >
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.mac.themac">
+
+    <uses-sdk tools:overrideLibrary="android.support.test.uiautomator.v18" />
 
     <!-- To access Google+ APIs: -->
     <uses-permission android:name="android.permission.INTERNET" />

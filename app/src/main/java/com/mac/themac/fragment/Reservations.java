@@ -54,6 +54,11 @@ public class Reservations extends FragmentWithTopActionBar {
     }
 
     @Override
+    protected int getTitleResourceId() {
+        return R.string.my_reservations;
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {

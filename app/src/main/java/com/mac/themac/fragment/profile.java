@@ -54,6 +54,10 @@ public class Profile extends FragmentWithTopActionBar {
     }
 
     @Override
+    protected int getTitleResourceId() {
+        return R.string.my_profile;
+    }
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {

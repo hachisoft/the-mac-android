@@ -5,7 +5,9 @@ import android.app.Application;
 import android.content.Intent;
 
 import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
 import com.firebase.client.Firebase;
+import com.google.android.gms.plus.Plus;
 import com.mac.themac.utility.FirebaseHelper;
 
 /**

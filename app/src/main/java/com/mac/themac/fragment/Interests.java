@@ -49,6 +49,11 @@ public class Interests extends FragmentWithTopActionBar {
     }
 
     @Override
+    protected int getTitleResourceId() {
+        return R.string.my_interests;
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {

@@ -17,7 +17,8 @@ public abstract class FragmentWithTopActionBar extends Fragment {
 
     protected OnFragmentInteractionListener mListener;
 
-    public abstract int getFragmentLayoutId();
+    protected abstract int getFragmentLayoutId();
+    protected abstract int getTitleResourceId();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -31,6 +32,7 @@ public abstract class FragmentWithTopActionBar extends Fragment {
         super.onResume();
         ActivityWithBottomActionBar activity = (ActivityWithBottomActionBar) mListener;
         if(activity != null){
+            activity.setTitle(getTitleResourceId());
             activity.showTopActionBar();
         }
     }

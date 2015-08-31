@@ -54,6 +54,11 @@ public class MACInformation extends FragmentWithTopActionBar {
     }
 
     @Override
+    protected int getTitleResourceId() {
+        return R.string.mac_information;
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
