@@ -10,7 +10,7 @@ import java.util.Date;
  */
 public class Field {
 
-    public enum FirebaseSupportedTypes {
+    public enum FBSupportedTypes {
         Boolean, Integer, String, Date, Weekday
     };
 
@@ -40,7 +40,7 @@ public class Field {
 
     private String mName;
     private Object mValue; //Always stored as correct Java Type
-    private FirebaseSupportedTypes mType;
+    private FBSupportedTypes mType;
     private boolean mIsEdited = true;
 
     public Object value() {
@@ -56,14 +56,14 @@ public class Field {
         return mName;
     }
 
-    public Field(String name, Object value, FirebaseSupportedTypes fieldType) {
+    public Field(String name, Object value, FBSupportedTypes fieldType) {
         mName = name;
         mValue = value;
         mType = fieldType;
         _setEdited();
     }
 
-    public Field(String name, FirebaseSupportedTypes fieldType) {
+    public Field(String name, FBSupportedTypes fieldType) {
         mName = name;
         mValue = null;
         mType = fieldType;

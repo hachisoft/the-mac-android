@@ -1,6 +1,7 @@
 package com.mac.themac.utility;
 
 import com.firebase.client.Firebase;
+import com.mac.themac.model.Login;
 import com.mac.themac.model.User;
 
 /**
@@ -9,7 +10,12 @@ import com.mac.themac.model.User;
 public class FirebaseHelper {
 
     private Firebase _firebaseRef;
+    private Login _login;
     private User _loggedInUser;
+
+    public enum FBRootContainerNames{
+        logins, users
+    }
 
     public FirebaseHelper(String firebaseUrl) {
         this._firebaseRef = new Firebase(firebaseUrl);
@@ -31,6 +37,10 @@ public class FirebaseHelper {
         this._firebaseRef = _firebaseRef;
     }
 
+    public void set_login(Login login){
+        this._login = login;
+    }
+
     public void set_loggedInUser(User _loggedInUser) {
         this._loggedInUser = _loggedInUser;
     }
@@ -49,8 +59,18 @@ public class FirebaseHelper {
     }
 
     public void unauth() {
+        _loggedInUser = null;
+        _login = null;
         if(_firebaseRef != null){
             _firebaseRef.unauth();
         }
+    }
+
+    public Firebase getLoginRef(String key){
+        return _firebaseRef.child(FBRootContainerNames.logins.name() + "/" + key);
+    }
+
+    public Firebase getUserRef(String key){
+        return _firebaseRef.child(FBRootContainerNames.users.name() + "/" + key);
     }
 }

@@ -1,6 +1,7 @@
 package com.mac.themac.model;
 
 import com.firebase.client.AuthData;
+import com.firebase.client.Firebase;
 import com.mac.themac.model.firebase.Container;
 import com.mac.themac.model.firebase.Field;
 
@@ -15,84 +16,94 @@ import java.util.Map;
 public class User extends Container {
 
     //Add all firebase field(keyvaluepair) keys here (no object/container, only fields)
-    public enum FirebaseFieldName {
+    public enum FBFieldName {
         created, provider, name, email, isAdmin, lastLogin
     };
 
-    private static Map<String, Field.FirebaseSupportedTypes> FirebaseFieldTypeMap;
+    private static Map<String, Field.FBSupportedTypes> FBFieldTypeMap;
     static {
-        Map<String, Field.FirebaseSupportedTypes> aMap = new HashMap<String, Field.FirebaseSupportedTypes>();
+        Map<String, Field.FBSupportedTypes> aMap = new HashMap<String, Field.FBSupportedTypes>();
 
         //Add all firebase field Type mappings here (no object/container, only fields)
-        aMap.put(FirebaseFieldName.created.name(), Field.FirebaseSupportedTypes.Date);
-        aMap.put(FirebaseFieldName.provider.name(), Field.FirebaseSupportedTypes.String);
-        aMap.put(FirebaseFieldName.name.name(), Field.FirebaseSupportedTypes.String);
-        aMap.put(FirebaseFieldName.email.name(), Field.FirebaseSupportedTypes.String);
-        aMap.put(FirebaseFieldName.isAdmin.name(), Field.FirebaseSupportedTypes.Boolean);
-        aMap.put(FirebaseFieldName.lastLogin.name(), Field.FirebaseSupportedTypes.Date);
-        FirebaseFieldTypeMap = Collections.unmodifiableMap(aMap);
+        aMap.put(FBFieldName.created.name(), Field.FBSupportedTypes.Date);
+        aMap.put(FBFieldName.provider.name(), Field.FBSupportedTypes.String);
+        aMap.put(FBFieldName.name.name(), Field.FBSupportedTypes.String);
+        aMap.put(FBFieldName.email.name(), Field.FBSupportedTypes.String);
+        aMap.put(FBFieldName.isAdmin.name(), Field.FBSupportedTypes.Boolean);
+        aMap.put(FBFieldName.lastLogin.name(), Field.FBSupportedTypes.Date);
+        FBFieldTypeMap = Collections.unmodifiableMap(aMap);
     };
 
     //Add all firebase object(containers of other fields) keys here
-    public enum FirebaseContainerName {
+    public enum FBDirectContainerName {
         providerCounts, sourceCounts
     };
+
+    //Add all firebase linked object(Linked by firebase Ids) keys here
+    public enum FBLinkedContainerName {
+        dependents, reservations, transactions, memberProfile, memberProfilePublic
+    }
 
     //Firebase specific "get" functions: Any public function with "get" prefix will be used
     //for generating Firebase document db key-value pair
     public String getProvider() {
-        return (String)fieldValue(FirebaseFieldName.provider.name());
+        return (String)fieldValue(FBFieldName.provider.name());
     }
 
     public String getName() {
-        return (String)fieldValue(FirebaseFieldName.name.name());
+        return (String)fieldValue(FBFieldName.name.name());
     }
 
     public String getEmail() {
-        return (String)fieldValue(FirebaseFieldName.email.name());
+        return (String)fieldValue(FBFieldName.email.name());
     }
 
     public boolean getIsAdmin() {
-        return (boolean)fieldValue(FirebaseFieldName.isAdmin.name());
+        return (boolean)fieldValue(FBFieldName.isAdmin.name());
     }
 
     public Date getCreated() {
-        return (Date)fieldValue(FirebaseFieldName.created.name());
+        return (Date)fieldValue(FBFieldName.created.name());
     }
 
     public Date getLastLogin(){
-        return (Date)fieldValue(FirebaseFieldName.lastLogin.name());
+        return (Date)fieldValue(FBFieldName.lastLogin.name());
     }
 
     public ProviderCount getProviderCounts(){
-        return (ProviderCount) mDirectContainers.get(FirebaseContainerName.providerCounts.name());
+        return (ProviderCount) mDirectContainers.get(FBDirectContainerName.providerCounts.name());
     }
     /////////////////////////////////////////////////////////
 
     private String mId;
 
-    public User(AuthData authData) {
-        super();
+    public User(AuthData authData, Firebase firebaseRef) {
+        super(firebaseRef);
 
         mId = authData.getUid();
 
         //Handle field populations
-        setFieldValue(FirebaseFieldName.provider.name(), authData.getProvider());
-        setFieldValue(FirebaseFieldName.created.name(), new Date());
-        setFieldValue(FirebaseFieldName.isAdmin.name(), false);
+        setFieldValue(FBFieldName.provider.name(), authData.getProvider());
+        setFieldValue(FBFieldName.created.name(), new Date());
+        setFieldValue(FBFieldName.isAdmin.name(), false);
 
         Map<String, Object> authKeyValueMappings = authData.getProviderData();
 
         if(authKeyValueMappings.containsKey("displayName")){
-            setFieldValue(FirebaseFieldName.name.name(), authKeyValueMappings.get("displayName").toString());
+            setFieldValue(FBFieldName.name.name(), authKeyValueMappings.get("displayName").toString());
         }
         if(authKeyValueMappings.containsKey("email")){
-            setFieldValue(FirebaseFieldName.email.name(), authKeyValueMappings.get("email").toString());
+            setFieldValue(FBFieldName.email.name(), authKeyValueMappings.get("email").toString());
         }
 
-        //Handle container populations
-        mDirectContainers.put(FirebaseContainerName.providerCounts.name(), new ProviderCount());
-        _setEdited();
+        //Handle direct container populations
+        mDirectContainers.put(FBDirectContainerName.providerCounts.name(), new ProviderCount());
+        mDirectContainers.put(FBDirectContainerName.sourceCounts.name(), new SourceCount());
+
+        //Handle linked container populations
+
+
+        setEdited();
     }
 
 
@@ -101,13 +112,13 @@ public class User extends Container {
     }
 
     @Override
-    protected Map<String, Field.FirebaseSupportedTypes> fieldTypeMap(){
-        return FirebaseFieldTypeMap;
+    protected Map<String, Field.FBSupportedTypes> fieldTypeMap(){
+        return FBFieldTypeMap;
     }
 
     @Override
-    protected Field.FirebaseSupportedTypes fieldType(String fieldName) {
-        return FirebaseFieldTypeMap.get(fieldName);
+    protected Field.FBSupportedTypes fieldType(String fieldName) {
+        return FBFieldTypeMap.get(fieldName);
     }
 
 }

@@ -135,12 +135,14 @@ public class LoginActivity extends AppCompatActivity implements
      ***************************************/
     @Bind(R.id.login_with_password) Button mPasswordLoginButton;
 
-    @Bind(R.id.viewSwitcher) ViewSwitcher mViewSwitcher;
+    @Bind(R.id.login_viewSwitcher) ViewSwitcher mLoginViewSwitcher;
+    @Bind(R.id.logged_in_viewSwitcher) ViewSwitcher mLoggedinViewSwitcher;
     @Bind(R.id.btnMyAccount) ToggleButton mBtnMyAccount;
     @Bind(R.id.btnBill) ToggleButton mBtnBill;
     @Bind(R.id.btnTennisCourts) ToggleButton mBtnTennis;
     @Bind(R.id.btnFind) ToggleButton mBtnFind;
     @Bind(R.id.btnMore) ToggleButton mBtnMore;
+    @Bind(R.id.btnValidateMemberId) Button mBtnValidateMemberId;
 
     @OnClick(R.id.btnMyAccount)
     public void launchMyAccount(){
@@ -165,6 +167,11 @@ public class LoginActivity extends AppCompatActivity implements
     @OnClick(R.id.btnMore)
     public void launchMore(){
         TheMACApplication.startActivity(this, More.class, false);
+    }
+
+    @OnClick(R.id.btnValidateMemberId)
+    public void validateMemberId(){
+
     }
 
     @Override
@@ -342,7 +349,7 @@ public class LoginActivity extends AppCompatActivity implements
     @OnClick(R.id.btnLogout)
     public void onClickLogout(){
         logout();
-        mViewSwitcher.setDisplayedChild(mViewSwitcher.indexOfChild(findViewById(R.id.login_view)));
+        mLoginViewSwitcher.setDisplayedChild(mLoginViewSwitcher.indexOfChild(findViewById(R.id.login_view)));
     }
 
     /**
@@ -417,40 +424,30 @@ public class LoginActivity extends AppCompatActivity implements
                 //mLoggedInStatusTextView.setText("Logged in as " + name + " (" + authData.getProvider() + ")");
             }
 
-            final Login loginObj = new Login(authData);
+            final Firebase loggedInUserRef = mFBHelper.getLoginRef(authData.getUid());
+            final Login login = new Login(authData, loggedInUserRef);
             final Activity loginActivity = this;
-            //Retrieve firebase user, create one if doesn't exist
-            final Firebase loggedInUserRef = mFBHelper.getFirebaseRef().child("logins/" + loginObj.id());
 
             loggedInUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if(dataSnapshot.getValue() != null)
-                        loginObj.loadServerData(loggedInUserRef, dataSnapshot);
+                        login.loadServerData(loggedInUserRef, dataSnapshot);
                     else
-                        loginObj.saveServerData(loggedInUserRef, dataSnapshot);
+                        login.saveServerData(loggedInUserRef, dataSnapshot);
 
-                    if(loginObj.getIsNotProvisioned() == true){ //Find and associate User
+                    mFBHelper.set_login(login);
+                    mLoginViewSwitcher.setDisplayedChild(mLoginViewSwitcher.indexOfChild(findViewById(R.id.logged_in_view)));
 
+                    if(login.getIsNotProvisioned() == true ||
+                            login.getUser().length() != 20){ //Find and associate User
+                        mLoggedinViewSwitcher.setDisplayedChild(mLoggedinViewSwitcher.indexOfChild(findViewById(R.id.logged_in_ask_memberid)));
                     }
-                    else{
+                    else{ //Find associated User
 
+                        mLoggedinViewSwitcher.setDisplayedChild(mLoggedinViewSwitcher.indexOfChild(findViewById(R.id.logged_in_home)));
+                        setLoggedInMACUser(login, authData, dataSnapshot, loggedInUserRef);
                     }
-
-                    /* This needs to be transferred to linked User
-                    if(authData.getProvider().compareToIgnoreCase("twitter") == 0) {
-                        loginObj.getProviderCounts().incrementCount(ProviderCount.FirebaseFieldName.twitter);
-                    }else if(authData.getProvider().compareToIgnoreCase("facebook") == 0) {
-                        loginObj.getProviderCounts().incrementCount(ProviderCount.FirebaseFieldName.facebook);
-                    }else if(authData.getProvider().compareToIgnoreCase("google") == 0) {
-                        loginObj.getProviderCounts().incrementCount(ProviderCount.FirebaseFieldName.google);
-                    }
-                    loginObj.getProviderCounts().saveServerData(
-                            loggedInUserRef.child(User.FirebaseContainerName.providerCounts.name()),
-                                    dataSnapshot.child(User.FirebaseContainerName.providerCounts.name()));
-
-                    mFBHelper.set_loggedInUser(UserObj); */
-                    mViewSwitcher.setDisplayedChild(mViewSwitcher.indexOfChild(findViewById(R.id.logged_in_view)));
                 }
 
                 @Override
@@ -472,6 +469,24 @@ public class LoginActivity extends AppCompatActivity implements
         invalidateOptionsMenu();
     }
 
+    private void setLoggedInMACUser(Login login, AuthData authData, DataSnapshot dataSnapshot, Firebase loggedInUserRef){
+
+        User linkedUser = login.linkedUser();
+
+        if(authData.getProvider().compareToIgnoreCase("twitter") == 0) {
+            linkedUser.getProviderCounts().incrementCount(ProviderCount.FBFieldName.twitter);
+        }else if(authData.getProvider().compareToIgnoreCase("facebook") == 0) {
+            linkedUser.getProviderCounts().incrementCount(ProviderCount.FBFieldName.facebook);
+        }else if(authData.getProvider().compareToIgnoreCase("google") == 0) {
+            linkedUser.getProviderCounts().incrementCount(ProviderCount.FBFieldName.google);
+        }
+        linkedUser.getProviderCounts().saveServerData(
+                loggedInUserRef.child(User.FBDirectContainerName.providerCounts.name()),
+                dataSnapshot.child(User.FBDirectContainerName.providerCounts.name()));
+
+        mFBHelper.set_loggedInUser(linkedUser);
+    }
+
     /**
      * Show errors to users
      */
@@ -487,7 +502,7 @@ public class LoginActivity extends AppCompatActivity implements
     @Override
     public void onAuthStateChanged(AuthData authData) {
         if(authData == null) {
-            mViewSwitcher.setDisplayedChild(mViewSwitcher.indexOfChild(findViewById(R.id.login_view)));
+            mLoginViewSwitcher.setDisplayedChild(mLoginViewSwitcher.indexOfChild(findViewById(R.id.login_view)));
         }
     }
 

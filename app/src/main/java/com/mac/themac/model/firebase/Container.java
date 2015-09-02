@@ -13,20 +13,28 @@ import java.util.Map;
  */
 abstract public class Container {
 
-    private boolean isEdited = false;
+    private boolean mIsEdited = false;
     protected HashMap<String, Field> mFields = new HashMap<String, Field>();
     protected HashMap<String, Container> mDirectContainers = new HashMap<String, Container>();
     protected HashMap<String, Container> mLinkedContainers = new HashMap<String, Container>();
+    protected Firebase mFirebaseRef = null;
 
-    public Container() {
-        for(Map.Entry<String, Field.FirebaseSupportedTypes> kvp : fieldTypeMap().entrySet()){
+    public Container (){
+        // empty default constructor, necessary for Firebase to be able to deserialize
+    }
+
+    public Container(Firebase firebaseRef) {
+
+        mFirebaseRef = firebaseRef;
+
+        for(Map.Entry<String, Field.FBSupportedTypes> kvp : fieldTypeMap().entrySet()){
             Field field = new Field(kvp.getKey(), kvp.getValue());
             mFields.put(kvp.getKey(), field);
         }
     }
 
-    protected abstract Map<String, Field.FirebaseSupportedTypes> fieldTypeMap();
-    protected abstract Field.FirebaseSupportedTypes fieldType(String fieldName);
+    protected abstract Map<String, Field.FBSupportedTypes> fieldTypeMap();
+    protected abstract Field.FBSupportedTypes fieldType(String fieldName);
 
     protected Object fieldValue(String fieldName){
 
@@ -42,7 +50,7 @@ abstract public class Container {
         setFieldValue(fieldName, fieldValue, fieldType(fieldName));
     }
 
-    protected void setFieldValue(String fieldName, Object fieldValue, Field.FirebaseSupportedTypes fieldType){
+    protected void setFieldValue(String fieldName, Object fieldValue, Field.FBSupportedTypes fieldType){
 
         if(mFields.containsKey(fieldName)) {
             Field field = mFields.get(fieldName);
@@ -51,15 +59,19 @@ abstract public class Container {
         else{
             mFields.put(fieldName, new Field(fieldName, fieldValue, fieldType));
         }
-        _setEdited();
+        setEdited();
     }
 
-    protected void _setEdited(){
-        isEdited = true;
+    protected void setEdited(){
+        mIsEdited = true;
     }
 
-    protected void _setSaved(){
-        isEdited = false;
+    protected void setSaved(){
+        mIsEdited = false;
+    }
+
+    protected void setFirebaseRef(Firebase firebaseRef){
+        mFirebaseRef = firebaseRef;
     }
 
     public void loadServerData(Firebase firebaseRef, DataSnapshot dataSnapshot) {
@@ -99,7 +111,6 @@ abstract public class Container {
             }
 
             //load linked containers
-
             for(HashMap.Entry<String, Container> kvp : mLinkedContainers.entrySet()){
 
                 try {
@@ -114,7 +125,7 @@ abstract public class Container {
                 }
             }
         }
-        _setSaved();
+        setSaved();
     }
 
     private void saveFields(Firebase firebaseRef, DataSnapshot dataSnapshot){
@@ -174,7 +185,7 @@ abstract public class Container {
 
         }
 
-        _setSaved();
+        setSaved();
     }
 
 }
