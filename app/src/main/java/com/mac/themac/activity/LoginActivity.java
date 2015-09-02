@@ -422,6 +422,19 @@ public class LoginActivity extends AppCompatActivity implements
             //Retrieve firebase user, create one if doesn't exist
             final Firebase loggedInUserRef = mFBHelper.getFirebaseRef().child("logins/" + loginObj.id());
 
+            Firebase testObj = mFBHelper.getFirebaseRef().child("reservationRules/" + "-Jy8lXjQBpJ8YXei2Ser");
+            testObj.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                }
+
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+
+                }
+            });
+
             loggedInUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {

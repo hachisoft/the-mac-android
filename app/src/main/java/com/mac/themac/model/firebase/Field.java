@@ -11,7 +11,7 @@ import java.util.Date;
 public class Field {
 
     public enum FirebaseSupportedTypes {
-        Boolean, Integer, String, Date, Weekday
+        Boolean, Long, String, Date, Weekday
     };
 
     private Object convertToJavaType(Object val) throws Exception{
@@ -21,7 +21,7 @@ public class Field {
             throw new Exception("Field Type not specified for " + mName);
         switch (mType){
             case Boolean:
-            case Integer:
+            case Long:
             case String:
                 //Basic types are directly convertible
                 retVal = val;

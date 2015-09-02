@@ -25,9 +25,9 @@ public class ProviderCount extends Container {
         Map<String, Field.FirebaseSupportedTypes> aMap = new HashMap<>();
 
         //Add all firebase field Type mappings here (no object/container, only fields)
-        aMap.put(FirebaseFieldName.facebook.name(), Field.FirebaseSupportedTypes.Integer);
-        aMap.put(FirebaseFieldName.google.name(), Field.FirebaseSupportedTypes.Integer);
-        aMap.put(FirebaseFieldName.twitter.name(), Field.FirebaseSupportedTypes.Integer);
+        aMap.put(FirebaseFieldName.facebook.name(), Field.FirebaseSupportedTypes.Long);
+        aMap.put(FirebaseFieldName.google.name(), Field.FirebaseSupportedTypes.Long);
+        aMap.put(FirebaseFieldName.twitter.name(), Field.FirebaseSupportedTypes.Long);
 
         FirebaseFieldTypeMap = Collections.unmodifiableMap(aMap);
     };

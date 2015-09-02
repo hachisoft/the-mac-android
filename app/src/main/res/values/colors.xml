@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primary">#ffa11111</color>
-    <color name="primary_dark">#ffb11111</color>
-    <color name="accent">#FF1073FF</color>
-    <color name="appBackground">#ffdedede</color>
-    <color name="textColor">#FF494949</color>
+    <color name="gray">#ff494949</color>
+    <color name="light_gray">#ffdedede</color>
+    <color name="red">#ffb11111</color>
+    <color name="green">#ff11b111</color>
+    <color name="yellow">#ffc7dd2e</color>
+    <color name="accent_red">#ffa11111</color>
+    <color name="white">#ffffffff</color>
+    <color name="black">#ff000000</color>
+    <color name="btn_grad_low">#ffede1c9</color>
+    <color name="btn_grad_high">#fffbf6e9</color>
 </resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CourtButton">
+        <attr name="courtNumber" format="string" />
+        <attr name="courtColor" format="integer" />
+        <attr name="isGreyed" format="boolean" />
+    </declare-styleable>
+</resources>
