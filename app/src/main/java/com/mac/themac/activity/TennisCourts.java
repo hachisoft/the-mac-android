@@ -12,6 +12,7 @@ import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 import com.mac.themac.R;
 import com.mac.themac.fragment.FragmentWithTopActionBar;
+import com.mac.themac.fragment.TennisReservation;
 import com.mac.themac.model.Interest;
 import com.mac.themac.model.Location;
 import com.mac.themac.model.ReservationRules;
@@ -40,6 +41,7 @@ public class TennisCourts extends ActivityWithBottomActionBar implements Fragmen
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        showFragment(TennisReservation.newInstance("",""), R.id.fragment_holder);
     }
 
     public FirebaseHelper getFBHelper(){

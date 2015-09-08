@@ -4,14 +4,6 @@
     android:orientation="vertical"
     tools:context="com.mac.themac.activity.TennisCourts">
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="match_parent"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Tennis Courts"
-        android:layout_above="@id/bottom_action_bar"
-        android:id="@+id/textView"
-        android:gravity="center"/>
 
     <include android:id="@+id/bottom_action_bar"
         layout="@layout/bottom_action_bar"
@@ -19,4 +11,8 @@
         android:layout_width="fill_parent"
         android:layout_alignParentBottom="true"/>
 
+    <FrameLayout android:id="@+id/fragment_holder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_action_bar"></FrameLayout>
 </RelativeLayout>

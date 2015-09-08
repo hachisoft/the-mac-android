@@ -50,7 +50,7 @@ public class Interest extends Container {
 
     public Interest (DataSnapshot dataSnapshot){
         super();
-        key = dataSnapshot.getKey();
+        key = (String) dataSnapshot.getKey();
     }
 
     @Override

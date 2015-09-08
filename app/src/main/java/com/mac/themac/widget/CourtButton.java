@@ -23,6 +23,8 @@ public class CourtButton extends RelativeLayout {
     @Bind(R.id.square) SquaredView squaredView;
     @Bind(R.id.label) TextView label;
     @Bind(R.id.ball) ImageView ball;
+    private CourtState state;
+    private int courtNum;
 
     public enum CourtState {
         available, reserved, waitlist, mac_reserved;
@@ -55,13 +57,15 @@ public class CourtButton extends RelativeLayout {
     private void init() {
         inflate(getContext(), R.layout.court_widget_court_button, this);
         ButterKnife.bind(this);
+        state = CourtState.available;
     }
 
     private void applyAttrs(AttributeSet attrs){
         TypedArray a = getContext().getTheme().obtainStyledAttributes(attrs, R.styleable.CourtButton, 0, 0);
         try{
             String courtNumber = a.getString(R.styleable.CourtButton_courtNumber);
-            label.setText(courtNumber!=null?courtNumber:"1");
+            setCourtName(courtNumber!=null?courtNumber:"1");
+            courtNum = Integer.valueOf(courtNumber!=null?courtNumber:"1");
             int courtcolor = a.getInt(R.styleable.CourtButton_courtColor, -1);
             if(courtcolor!= -1)
                 squaredView.setBackgroundColor(courtcolor);
@@ -85,6 +89,11 @@ public class CourtButton extends RelativeLayout {
             case mac_reserved:
                 squaredView.setBackgroundColor(getResources().getColor(R.color.gray));
         }
+        this.state = state;
+    }
+
+    public CourtState getCourtState(){
+        return state;
     }
 
     public void setHasBallMachine(boolean hasBallMachine){
@@ -100,6 +109,14 @@ public class CourtButton extends RelativeLayout {
         } else {
             this.setAlpha(1);
         }
+    }
+
+    public int getCourtNum() {
+        return courtNum;
+    }
+
+    public void setCourtName(String name){
+        label.setText(name);
     }
 
     @Override
