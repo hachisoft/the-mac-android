@@ -13,13 +13,35 @@ import java.util.Map;
  */
 public class Location {
     String key;
-    String interes;
+    String interest;
     String name;
     long nsCourseLocationId;
     long nsLocationId;
-    public enum FirebaseFieldName {
-        interest, name, nsCourseLocationId, nsLocationId;
-    }
+    HashMap<String, Boolean> sessions;
 
     public Location(){}
+
+    public String getKey() {
+        return key;
+    }
+
+    public String getInterest() {
+        return interest;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public long getNsCourseLocationId() {
+        return nsCourseLocationId;
+    }
+
+    public long getNsLocationId() {
+        return nsLocationId;
+    }
+
+    public HashMap<String, Boolean> getSessions() {
+        return sessions;
+    }
 }

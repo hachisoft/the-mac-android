@@ -3,11 +3,11 @@ package com.mac.themac.fragment;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -26,11 +26,9 @@ import com.mac.themac.model.Session;
 import com.mac.themac.utility.FirebaseHelper;
 import com.mac.themac.widget.CourtReservationTimeBlockWidget;
 
-import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -223,6 +221,10 @@ public class TennisReservation extends FragmentWithTopActionBar {
             slot.startTime = i;
             mAdapter.add(slot);
         }
+        for(int i = 0; i < sessions.size(); i++){
+            for(Session session: sessions.get(i))
+                assignSessionToTimeSlot(session, i);
+        }
         widgetList.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();
     }
@@ -264,14 +266,15 @@ public class TennisReservation extends FragmentWithTopActionBar {
     }
 
     private void getSession(String key, final int pos){
-        Firebase sessionRef = new Firebase(getString(R.string.firebase_url) + "/locations/" + key);
+        Firebase sessionRef = new Firebase(getString(R.string.firebase_url) + "/sessions/" + key);
         sessionRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.getValue()!=null){
+                if (dataSnapshot.getValue() != null) {
                     Session session = dataSnapshot.getValue(Session.class);
                     //TODO determine if Date fits window here?
                     sessions.get(pos).add(session);
+                    assignSessionToTimeSlot(session, pos);
                 }
             }
 
@@ -282,10 +285,26 @@ public class TennisReservation extends FragmentWithTopActionBar {
         });
     }
 
+    private void assignSessionToTimeSlot(Session session, int pos){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(session.getDate());
+        if(cal.get(Calendar.MONTH) == calendar.get(Calendar.MONTH) &&
+                cal.get(Calendar.DAY_OF_MONTH) == calendar.get(Calendar.DAY_OF_MONTH)){
+            long mins = cal.get(Calendar.MINUTE) + (calendar.get(Calendar.HOUR_OF_DAY) * 60);
+            for(int i = 0; i < mAdapter.getCount(); i++){
+                TimeSlot slot = mAdapter.getItem(i);
+                if(mins >= slot.startTime && mins < slot.startTime + reservationRules.getSessionLength()){
+                    slot.sessions.put(pos, session);
+                }
+            }
+        }
+    }
+
 
     private void getLocations(String interest){
         Firebase locationsRef = new Firebase(getString(R.string.firebase_url) + "/locations");
         Query queryRef = locationsRef.orderByChild("interest").equalTo(interest);
+        locationsRef.push().setValue(new Location());
         queryRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -299,6 +318,7 @@ public class TennisReservation extends FragmentWithTopActionBar {
                     }
                 }
                 mAdapter.notifyDataSetChanged();
+                widgetList.invalidate();
             }
 
             @Override
@@ -326,6 +346,7 @@ public class TennisReservation extends FragmentWithTopActionBar {
     private class TimeSlot {
         Long startTime;
         int selected = -1;
+        SparseArray<Session> sessions = new SparseArray<>();
         //TODO need to add support for reservations
 //        SparseArray<Reservation> reservations;
     }
@@ -346,10 +367,14 @@ public class TennisReservation extends FragmentWithTopActionBar {
                 getItem(lastPos).selected = view.getSelected();
             }
             view.setTag(position);
-            view.setButton(getItem(position).selected);
+            view.resetButtons();
+            view.setSelectedButton(getItem(position).selected);
             view.setTimeLabel(getItem(position).startTime);
-
-
+            for(int i = 0; i < 9; i ++){
+                if(getItem(position).sessions.get(i)!=null){
+                    view.setButtonStatus(i, getItem(position).sessions.get(i));
+                }
+            }
             return view;
         }
     }
