@@ -368,13 +368,13 @@ public class TennisReservation extends FragmentWithTopActionBar {
             }
             view.setTag(position);
             view.resetButtons();
-            view.setSelectedButton(getItem(position).selected);
             view.setTimeLabel(getItem(position).startTime);
             for(int i = 0; i < 9; i ++){
                 if(getItem(position).sessions.get(i)!=null){
                     view.setButtonStatus(i, getItem(position).sessions.get(i));
                 }
             }
+            view.setSelectedButton(getItem(position).selected);
             return view;
         }
     }
