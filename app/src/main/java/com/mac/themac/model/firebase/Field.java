@@ -10,8 +10,8 @@ import java.util.Date;
  */
 public class Field {
 
-    public enum FBSupportedTypes {
-        Boolean, Integer, String, Date, Weekday
+    public enum FirebaseSupportedTypes {
+        Boolean, Long, String, Date, Weekday
     };
 
     private Object convertToJavaType(Object val) throws Exception{
@@ -21,7 +21,7 @@ public class Field {
             throw new Exception("Field Type not specified for " + mName);
         switch (mType){
             case Boolean:
-            case Integer:
+            case Long:
             case String:
                 //Basic types are directly convertible
                 retVal = val;
@@ -40,7 +40,7 @@ public class Field {
 
     private String mName;
     private Object mValue; //Always stored as correct Java Type
-    private FBSupportedTypes mType;
+    private FirebaseSupportedTypes mType;
     private boolean mIsEdited = true;
 
     public Object value() {
@@ -56,14 +56,14 @@ public class Field {
         return mName;
     }
 
-    public Field(String name, Object value, FBSupportedTypes fieldType) {
+    public Field(String name, Object value, FirebaseSupportedTypes fieldType) {
         mName = name;
         mValue = value;
         mType = fieldType;
         _setEdited();
     }
 
-    public Field(String name, FBSupportedTypes fieldType) {
+    public Field(String name, FirebaseSupportedTypes fieldType) {
         mName = name;
         mValue = null;
         mType = fieldType;

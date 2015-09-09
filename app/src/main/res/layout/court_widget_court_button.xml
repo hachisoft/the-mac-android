@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.mac.themac.widget.SquaredView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/square">
+            <TextView android:id="@+id/label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:textColor="@color/white"/>
+    </com.mac.themac.widget.SquaredView>
+
+    <ImageView android:id="@+id/ball"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ballmachine"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/square"
+        android:layout_marginTop="-15dp"
+        android:visibility="invisible"/>
+</merge>

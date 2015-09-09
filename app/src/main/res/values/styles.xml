@@ -2,20 +2,27 @@
 
     <style name="AppThemeWithActionBar" parent="@style/Theme.AppCompat.Light">
         <!-- Customize your theme here. -->
-        <item name="android:background">@color/appBackground</item>
+        <!--<item name="android:background">@color/light_gray</item>-->
         <!-- Main theme colors -->
         <!--   your app branding color for the app bar -->
-        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimary">@color/red</item>
         <!--   darker variant for the status bar and contextual app bars -->
-        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorPrimaryDark">@color/red</item>
         <!--   theme UI controls like checkboxes and text fields -->
-        <item name="colorAccent">@color/accent</item>
-        <!--<item name="actionBarStyle">@style/ActionBarTheme</item>-->
+        <item name="colorAccent">@color/red</item>
+        <!--<item name="android:buttonStyle">@style/UIButton</item>-->
+        <item name="actionBarStyle">@style/ActionBarTheme</item>
     </style>
     <style name="ActionBarTheme" parent="@style/Widget.AppCompat.Light.ActionBar">
         <item name="windowActionBarOverlay">true</item>
-        <item name="background">@color/primary_dark</item>
-        <item name="android:background">@color/primary_dark</item>
+        <item name="background">@color/white</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:textColor">@color/red</item>
+        <item name="android:titleTextStyle">@style/ActionBarTitleText</item>
+    </style>
+
+    <style name="ActionBarTitleText" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/red</item>
     </style>
 
     <style name="ActionButton" parent="@style/Theme.AppCompat.Light">
@@ -31,7 +38,7 @@
         <item name="android:layout_weight">0.2</item>
     </style>
     <style name="ActionButtonLayout" parent="@style/Theme.AppCompat.Light">
-        <item name="android:background">@color/primary_dark</item>
+        <item name="android:background">@color/red</item>
         <item name="android:orientation">vertical</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
@@ -40,23 +47,39 @@
     <style name="RowButton" parent="@style/Theme.AppCompat.Light">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">fill_parent</item>
-        <item name="android:textColor">@color/textColor</item>
+        <item name="android:textColor">@color/gray</item>
         <item name="android:background">@android:color/white</item>
-        <item name="android:layout_margin">1dp</item>
+        <item name="android:layout_marginTop">5dp</item>
     </style>
     <style name="SmallDescriptionText" parent="@style/Theme.AppCompat.Light">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
-        <item name="android:textColor">@color/textColor</item>
+        <item name="android:textColor">@color/gray</item>
         <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
     </style>
     <style name="MediumRowHeaderText" parent="@style/Theme.AppCompat.Light">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">right</item>
-        <item name="android:textColor">@color/textColor</item>
+        <item name="android:textColor">@color/gray</item>
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
         <item name="android:layout_column">1</item>
+    </style>
+    <style name="UIButton" parent="@style/Theme.AppCompat.Light">
+        <item name="android:background">@drawable/ui_button_selector</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:shadowColor">@color/white</item>
+        <item name="android:minHeight">10dp</item>
+        <item name="android:minWidth">10dp</item>
+        <!--<item name="android:shadowRadius">1dp</item>-->
+        <item name="android:padding">3dp</item>
+    </style>
+
+    <style name="CourtButton">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_margin">1dp</item>
     </style>
 </resources>

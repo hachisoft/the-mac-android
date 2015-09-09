@@ -428,6 +428,19 @@ public class LoginActivity extends AppCompatActivity implements
             final Login login = new Login(authData, loggedInUserRef);
             final Activity loginActivity = this;
 
+            Firebase testObj = mFBHelper.getFirebaseRef().child("reservationRules/" + "-Jy8lXjQBpJ8YXei2Ser");
+            testObj.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                }
+
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+
+                }
+            });
+
             loggedInUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {

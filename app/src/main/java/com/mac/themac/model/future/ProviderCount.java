@@ -1,8 +1,11 @@
-package com.mac.themac.model.future;
+package com.mac.themac.model;
 
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
 import com.mac.themac.model.firebase.Container;
 import com.mac.themac.model.firebase.Field;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,18 +16,18 @@ import java.util.Map;
 public class ProviderCount extends Container {
 
     //Add all firebase field(keyvaluepair) keys here (no object/container, only fields)
-    public enum FBFieldName {
+    public enum FirebaseFieldName{
         facebook, google, twitter
     };
 
-    private static Map<String, Field.FBSupportedTypes> FirebaseFieldTypeMap;
+    private static Map<String, Field.FirebaseSupportedTypes> FirebaseFieldTypeMap;
     static {
-        Map<String, Field.FBSupportedTypes> aMap = new HashMap<>();
+        Map<String, Field.FirebaseSupportedTypes> aMap = new HashMap<>();
 
         //Add all firebase field Type mappings here (no object/container, only fields)
-        aMap.put(FBFieldName.facebook.name(), Field.FBSupportedTypes.Integer);
-        aMap.put(FBFieldName.google.name(), Field.FBSupportedTypes.Integer);
-        aMap.put(FBFieldName.twitter.name(), Field.FBSupportedTypes.Integer);
+        aMap.put(FirebaseFieldName.facebook.name(), Field.FirebaseSupportedTypes.Long);
+        aMap.put(FirebaseFieldName.google.name(), Field.FirebaseSupportedTypes.Long);
+        aMap.put(FirebaseFieldName.twitter.name(), Field.FirebaseSupportedTypes.Long);
 
         FirebaseFieldTypeMap = Collections.unmodifiableMap(aMap);
     };
@@ -32,39 +35,39 @@ public class ProviderCount extends Container {
 
     public ProviderCount() {
         super();
-        setFieldValue(FBFieldName.facebook.name(), 0);
-        setFieldValue(FBFieldName.google.name(), 0);
-        setFieldValue(FBFieldName.twitter.name(), 0);
-        setEdited();
+        setFieldValue(FirebaseFieldName.facebook.name(), 0);
+        setFieldValue(FirebaseFieldName.google.name(), 0);
+        setFieldValue(FirebaseFieldName.twitter.name(), 0);
+        _setEdited();
     }
 
     //Firebase specific "get" functions: Any public function with "get" prefix will be used
     //for generating Firebase document db key-value pair
     public int getTwitter() {
-        return (int)fieldValue(FBFieldName.twitter.name());
+        return (int)fieldValue(FirebaseFieldName.twitter.name());
     }
 
     public int getFacebook() {
-        return (int)fieldValue(FBFieldName.facebook.name());
+        return (int)fieldValue(FirebaseFieldName.facebook.name());
     }
 
     public int getGoogle() {
-        return (int)fieldValue(FBFieldName.google.name());
+        return (int)fieldValue(FirebaseFieldName.google.name());
     }
     /////////////////////////////////////////////////////////
 
-    public void incrementCount(FBFieldName providerType){
+    public void incrementCount(FirebaseFieldName providerType){
         int currentCount = (int)fieldValue(providerType.name());
         setFieldValue(providerType.name(), currentCount + 1, FirebaseFieldTypeMap.get(providerType.name()));
     }
 
     @Override
-    protected Map<String, Field.FBSupportedTypes> fieldTypeMap() {
+    protected Map<String, Field.FirebaseSupportedTypes> fieldTypeMap() {
        return FirebaseFieldTypeMap;
     }
 
     @Override
-    protected Field.FBSupportedTypes fieldType(String fieldName) {
+    protected Field.FirebaseSupportedTypes fieldType(String fieldName) {
         return FirebaseFieldTypeMap.get(fieldName);
     }
 }
