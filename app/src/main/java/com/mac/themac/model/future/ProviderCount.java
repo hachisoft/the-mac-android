@@ -1,4 +1,4 @@
-package com.mac.themac.model;
+package com.mac.themac.model.future;
 
 import com.mac.themac.model.firebase.Container;
 import com.mac.themac.model.firebase.Field;

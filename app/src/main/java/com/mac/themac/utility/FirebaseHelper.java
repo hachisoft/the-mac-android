@@ -1,8 +1,8 @@
 package com.mac.themac.utility;
 
 import com.firebase.client.Firebase;
-import com.mac.themac.model.Login;
-import com.mac.themac.model.User;
+import com.mac.themac.model.future.Login;
+import com.mac.themac.model.future.User;
 
 /**
  * Created by Samir on 7/3/2015.

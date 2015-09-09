@@ -36,9 +36,9 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 import com.mac.themac.R;
 import com.mac.themac.TheMACApplication;
-import com.mac.themac.model.Login;
-import com.mac.themac.model.ProviderCount;
-import com.mac.themac.model.User;
+import com.mac.themac.model.future.Login;
+import com.mac.themac.model.future.ProviderCount;
+import com.mac.themac.model.future.User;
 import com.mac.themac.utility.FirebaseHelper;
 
 import java.io.IOException;
