@@ -98,4 +98,76 @@ public class Reservation {
     public boolean getWantsPartner() {
         return wantsPartner;
     }
+
+    public void setDateReserved(Date dateReserved) {
+        this.dateReserved = dateReserved;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setHasGuest(boolean hasGuest) {
+        this.hasGuest = hasGuest;
+    }
+
+    public void setInterest(String interest) {
+        this.interest = interest;
+    }
+
+    public void setIsAdvRes(boolean isAdvRes) {
+        this.isAdvRes = isAdvRes;
+    }
+
+    public void setIsJunior(boolean isJunior) {
+        this.isJunior = isJunior;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public void setMemberNumber(String memberNumber) {
+        this.memberNumber = memberNumber;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public void setNsReservationId(long nsReservationId) {
+        this.nsReservationId = nsReservationId;
+    }
+
+    public void setReservationUser(String reservationUser) {
+        this.reservationUser = reservationUser;
+    }
+
+    public void setReservingUser(String reservingUser) {
+        this.reservingUser = reservingUser;
+    }
+
+    public void setSession(String session) {
+        this.session = session;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setWantsPartner(boolean wantsPartner) {
+        this.wantsPartner = wantsPartner;
+    }
 }

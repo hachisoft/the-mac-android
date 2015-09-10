@@ -89,7 +89,7 @@ public class TennisReservation extends FragmentWithTopActionBar {
 
     @Override
     public int getFragmentLayoutId() {
-        return R.layout.fragment_reservations;
+        return R.layout.fragment_tennis_courts;
     }
 
     @Override

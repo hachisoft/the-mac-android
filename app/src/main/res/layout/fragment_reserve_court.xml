@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:background="@color/light_gray">
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/courtlayout"
+        android:adjustViewBounds="true"/>
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:stretchColumns="1"
+        android:shrinkColumns="0">
+        <TableRow
+            style="@style/UIEntryLayout">
+
+            <TextView
+                style="@style/MediumRowHeaderText"
+                android:text="@string/court"/>
+
+            <TextView
+                style="@style/UIGrayColumnBox"
+                android:text="6"
+                android:id="@+id/tvCourt"
+                />
+        </TableRow>
+        <TableRow
+            style="@style/UIEntryLayout">
+
+            <TextView
+                style="@style/MediumRowHeaderText"
+                android:text="@string/date"/>
+
+            <TextView
+                style="@style/UIGrayColumnBox"
+                android:text="August 15, 2014"
+                android:id="@+id/tvDate"
+                />
+        </TableRow>
+        <TableRow
+            style="@style/UIEntryLayout">
+
+            <TextView
+                style="@style/MediumRowHeaderText"
+                android:text="@string/time"/>
+
+            <TextView
+                style="@style/UIGrayColumnBox"
+                android:text="9:30 AM"
+                android:id="@+id/tvTime"
+                />
+        </TableRow>
+        <TableRow
+            style="@style/UIEntryLayout">
+
+            <TextView
+                style="@style/MediumRowHeaderText"
+                android:text="@string/ball_machine"/>
+
+            <CheckBox
+                style="@style/UIGrayColumnBox"
+                android:id="@+id/cbBallMachine"
+                />
+        </TableRow>
+        <TableRow
+            style="@style/UIEntryLayout">
+
+            <TextView
+                style="@style/MediumRowHeaderText"
+                android:text="@string/notes"/>
+
+            <EditText
+                style="@style/UIGrayColumnBox"
+                android:inputType="textPersonName"
+                android:text="Notes:"
+                android:id="@+id/editNotes"
+                />
+        </TableRow>
+    </TableLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="15dp">
+        <Button
+            style="@style/UIButton.FormButton"
+            android:layout_marginRight="5dp"
+            android:text="@string/reserve"/>
+        <Button
+            style="@style/UIButton.FormButton"
+            android:text="@string/cancel"/>
+    </LinearLayout>
+
+</LinearLayout>

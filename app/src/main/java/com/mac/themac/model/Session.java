@@ -38,4 +38,28 @@ public class Session {
     public String getClosure() {
         return closure;
     }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public void setDuration(Long duration) {
+        this.duration = duration;
+    }
+
+    public void setEvent(String event) {
+        this.event = event;
+    }
+
+    public void setReservation(String reservation) {
+        this.reservation = reservation;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public void setClosure(String closure) {
+        this.closure = closure;
+    }
 }

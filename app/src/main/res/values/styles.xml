@@ -62,9 +62,10 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">right</item>
+        <item name="android:layout_gravity">center_vertical</item>
         <item name="android:textColor">@color/gray</item>
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
-        <item name="android:layout_column">1</item>
+        <item name="android:layout_marginRight">5dp</item>
     </style>
     <style name="UIButton" parent="@style/Theme.AppCompat.Light">
         <item name="android:background">@drawable/ui_button_selector</item>
@@ -76,10 +77,36 @@
         <item name="android:padding">3dp</item>
     </style>
 
+    <style name="UIButton.FormButton" parent="@style/UIButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:ems">6</item>
+        <item name="android:padding">8dp</item>
+    </style>
+
     <style name="CourtButton">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">1</item>
         <item name="android:layout_margin">1dp</item>
+    </style>
+
+    <style name="UIEntryLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:layout_marginRight">5dp</item>
+        <item name="android:layout_marginLeft">5dp</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:padding">10dp</item>
+    </style>
+
+    <style name="UIGrayColumnBox">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/light_gray</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:textColor">@color/gray</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
     </style>
 </resources>
