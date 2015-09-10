@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Intent;
 
+import com.crashlytics.android.Crashlytics;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.firebase.client.Firebase;
 import com.google.android.gms.plus.Plus;
 import com.mac.themac.utility.FirebaseHelper;
+import io.fabric.sdk.android.Fabric;
 
 /**
  * Created by Samir on 6/29/2015.
@@ -22,6 +24,7 @@ public class TheMACApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
 
         //initialize Firebase
         Firebase.setAndroidContext(this);

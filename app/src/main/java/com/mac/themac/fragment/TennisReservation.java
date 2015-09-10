@@ -143,12 +143,14 @@ public class TennisReservation extends FragmentWithTopActionBar {
 
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                interest = dataSnapshot.getValue(Interest.class);
-                interest.FBKey = dataSnapshot.getKey();
-                //interest = new Interest(dataSnapshot);
-                //interest.loadServerData(_FBHelper.getFirebaseRef(), dataSnapshot);
-                getReservationRules(interest.FBKey);
-                getLocations(interest.FBKey);
+                if(dataSnapshot.exists()) {
+                    interest = dataSnapshot.getValue(Interest.class);
+                    interest.FBKey = dataSnapshot.getKey();
+                    //interest = new Interest(dataSnapshot);
+                    //interest.loadServerData(_FBHelper.getFirebaseRef(), dataSnapshot);
+                    getReservationRules(interest.FBKey);
+                    getLocations(interest.FBKey);
+                }
             }
 
             @Override
