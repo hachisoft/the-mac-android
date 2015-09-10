@@ -2,11 +2,15 @@ package com.mac.themac.model;
 
 import java.util.Date;
 import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.mac.themac.model.firebase.FBModelObject;
 
 /**
- * Created by Bryan on 9/8/2015.
+ * Created by Samir on 9/9/2015.
  */
-public class Event {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Event extends FBModelObject{
     boolean allowGuests;
     boolean allowJuniors;
     boolean allowWaitlist;
@@ -25,8 +29,11 @@ public class Event {
     String status;
     String title;
     String number;
+	
+    @JsonIgnore
+    public String FBKey;
 
-    public Event(){}
+    public Event() {}
 
     public boolean getAllowGuests() {
         return allowGuests;

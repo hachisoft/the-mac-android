@@ -1,11 +1,14 @@
 package com.mac.themac.model;
 
 import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.mac.themac.model.firebase.FBModelObject;
 
 /**
- * Created by Bryan on 9/8/2015.
+ * Created by Samir on 9/9/2015.
  */
-public class Reservation {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Reservation extends FBModelObject{
     Date dateReserved;
     String firstName;
     boolean hasGuest;

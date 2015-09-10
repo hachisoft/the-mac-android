@@ -1,113 +1,56 @@
 package com.mac.themac.model;
 
-import com.firebase.client.AuthData;
-import com.mac.themac.model.firebase.Container;
-import com.mac.themac.model.firebase.Field;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.mac.themac.model.firebase.FBModelObject;
 
-import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
+import android.util.Pair;
 
 /**
- * Created by Samir on 6/29/2015.
+ * Created by Samir on 9/9/2015.
  */
-public class User extends Container {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class User extends FBModelObject{
 
-    //Add all firebase field(keyvaluepair) keys here (no object/container, only fields)
-    public enum FirebaseFieldName {
-        created, provider, name, email, isAdmin, lastLogin
-    };
+    public Date created;
+    public List<Pair<String, Boolean>> dependents;
+    public String firstName;
+    public String middleName;
+    public String lastName;
+    public Boolean isAdmin;
+    public Boolean isDeptHead;
+    public Boolean isJunior;
+    public Boolean isLeader;
+    public Date lastLogin;
+    public List<Pair<String, Boolean>> logins;
+    public String memberNumber;
+    public String memberProfile;
+    public String memberProfilePublic;
+    public String employeeProfile;
+    public long numAdbRes;
+    public long numGenRes;
+    public String primaryMemberNumber;
+    public List<Pair<String, Boolean>> interests;
+    public List<Pair<String, Boolean>> createdReservations;
 
-    private static Map<String, Field.FirebaseSupportedTypes> FirebaseFieldTypeMap;
-    static {
-        Map<String, Field.FirebaseSupportedTypes> aMap = new HashMap<String, Field.FirebaseSupportedTypes>();
 
-        //Add all firebase field Type mappings here (no object/container, only fields)
-        aMap.put(FirebaseFieldName.created.name(), Field.FirebaseSupportedTypes.Date);
-        aMap.put(FirebaseFieldName.provider.name(), Field.FirebaseSupportedTypes.String);
-        aMap.put(FirebaseFieldName.name.name(), Field.FirebaseSupportedTypes.String);
-        aMap.put(FirebaseFieldName.email.name(), Field.FirebaseSupportedTypes.String);
-        aMap.put(FirebaseFieldName.isAdmin.name(), Field.FirebaseSupportedTypes.Boolean);
-        aMap.put(FirebaseFieldName.lastLogin.name(), Field.FirebaseSupportedTypes.Date);
-        FirebaseFieldTypeMap = Collections.unmodifiableMap(aMap);
-    };
+    @JsonIgnore
+    public String FBKey;
+    @JsonIgnore
+    public List<User> linkedDependents;
+    @JsonIgnore
+    public List<Login> linkedLogins;
+    @JsonIgnore
+    public MemberProfile linkedMemberProfile;
+    @JsonIgnore
+    public MemberProfilePublic linkedMemberProfilePublic;
+    @JsonIgnore
+    public EmployeeProfile linkedEmployeeProfile;
+    @JsonIgnore
+    public List<Reservation> linkedReservations;
 
-    //Add all firebase object(containers of other fields) keys here
-    public enum FirebaseContainerName {
-        providerCounts, sourceCounts
-    };
-
-    //Firebase specific "get" functions: Any public function with "get" prefix will be used
-    //for generating Firebase document db key-value pair
-    public String getProvider() {
-        return (String)fieldValue(FirebaseFieldName.provider.name());
+    public User() {
     }
-
-    public String getName() {
-        return (String)fieldValue(FirebaseFieldName.name.name());
-    }
-
-    public String getEmail() {
-        return (String)fieldValue(FirebaseFieldName.email.name());
-    }
-
-    public boolean getIsAdmin() {
-        return (boolean)fieldValue(FirebaseFieldName.isAdmin.name());
-    }
-
-    public Date getCreated() {
-        return (Date)fieldValue(FirebaseFieldName.created.name());
-    }
-
-    public Date getLastLogin(){
-        return (Date)fieldValue(FirebaseFieldName.lastLogin.name());
-    }
-
-    public ProviderCount getProviderCounts(){
-        return (ProviderCount) mDirectContainers.get(FirebaseContainerName.providerCounts.name());
-    }
-    /////////////////////////////////////////////////////////
-
-    private String mId;
-
-    public User(AuthData authData) {
-        super();
-
-        mId = authData.getUid();
-
-        //Handle field populations
-        setFieldValue(FirebaseFieldName.provider.name(), authData.getProvider());
-        setFieldValue(FirebaseFieldName.created.name(), new Date());
-        setFieldValue(FirebaseFieldName.isAdmin.name(), false);
-
-        Map<String, Object> authKeyValueMappings = authData.getProviderData();
-
-        if(authKeyValueMappings.containsKey("displayName")){
-            setFieldValue(FirebaseFieldName.name.name(), authKeyValueMappings.get("displayName").toString());
-        }
-        if(authKeyValueMappings.containsKey("email")){
-            setFieldValue(FirebaseFieldName.email.name(), authKeyValueMappings.get("email").toString());
-        }
-
-        //Handle container populations
-        mDirectContainers.put(FirebaseContainerName.providerCounts.name(), new ProviderCount());
-        _setEdited();
-    }
-
-
-    public String id() {
-        return mId;
-    }
-
-    @Override
-    protected Map<String, Field.FirebaseSupportedTypes> fieldTypeMap(){
-        return FirebaseFieldTypeMap;
-    }
-
-    @Override
-    protected Field.FirebaseSupportedTypes fieldType(String fieldName) {
-        return FirebaseFieldTypeMap.get(fieldName);
-    }
-
 }

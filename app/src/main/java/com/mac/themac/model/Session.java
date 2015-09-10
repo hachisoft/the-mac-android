@@ -1,11 +1,15 @@
 package com.mac.themac.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.mac.themac.model.firebase.FBModelObject;
+
 import java.util.Date;
 
 /**
  * Created by Bryan on 9/8/2015.
  */
-public class Session {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Session extends FBModelObject {
     Date date;
     Long duration;
     String event;

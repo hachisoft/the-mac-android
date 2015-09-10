@@ -1,90 +1,81 @@
 package com.mac.themac.model;
 
-import com.firebase.client.AuthData;
-import com.mac.themac.model.firebase.Container;
-import com.mac.themac.model.firebase.Field;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
+import com.mac.themac.TheMACApplication;
+import com.mac.themac.model.firebase.FBModelObject;
+import com.mac.themac.utility.FirebaseHelper;
 
-import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
- * Created by Samir on 8/31/2015.
+ * Created by Samir on 9/9/2015.
  */
-public class Login extends Container {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Login extends FBModelObject {
 
-    //Add all firebase field(keyvaluepair) keys here (no object/container, only fields)
-    public enum FirebaseFieldName {
-        created, isNotProvisioned, loginId, provider, user
-    };
+    public Date created;
+    public Boolean isNotProvisioned = true;
+    public String provider;
+    public String user;
 
-    private static Map<String, Field.FirebaseSupportedTypes> FirebaseFieldTypeMap;
-    static {
-        Map<String, Field.FirebaseSupportedTypes> aMap = new HashMap<String, Field.FirebaseSupportedTypes>();
+    @JsonIgnore
+    public String FBKey;
+    @JsonIgnore
+    public User linkedUser;
 
-        //Add all firebase field Type mappings here (no object/container, only fields)
-        aMap.put(FirebaseFieldName.created.name(), Field.FirebaseSupportedTypes.Date);
-        aMap.put(FirebaseFieldName.provider.name(), Field.FirebaseSupportedTypes.String);
-        aMap.put(FirebaseFieldName.isNotProvisioned.name(), Field.FirebaseSupportedTypes.Boolean);
-        aMap.put(FirebaseFieldName.user.name(), Field.FirebaseSupportedTypes.String);
-        FirebaseFieldTypeMap = Collections.unmodifiableMap(aMap);
-    };
+    public Login(){
 
-    //Add all firebase object(containers of other fields) keys here
-    public enum FirebaseContainerName {
-
-    };
-
-    //Add all firebase linked object(Linked by firebase Ids) keys here
-    public enum FirebaseLinkName{
-        user
     }
 
-    //Firebase specific "get" functions: Any public function with "get" prefix will be used
-    //for generating Firebase document db key-value pair
-    public String getProvider() {
-        return (String)fieldValue(FirebaseFieldName.provider.name());
+    public Login(String _provider){
+        created = new Date();
+        isNotProvisioned = true;
+        provider = _provider;
     }
 
     public Date getCreated() {
-        return (Date)fieldValue(FirebaseFieldName.created.name());
+        return created;
     }
 
-    public Boolean getIsNotProvisioned(){
-        return (Boolean)fieldValue(FirebaseFieldName.isNotProvisioned.name());
+    public Boolean getIsNotProvisioned() {
+        return isNotProvisioned;
     }
 
-    public String getUser(){
-        return (String)fieldValue(FirebaseFieldName.user.name());
-    }
-    /////////////////////////////////////////////////////////
-    private String mId;
-    public Login(AuthData authData) {
-
-        super();
-        mId = authData.getUid();
-
-        //Handle field populations
-        setFieldValue(FirebaseFieldName.provider.name(), authData.getProvider());
-        setFieldValue(FirebaseFieldName.created.name(), new Date());
-        setFieldValue(FirebaseFieldName.isNotProvisioned.name(), true);
-
-        _setEdited();
-
+    public String getProvider() {
+        return provider;
     }
 
-    public String id() {
-        return mId;
+    public String getUser() {
+        return user;
     }
 
     @Override
-    protected Map<String, Field.FirebaseSupportedTypes> fieldTypeMap() {
-        return FirebaseFieldTypeMap;
-    }
+    @JsonIgnore
+    public void setLinkedObjects(){
 
-    @Override
-    protected Field.FirebaseSupportedTypes fieldType(String fieldName) {
-        return FirebaseFieldTypeMap.get(fieldName);
+        FirebaseHelper fbHelper = TheMACApplication.theApp.getFirebaseHelper();
+
+        if(user != null && !user.isEmpty()){
+            Firebase fbRef = fbHelper.getUserRef(user);
+            fbRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.exists()){
+                        linkedUser = dataSnapshot.getValue(User.class);
+                        linkedUser.FBKey = dataSnapshot.getKey();
+                    }
+                }
+
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+
+                }
+            });
+        }
     }
 }

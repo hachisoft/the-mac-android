@@ -19,9 +19,9 @@ import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 import com.mac.themac.R;
 import com.mac.themac.activity.TennisCourts;
+import com.mac.themac.model.ReservationRule;
 import com.mac.themac.model.Interest;
 import com.mac.themac.model.Location;
-import com.mac.themac.model.ReservationRules;
 import com.mac.themac.model.Session;
 import com.mac.themac.utility.FirebaseHelper;
 import com.mac.themac.widget.CourtReservationTimeBlockWidget;
@@ -43,7 +43,7 @@ public class TennisReservation extends FragmentWithTopActionBar {
     private int dayCount = 1;
 
     private FirebaseHelper _FBHelper;
-    private ReservationRules reservationRules;
+    private ReservationRule reservationRule;
     private Interest interest;
     private ArrayList<Location> locations = new ArrayList<>();
     private ReservationAdapter mAdapter;
@@ -143,10 +143,12 @@ public class TennisReservation extends FragmentWithTopActionBar {
 
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                interest = new Interest(dataSnapshot);
-                interest.loadServerData(_FBHelper.getFirebaseRef(), dataSnapshot);
-                getReservationRules(interest.key);
-                getLocations(interest.key);
+                interest = dataSnapshot.getValue(Interest.class);
+                interest.FBKey = dataSnapshot.getKey();
+                //interest = new Interest(dataSnapshot);
+                //interest.loadServerData(_FBHelper.getFirebaseRef(), dataSnapshot);
+                getReservationRules(interest.FBKey);
+                getLocations(interest.FBKey);
             }
 
             @Override
@@ -204,17 +206,17 @@ public class TennisReservation extends FragmentWithTopActionBar {
         long end;
         long duration;
         if(day == Calendar.SATURDAY){
-            begin = reservationRules.getSaturdayPlayBegins();
-            end = reservationRules.getSaturdayPlayEnds();
+            begin = reservationRule.getSaturdayPlayBegins();
+            end = reservationRule.getSaturdayPlayEnds();
         } else if(day == Calendar.SUNDAY){
-            begin = reservationRules.getSundayPlayBegins();
-            end = reservationRules.getSundayPlayEnds();
+            begin = reservationRule.getSundayPlayBegins();
+            end = reservationRule.getSundayPlayEnds();
         } else {
-            begin = reservationRules.getWeekdayPlayBegins();
-            end = reservationRules.getWeekdayPlayEnds();
+            begin = reservationRule.getWeekdayPlayBegins();
+            end = reservationRule.getWeekdayPlayEnds();
 
         }
-        duration = reservationRules.getSessionLength();
+        duration = reservationRule.getSessionLength();
 
         for(long i = begin; i < end; i+= duration){
             TimeSlot slot = new TimeSlot();
@@ -230,16 +232,16 @@ public class TennisReservation extends FragmentWithTopActionBar {
     }
 
     private void getReservationRules(String interest){
-        Firebase rulesRef = new Firebase(getString(R.string.firebase_url) + "/reservationRules");
+        Firebase rulesRef = new Firebase(getString(R.string.firebase_url) + "/reservationRule");
         Query queryRef = rulesRef.orderByChild("interest").equalTo(interest);
         queryRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                reservationRules = dataSnapshot.getValue(ReservationRules.class);
+                reservationRule = dataSnapshot.getValue(ReservationRule.class);
                 constructScheduleForDay();
-                daysToShow = reservationRules.getGeneralWindowLength();
-                if (calendar.get(Calendar.MINUTE) + (calendar.get(Calendar.HOUR_OF_DAY) * 60) >= reservationRules.getTimeRegistrationOpens())
-                    daysToShow += reservationRules.getAdvancedWindowLength();
+                daysToShow = reservationRule.getGeneralWindowLength();
+                if (calendar.getTime().compareTo( reservationRule.getTimeRegistrationOpens()) >= 0)
+                    daysToShow += reservationRule.getAdvancedWindowLength();
                 updateCountLabel();
             }
 
@@ -293,7 +295,7 @@ public class TennisReservation extends FragmentWithTopActionBar {
             long mins = cal.get(Calendar.MINUTE) + (calendar.get(Calendar.HOUR_OF_DAY) * 60);
             for(int i = 0; i < mAdapter.getCount(); i++){
                 TimeSlot slot = mAdapter.getItem(i);
-                if(mins >= slot.startTime && mins < slot.startTime + reservationRules.getSessionLength()){
+                if(mins >= slot.startTime && mins < slot.startTime + reservationRule.getSessionLength()){
                     slot.sessions.put(pos, session);
                 }
             }
@@ -313,7 +315,7 @@ public class TennisReservation extends FragmentWithTopActionBar {
                 sessions.add(new ArrayList<Session>());
                 DataSnapshot session = dataSnapshot.child("sessions");
                 for(DataSnapshot ds: session.getChildren()){
-                    if(ds.getValue()==true){
+                    if(((boolean)ds.getValue())==true){
                         getSession(ds.getKey(), sessions.size()-1);
                     }
                 }
