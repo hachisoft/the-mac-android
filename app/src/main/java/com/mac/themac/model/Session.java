@@ -1,9 +1,13 @@
 package com.mac.themac.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.mac.themac.TheMACApplication;
 import com.mac.themac.model.firebase.FBModelObject;
+import com.mac.themac.utility.FirebaseHelper;
 
 import java.util.Date;
+import java.util.HashMap;
 
 /**
  * Created by Bryan on 9/8/2015.
@@ -12,10 +16,20 @@ import java.util.Date;
 public class Session extends FBModelObject {
     Date date;
     Long duration;
+    Boolean isEvent;
     String event;
     String reservation;
     String location;
     String closure;
+
+    @JsonIgnore
+    Location linkedLocation;
+    @JsonIgnore
+    Event linkedEvent;
+    @JsonIgnore
+    Closure linkedClosure;
+    @JsonIgnore
+    Reservation linkedReservation;
 
     public Session(){}
 
@@ -65,5 +79,14 @@ public class Session extends FBModelObject {
 
     public void setClosure(String closure) {
         this.closure = closure;
+    }
+
+    @Override
+    @JsonIgnore
+    public void loadLinkedObjects() {
+        final FirebaseHelper fbHelper = TheMACApplication.theApp.getFirebaseHelper();
+
+
+
     }
 }

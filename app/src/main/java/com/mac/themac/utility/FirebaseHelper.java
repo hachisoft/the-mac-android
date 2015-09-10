@@ -14,7 +14,8 @@ public class FirebaseHelper {
     private User _loggedInUser;
 
     public enum FBRootContainerNames{
-        logins, users
+        logins, users, sessions, interests, events, reservations, reservationRules, registrations,
+        fees, closures, locations, memberProfiles, memberProfilePublics, employeeProfiles
     }
 
     public FirebaseHelper(String firebaseUrl) {
@@ -70,11 +71,19 @@ public class FirebaseHelper {
         }
     }
 
+    public Firebase getRootKeyedObjectRef(FBRootContainerNames containerName, String key){
+        return _firebaseRef.child(containerName.name() + "/" + key);
+    }
+
     public Firebase getLoginRef(String key){
         return _firebaseRef.child(FBRootContainerNames.logins.name() + "/" + key);
     }
 
     public Firebase getUserRef(String key){
         return _firebaseRef.child(FBRootContainerNames.users.name() + "/" + key);
+    }
+
+    public Firebase getSessionRef(String key){
+        return _firebaseRef.child(FBRootContainerNames.sessions.name() + "/" + key);
     }
 }

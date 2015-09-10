@@ -1,5 +1,7 @@
 package com.mac.themac.model;
 
+import android.util.Pair;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.firebase.client.DataSnapshot;
@@ -10,7 +12,9 @@ import com.mac.themac.TheMACApplication;
 import com.mac.themac.model.firebase.FBModelObject;
 import com.mac.themac.utility.FirebaseHelper;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 /**
  * Created by Samir on 9/9/2015.
@@ -23,8 +27,6 @@ public class Login extends FBModelObject {
     public String provider;
     public String user;
 
-    @JsonIgnore
-    public String FBKey;
     @JsonIgnore
     public User linkedUser;
 
@@ -56,26 +58,35 @@ public class Login extends FBModelObject {
 
     @Override
     @JsonIgnore
-    public void setLinkedObjects(){
+    public void loadLinkedObjects(){
 
-        FirebaseHelper fbHelper = TheMACApplication.theApp.getFirebaseHelper();
+        if(user != null && !user.isEmpty()) {
+            loadLinkedObject(User.class, FirebaseHelper.FBRootContainerNames.users, user);
+        }
 
-        if(user != null && !user.isEmpty()){
-            Firebase fbRef = fbHelper.getUserRef(user);
-            fbRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    if(dataSnapshot.exists()){
-                        linkedUser = dataSnapshot.getValue(User.class);
-                        linkedUser.FBKey = dataSnapshot.getKey();
-                    }
-                }
+    }
 
-                @Override
-                public void onCancelled(FirebaseError firebaseError) {
+    @JsonIgnore
+    @Override
+    protected void setLinkedObject(Class<? extends FBModelObject> targetObjectType, FBModelObject modelObject) {
 
-                }
-            });
+        if(targetObjectType.equals(User.class) &&
+                modelObject instanceof User){
+
+            linkedUser =  (User)modelObject;
+
+            if(linkedUser.logins == null){
+                linkedUser.logins = new HashMap<String, Boolean>();
+            }
+            if(linkedUser.logins!= null &&
+                    !linkedUser.logins.containsKey(this.FBKey)){
+                linkedUser.logins.put(this.FBKey, true);
+
+                Firebase ref = TheMACApplication.theApp.getFirebaseHelper().getUserRef(linkedUser.FBKey);
+                ref.setValue(linkedUser);
+            }
+
+            linkedUser.loadLinkedObjects();
         }
     }
 }

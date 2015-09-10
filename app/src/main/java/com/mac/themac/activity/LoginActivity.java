@@ -194,7 +194,7 @@ public class LoginActivity extends AppCompatActivity implements
 
                     User user = dataSnapshot.getValue(User.class);
                     user.FBKey = dataSnapshot.getKey();
-                    user.setLinkedObjects();
+                    user.loadLinkedObjects();
 
                     login.user = user.FBKey;
                     login.isNotProvisioned = false;
@@ -493,7 +493,7 @@ public class LoginActivity extends AppCompatActivity implements
                     if (dataSnapshot.exists()) {
 
                         login = dataSnapshot.getValue(Login.class);
-                        login.setLinkedObjects();
+                        login.loadLinkedObjects();
 
                     } else { //First time login with this auth
 
