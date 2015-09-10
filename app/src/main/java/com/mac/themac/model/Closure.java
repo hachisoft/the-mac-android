@@ -1,12 +1,15 @@
 package com.mac.themac.model;
 
+import com.mac.themac.model.firebase.FBModelObject;
+
 import java.util.Date;
 import java.util.HashMap;
 
 /**
  * Created by Bryan on 9/8/2015.
  */
-public class Closure {
+public class Closure extends FBModelObject{
+
     String daysOfWeek;
     String description;
     Date endDate;
