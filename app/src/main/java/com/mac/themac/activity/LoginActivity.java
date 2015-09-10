@@ -14,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.ToggleButton;
 import android.widget.ViewSwitcher;
 
@@ -46,7 +45,6 @@ import com.mac.themac.model.User;
 import com.mac.themac.utility.FirebaseHelper;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -139,9 +137,12 @@ public class LoginActivity extends AppCompatActivity implements
      *              PASSWORD               *
      ***************************************/
     @Bind(R.id.login_with_password) Button mPasswordLoginButton;
+    @Bind(R.id.txtEmail) EditText mFBLoginEmail;
+    @Bind(R.id.txtPassword) EditText mFBLoginPassword;
 
     @Bind(R.id.login_viewSwitcher) ViewSwitcher mLoginViewSwitcher;
     @Bind(R.id.logged_in_viewSwitcher) ViewSwitcher mLoggedinViewSwitcher;
+    @Bind(R.id.log_in_options_viewSwitcher) ViewSwitcher mLoginOptionsViewSwitcher;
     @Bind(R.id.btnMyAccount) ToggleButton mBtnMyAccount;
     @Bind(R.id.btnBill) ToggleButton mBtnBill;
     @Bind(R.id.btnTennisCourts) ToggleButton mBtnTennis;
@@ -174,6 +175,12 @@ public class LoginActivity extends AppCompatActivity implements
     public void launchMore(){
         TheMACApplication.startActivity(this, More.class, false);
     }
+
+    @OnClick(R.id.btnLoginWithEmailPasswordCancel)
+    public void cancelEmailPasswordLogin(){
+        mLoginOptionsViewSwitcher.setDisplayedChild(mLoginOptionsViewSwitcher.indexOfChild(findViewById(R.id.login_view1)));
+    }
+
 
     @OnClick(R.id.btnValidateMemberId)
     public void validateMemberId(){
@@ -300,7 +307,7 @@ public class LoginActivity extends AppCompatActivity implements
         mPasswordLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                loginWithPassword();
+                mLoginOptionsViewSwitcher.setDisplayedChild(mLoginOptionsViewSwitcher.indexOfChild(findViewById(R.id.login_view2)));
             }
         });
 
@@ -399,6 +406,7 @@ public class LoginActivity extends AppCompatActivity implements
     @OnClick(R.id.btnLogout)
     public void onClickLogout(){
         logout();
+        mLoginOptionsViewSwitcher.setDisplayedChild(mLoginOptionsViewSwitcher.indexOfChild(findViewById(R.id.login_view1)));
         mLoginViewSwitcher.setDisplayedChild(mLoginViewSwitcher.indexOfChild(findViewById(R.id.login_view)));
     }
 
@@ -708,9 +716,53 @@ public class LoginActivity extends AppCompatActivity implements
      *              PASSWORD              *
      **************************************
      */
+    @OnClick(R.id.btnLoginWithEmailPassword)
     public void loginWithPassword() {
         mAuthProgressDialog.show();
-        mFBHelper.getFirebaseRef().authWithPassword("test@firebaseuser.com", "test1234", new AuthResultHandler("password"));
+        mFBHelper.getFirebaseRef().authWithPassword(
+                mFBLoginEmail.getText().toString(),
+                mFBLoginPassword.getText().toString(),
+                new Firebase.AuthResultHandler() {
+                    @Override
+                    public void onAuthenticated(AuthData authData) {
+                        mAuthProgressDialog.hide();
+                        setAuthenticatedUser(authData);
+                    }
+
+                    @Override
+                    public void onAuthenticationError(FirebaseError firebaseError) {
+                        if (firebaseError.getCode() == FirebaseError.USER_DOES_NOT_EXIST) {
+                            createLoginPasswordUser();
+                        }
+                        else if(firebaseError.getCode() == FirebaseError.INVALID_EMAIL ||
+                                firebaseError.getCode() == FirebaseError.INVALID_PASSWORD){
+                            mAuthProgressDialog.hide();
+                            showErrorDialog("Invalid Email/Password combination provided. Please try again with valid credentials.");
+                        }
+                        else{
+                            mAuthProgressDialog.hide();
+                            showErrorDialog("Unable to login with Email/Password");
+                        }
+                    }
+                });
+    }
+
+    private void createLoginPasswordUser() {
+        mFBHelper.getFirebaseRef().createUser(
+                mFBLoginEmail.getText().toString(),
+                mFBLoginPassword.getText().toString(),
+                new Firebase.ValueResultHandler<Map<String, Object>>() {
+                    @Override
+                    public void onSuccess(Map<String, Object> stringObjectMap) {
+                        loginWithPassword();
+                    }
+
+                    @Override
+                    public void onError(FirebaseError firebaseError) {
+                        mAuthProgressDialog.hide();
+                        showErrorDialog("Unable to create new user with Email/Password");
+                    }
+                });
     }
 
     /* ************************************

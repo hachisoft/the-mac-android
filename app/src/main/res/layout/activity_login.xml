@@ -19,32 +19,121 @@
         android:layout_alignParentEnd="true">
 
         <RelativeLayout android:layout_width="match_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             android:gravity="center"
             android:id="@+id/login_view">
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageViewLogin"
-                android:src="@drawable/main"
-                android:scaleType="fitCenter"
+            <ViewSwitcher
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/log_in_options_viewSwitcher"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
                 android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentBottom="true"
-                android:layout_centerInParent="true" />
+                android:layout_alignParentEnd="true">
 
-            <include
-                layout="@layout/login_buttons"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:layout_gravity="center"
-                android:layout_centerInParent="true"/>
 
+                <RelativeLayout android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:id="@+id/login_view1">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/imageViewLogin"
+                        android:src="@drawable/main"
+                        android:scaleType="fitCenter"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerInParent="true" />
+
+                    <include
+                        layout="@layout/login_buttons"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_centerInParent="true"/>
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:id="@+id/login_view2">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Email :"
+                            android:id="@+id/textView3" />
+
+                        <EditText
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/txtEmail"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:inputType="textEmailAddress" />
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Password :"
+                            android:id="@+id/textView4" />
+
+                        <EditText
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/txtPassword"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:inputType="textPassword" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Login"
+                            android:id="@+id/btnLoginWithEmailPassword"
+                            android:layout_gravity="center_vertical" />
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Cancel"
+                            android:id="@+id/btnLoginWithEmailPasswordCancel"
+                            android:layout_gravity="center_vertical" />
+                    </LinearLayout>
+                </LinearLayout>
+
+            </ViewSwitcher>
         </RelativeLayout>
-
         <LinearLayout android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
