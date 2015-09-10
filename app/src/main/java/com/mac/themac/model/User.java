@@ -2,6 +2,7 @@ package com.mac.themac.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.mac.themac.model.firebase.FBModelObject;
 
 import java.util.Date;
 import java.util.List;
@@ -11,7 +12,7 @@ import android.util.Pair;
  * Created by Samir on 9/9/2015.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class User {
+public class User extends FBModelObject{
 
     public Date created;
     public List<Pair<String, Boolean>> dependents;
@@ -50,4 +51,6 @@ public class User {
     @JsonIgnore
     public List<Reservation> linkedReservations;
 
+    public User() {
+    }
 }

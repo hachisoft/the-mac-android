@@ -1,8 +1,8 @@
 package com.mac.themac.utility;
 
 import com.firebase.client.Firebase;
-import com.mac.themac.model.future.Login;
-import com.mac.themac.model.future.User;
+import com.mac.themac.model.Login;
+import com.mac.themac.model.User;
 
 /**
  * Created by Samir on 7/3/2015.
@@ -31,6 +31,10 @@ public class FirebaseHelper {
 
     public User getLoggedInUser() {
         return _loggedInUser;
+    }
+
+    public Login getLogin(){
+        return _login;
     }
 
     public void set_firebaseRef(Firebase _firebaseRef) {

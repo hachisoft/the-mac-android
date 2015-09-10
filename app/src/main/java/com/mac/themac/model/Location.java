@@ -1,24 +1,37 @@
 package com.mac.themac.model;
 
-import com.firebase.client.DataSnapshot;
-import com.mac.themac.model.firebase.Container;
-import com.mac.themac.model.firebase.Field;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.mac.themac.model.firebase.FBModelObject;
 
 /**
  * Created by Bryan on 9/1/2015.
  */
-public class Location {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Location extends FBModelObject{
     String key;
-    String interes;
+    String interest;
     String name;
     long nsCourseLocationId;
     long nsLocationId;
-    public enum FirebaseFieldName {
-        interest, name, nsCourseLocationId, nsLocationId;
+
+    public String getKey() {
+        return key;
+    }
+
+    public String getInterest() {
+        return interest;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public long getNsCourseLocationId() {
+        return nsCourseLocationId;
+    }
+
+    public long getNsLocationId() {
+        return nsLocationId;
     }
 
     public Location(){}

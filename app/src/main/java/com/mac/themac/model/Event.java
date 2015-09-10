@@ -8,11 +8,11 @@ import com.mac.themac.model.firebase.FBModelObject;
  * Created by Samir on 9/9/2015.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class EmployeeProfile extends FBModelObject{
+public class Event extends FBModelObject{
 
     @JsonIgnore
     public String FBKey;
 
-    public EmployeeProfile() {
+    public Event() {
     }
 }

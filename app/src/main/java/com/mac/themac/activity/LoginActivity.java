@@ -13,6 +13,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.ToggleButton;
 import android.widget.ViewSwitcher;
 
@@ -22,9 +24,11 @@ import com.facebook.CallbackManager;
 import com.facebook.login.LoginManager;
 import com.facebook.login.widget.LoginButton;
 import com.firebase.client.AuthData;
+import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.auth.GoogleAuthUtil;
@@ -36,12 +40,12 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 import com.mac.themac.R;
 import com.mac.themac.TheMACApplication;
-import com.mac.themac.model.future.Login;
-import com.mac.themac.model.future.ProviderCount;
-import com.mac.themac.model.future.User;
+import com.mac.themac.model.Login;
+import com.mac.themac.model.User;
 import com.mac.themac.utility.FirebaseHelper;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -143,6 +147,7 @@ public class LoginActivity extends AppCompatActivity implements
     @Bind(R.id.btnFind) ToggleButton mBtnFind;
     @Bind(R.id.btnMore) ToggleButton mBtnMore;
     @Bind(R.id.btnValidateMemberId) Button mBtnValidateMemberId;
+    @Bind(R.id.txtMemberId) EditText mMemberId;
 
     @OnClick(R.id.btnMyAccount)
     public void launchMyAccount(){
@@ -171,6 +176,50 @@ public class LoginActivity extends AppCompatActivity implements
 
     @OnClick(R.id.btnValidateMemberId)
     public void validateMemberId(){
+        Firebase ref = mFBHelper.getFirebaseRef().child(FirebaseHelper.FBRootContainerNames.users.name());
+        Query queryRef = ref.orderByChild("memberNumber").equalTo(mMemberId.getText().toString()).limitToFirst(1);
+        queryRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String prevChild) {
+                Login login = mFBHelper.getLogin();
+                if (dataSnapshot.exists()) {
+
+                    User user = dataSnapshot.getValue(User.class);
+                    user.FBKey = dataSnapshot.getKey();
+                    user.setLinkedObjects();
+
+                    login.user = user.FBKey;
+                    login.isNotProvisioned = false;
+                    login.linkedUser = user;
+
+                    mFBHelper.getLoginRef(login.FBKey).setValue(login);
+                    mLoggedinViewSwitcher.setDisplayedChild(mLoggedinViewSwitcher.indexOfChild(findViewById(R.id.logged_in_home)));
+                } else { //User doesn't exist
+                    showErrorDialog("Invalid Member Number. Please retry with valid Member Number.");
+                    mMemberId.setText("");
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
 
     }
 
@@ -424,42 +473,38 @@ public class LoginActivity extends AppCompatActivity implements
                 //mLoggedInStatusTextView.setText("Logged in as " + name + " (" + authData.getProvider() + ")");
             }
 
-            final Firebase loggedInUserRef = mFBHelper.getLoginRef(authData.getUid());
-            final Login login = new Login(authData, loggedInUserRef);
+            final Firebase loginRef = mFBHelper.getLoginRef(authData.getUid());
             final Activity loginActivity = this;
 
-            Firebase testObj = mFBHelper.getFirebaseRef().child("reservationRules/" + "-Jy8lXjQBpJ8YXei2Ser");
-            testObj.addListenerForSingleValueEvent(new ValueEventListener() {
+            loginRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
+                    Login login = null;
 
-                }
+                    if (dataSnapshot.exists()) {
 
-                @Override
-                public void onCancelled(FirebaseError firebaseError) {
+                        login = dataSnapshot.getValue(Login.class);
+                        login.setLinkedObjects();
 
-                }
-            });
+                    } else { //First time login with this auth
 
-            loggedInUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    if(dataSnapshot.getValue() != null)
-                        login.loadServerData(loggedInUserRef, dataSnapshot);
-                    else
-                        login.saveServerData(loggedInUserRef, dataSnapshot);
-
-                    mFBHelper.set_login(login);
-                    mLoginViewSwitcher.setDisplayedChild(mLoginViewSwitcher.indexOfChild(findViewById(R.id.logged_in_view)));
-
-                    if(login.getIsNotProvisioned() == true ||
-                            login.getUser().length() != 20){ //Find and associate User
-                        mLoggedinViewSwitcher.setDisplayedChild(mLoggedinViewSwitcher.indexOfChild(findViewById(R.id.logged_in_ask_memberid)));
+                        login = new Login(authData.getProvider());
+                        loginRef.setValue(login);
                     }
-                    else{ //Find associated User
 
-                        mLoggedinViewSwitcher.setDisplayedChild(mLoggedinViewSwitcher.indexOfChild(findViewById(R.id.logged_in_home)));
-                        setLoggedInMACUser(login, authData, dataSnapshot, loggedInUserRef);
+                    if (login != null) {
+                        login.FBKey = dataSnapshot.getKey();
+
+                        mFBHelper.set_login(login);
+                        mLoginViewSwitcher.setDisplayedChild(mLoginViewSwitcher.indexOfChild(findViewById(R.id.logged_in_view)));
+
+                        if (login.getIsNotProvisioned() == true ||
+                                login.getUser().length() != 20) { //Find and associate User
+                            mLoggedinViewSwitcher.setDisplayedChild(mLoggedinViewSwitcher.indexOfChild(findViewById(R.id.logged_in_ask_memberid)));
+                        } else {
+                            mLoggedinViewSwitcher.setDisplayedChild(mLoggedinViewSwitcher.indexOfChild(findViewById(R.id.logged_in_home)));
+                            mFBHelper.set_loggedInUser(login.linkedUser);
+                        }
                     }
                 }
 
@@ -484,19 +529,7 @@ public class LoginActivity extends AppCompatActivity implements
 
     private void setLoggedInMACUser(Login login, AuthData authData, DataSnapshot dataSnapshot, Firebase loggedInUserRef){
 
-        User linkedUser = login.linkedUser();
-
-        if(authData.getProvider().compareToIgnoreCase("twitter") == 0) {
-            linkedUser.getProviderCounts().incrementCount(ProviderCount.FBFieldName.twitter);
-        }else if(authData.getProvider().compareToIgnoreCase("facebook") == 0) {
-            linkedUser.getProviderCounts().incrementCount(ProviderCount.FBFieldName.facebook);
-        }else if(authData.getProvider().compareToIgnoreCase("google") == 0) {
-            linkedUser.getProviderCounts().incrementCount(ProviderCount.FBFieldName.google);
-        }
-        linkedUser.getProviderCounts().saveServerData(
-                loggedInUserRef.child(User.FBDirectContainerName.providerCounts.name()),
-                dataSnapshot.child(User.FBDirectContainerName.providerCounts.name()));
-
+        User linkedUser = login.linkedUser;
         mFBHelper.set_loggedInUser(linkedUser);
     }
 
