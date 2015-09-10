@@ -53,7 +53,7 @@
 
             <ViewSwitcher
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:id="@+id/logged_in_viewSwitcher"
                 android:layout_marginLeft="0dp"
                 android:layout_marginTop="0dp"

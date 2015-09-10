@@ -34,6 +34,7 @@ import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.auth.UserRecoverableAuthException;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -263,7 +264,7 @@ public class LoginActivity extends AppCompatActivity implements
             public void onClick(View view) {
                 mGoogleLoginClicked = true;
                 if (!mGoogleApiClient.isConnecting()) {
-                    if (mGoogleConnectionResult != null) {
+                    if (mGoogleConnectionResult != null && mGoogleConnectionResult.hasResolution()) {
                         resolveSignInError();
                     } else if (mGoogleApiClient.isConnected()) {
                         getGoogleOAuthTokenAndLogin();
@@ -678,7 +679,12 @@ public class LoginActivity extends AppCompatActivity implements
             if (mGoogleLoginClicked) {
                 /* The user has already clicked login so we attempt to resolve all errors until the user is signed in,
                  * or they cancel. */
-                resolveSignInError();
+                if(!result.hasResolution()) {//Show local error dialog
+                    GooglePlayServicesUtil.getErrorDialog(result.getErrorCode(), this, 0).show();
+                }
+                else {
+                    resolveSignInError();
+                }
             } else {
                 Log.e(TAG, result.toString());
             }
