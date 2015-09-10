@@ -11,7 +11,6 @@ import com.firebase.client.Firebase;
 import com.mac.themac.R;
 import com.mac.themac.TheMACApplication;
 import com.mac.themac.fragment.FragmentWithTopActionBar;
-import com.mac.themac.fragment.Profile;
 import com.mac.themac.model.User;
 import com.mac.themac.utility.FirebaseHelper;
 

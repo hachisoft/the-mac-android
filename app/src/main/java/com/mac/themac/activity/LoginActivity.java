@@ -13,6 +13,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.ToggleButton;
 import android.widget.ViewSwitcher;
 
@@ -22,9 +24,11 @@ import com.facebook.CallbackManager;
 import com.facebook.login.LoginManager;
 import com.facebook.login.widget.LoginButton;
 import com.firebase.client.AuthData;
+import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.auth.GoogleAuthUtil;
@@ -37,11 +41,11 @@ import com.google.android.gms.plus.Plus;
 import com.mac.themac.R;
 import com.mac.themac.TheMACApplication;
 import com.mac.themac.model.Login;
-import com.mac.themac.model.ProviderCount;
 import com.mac.themac.model.User;
 import com.mac.themac.utility.FirebaseHelper;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -135,12 +139,15 @@ public class LoginActivity extends AppCompatActivity implements
      ***************************************/
     @Bind(R.id.login_with_password) Button mPasswordLoginButton;
 
-    @Bind(R.id.viewSwitcher) ViewSwitcher mViewSwitcher;
+    @Bind(R.id.login_viewSwitcher) ViewSwitcher mLoginViewSwitcher;
+    @Bind(R.id.logged_in_viewSwitcher) ViewSwitcher mLoggedinViewSwitcher;
     @Bind(R.id.btnMyAccount) ToggleButton mBtnMyAccount;
     @Bind(R.id.btnBill) ToggleButton mBtnBill;
     @Bind(R.id.btnTennisCourts) ToggleButton mBtnTennis;
     @Bind(R.id.btnFind) ToggleButton mBtnFind;
     @Bind(R.id.btnMore) ToggleButton mBtnMore;
+    @Bind(R.id.btnValidateMemberId) Button mBtnValidateMemberId;
+    @Bind(R.id.txtMemberId) EditText mMemberId;
 
     @OnClick(R.id.btnMyAccount)
     public void launchMyAccount(){
@@ -165,6 +172,55 @@ public class LoginActivity extends AppCompatActivity implements
     @OnClick(R.id.btnMore)
     public void launchMore(){
         TheMACApplication.startActivity(this, More.class, false);
+    }
+
+    @OnClick(R.id.btnValidateMemberId)
+    public void validateMemberId(){
+        Firebase ref = mFBHelper.getFirebaseRef().child(FirebaseHelper.FBRootContainerNames.users.name());
+        Query queryRef = ref.orderByChild("memberNumber").equalTo(mMemberId.getText().toString()).limitToFirst(1);
+        queryRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String prevChild) {
+                Login login = mFBHelper.getLogin();
+                if (dataSnapshot.exists()) {
+
+                    User user = dataSnapshot.getValue(User.class);
+                    user.FBKey = dataSnapshot.getKey();
+                    user.setLinkedObjects();
+
+                    login.user = user.FBKey;
+                    login.isNotProvisioned = false;
+                    login.linkedUser = user;
+
+                    mFBHelper.getLoginRef(login.FBKey).setValue(login);
+                    mLoggedinViewSwitcher.setDisplayedChild(mLoggedinViewSwitcher.indexOfChild(findViewById(R.id.logged_in_home)));
+                } else { //User doesn't exist
+                    showErrorDialog("Invalid Member Number. Please retry with valid Member Number.");
+                    mMemberId.setText("");
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
     }
 
     @Override
@@ -342,7 +398,7 @@ public class LoginActivity extends AppCompatActivity implements
     @OnClick(R.id.btnLogout)
     public void onClickLogout(){
         logout();
-        mViewSwitcher.setDisplayedChild(mViewSwitcher.indexOfChild(findViewById(R.id.login_view)));
+        mLoginViewSwitcher.setDisplayedChild(mLoginViewSwitcher.indexOfChild(findViewById(R.id.login_view)));
     }
 
     /**
@@ -417,53 +473,39 @@ public class LoginActivity extends AppCompatActivity implements
                 //mLoggedInStatusTextView.setText("Logged in as " + name + " (" + authData.getProvider() + ")");
             }
 
-            final Login loginObj = new Login(authData);
+            final Firebase loginRef = mFBHelper.getLoginRef(authData.getUid());
             final Activity loginActivity = this;
-            //Retrieve firebase user, create one if doesn't exist
-            final Firebase loggedInUserRef = mFBHelper.getFirebaseRef().child("logins/" + loginObj.id());
 
-            Firebase testObj = mFBHelper.getFirebaseRef().child("reservationRules/" + "-Jy8lXjQBpJ8YXei2Ser");
-            testObj.addListenerForSingleValueEvent(new ValueEventListener() {
+            loginRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
+                    Login login = null;
 
-                }
+                    if (dataSnapshot.exists()) {
 
-                @Override
-                public void onCancelled(FirebaseError firebaseError) {
+                        login = dataSnapshot.getValue(Login.class);
+                        login.setLinkedObjects();
 
-                }
-            });
+                    } else { //First time login with this auth
 
-            loggedInUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    if(dataSnapshot.getValue() != null)
-                        loginObj.loadServerData(loggedInUserRef, dataSnapshot);
-                    else
-                        loginObj.saveServerData(loggedInUserRef, dataSnapshot);
-
-                    if(loginObj.getIsNotProvisioned() == true){ //Find and associate User
-
-                    }
-                    else{
-
+                        login = new Login(authData.getProvider());
+                        loginRef.setValue(login);
                     }
 
-                    /* This needs to be transferred to linked User
-                    if(authData.getProvider().compareToIgnoreCase("twitter") == 0) {
-                        loginObj.getProviderCounts().incrementCount(ProviderCount.FirebaseFieldName.twitter);
-                    }else if(authData.getProvider().compareToIgnoreCase("facebook") == 0) {
-                        loginObj.getProviderCounts().incrementCount(ProviderCount.FirebaseFieldName.facebook);
-                    }else if(authData.getProvider().compareToIgnoreCase("google") == 0) {
-                        loginObj.getProviderCounts().incrementCount(ProviderCount.FirebaseFieldName.google);
-                    }
-                    loginObj.getProviderCounts().saveServerData(
-                            loggedInUserRef.child(User.FirebaseContainerName.providerCounts.name()),
-                                    dataSnapshot.child(User.FirebaseContainerName.providerCounts.name()));
+                    if (login != null) {
+                        login.FBKey = dataSnapshot.getKey();
 
-                    mFBHelper.set_loggedInUser(UserObj); */
-                    mViewSwitcher.setDisplayedChild(mViewSwitcher.indexOfChild(findViewById(R.id.logged_in_view)));
+                        mFBHelper.set_login(login);
+                        mLoginViewSwitcher.setDisplayedChild(mLoginViewSwitcher.indexOfChild(findViewById(R.id.logged_in_view)));
+
+                        if (login.getIsNotProvisioned() == true ||
+                                login.getUser().length() != 20) { //Find and associate User
+                            mLoggedinViewSwitcher.setDisplayedChild(mLoggedinViewSwitcher.indexOfChild(findViewById(R.id.logged_in_ask_memberid)));
+                        } else {
+                            mLoggedinViewSwitcher.setDisplayedChild(mLoggedinViewSwitcher.indexOfChild(findViewById(R.id.logged_in_home)));
+                            mFBHelper.set_loggedInUser(login.linkedUser);
+                        }
+                    }
                 }
 
                 @Override
@@ -485,6 +527,12 @@ public class LoginActivity extends AppCompatActivity implements
         invalidateOptionsMenu();
     }
 
+    private void setLoggedInMACUser(Login login, AuthData authData, DataSnapshot dataSnapshot, Firebase loggedInUserRef){
+
+        User linkedUser = login.linkedUser;
+        mFBHelper.set_loggedInUser(linkedUser);
+    }
+
     /**
      * Show errors to users
      */
@@ -500,7 +548,7 @@ public class LoginActivity extends AppCompatActivity implements
     @Override
     public void onAuthStateChanged(AuthData authData) {
         if(authData == null) {
-            mViewSwitcher.setDisplayedChild(mViewSwitcher.indexOfChild(findViewById(R.id.login_view)));
+            mLoginViewSwitcher.setDisplayedChild(mLoginViewSwitcher.indexOfChild(findViewById(R.id.login_view)));
         }
     }
 
