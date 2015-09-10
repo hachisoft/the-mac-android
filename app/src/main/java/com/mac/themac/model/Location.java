@@ -1,17 +1,19 @@
 package com.mac.themac.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.firebase.client.DataSnapshot;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import com.firebase.client.DataSnapshot;
-import com.mac.themac.model.firebase.Field;
+import com.mac.themac.model.firebase.FBModelObject;
+
 /**
  * Created by Bryan on 9/1/2015.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Location extends FBModelObject{
+public class Location extends FBModelObject {
     String key;
     String interest;
     String name;
@@ -40,11 +42,6 @@ public class Location extends FBModelObject{
     public long getNsLocationId() {
         return nsLocationId;
     }
-
-    public long getNsLocationId() {
-        return nsLocationId;
-    }
-
     public HashMap<String, Boolean> getSessions() {
         return sessions;
     }
