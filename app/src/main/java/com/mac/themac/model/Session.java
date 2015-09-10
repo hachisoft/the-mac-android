@@ -84,9 +84,43 @@ public class Session extends FBModelObject {
     @Override
     @JsonIgnore
     public void loadLinkedObjects() {
-        final FirebaseHelper fbHelper = TheMACApplication.theApp.getFirebaseHelper();
+        if(closure != null && !closure.isEmpty()) {
+            loadLinkedObject(Closure.class, FirebaseHelper.FBRootContainerNames.closures, closure);
+        }
 
+        if(event != null && !event.isEmpty()) {
+            loadLinkedObject(Event.class, FirebaseHelper.FBRootContainerNames.events, event);
+        }
 
+        if(location != null && !location.isEmpty()) {
+            loadLinkedObject(Location.class, FirebaseHelper.FBRootContainerNames.locations, location);
+        }
 
+        if(reservation != null && !reservation.isEmpty()) {
+            loadLinkedObject(Reservation.class, FirebaseHelper.FBRootContainerNames.reservations, reservation);
+        }
+
+    }
+
+    @JsonIgnore
+    @Override
+    protected void setLinkedObject(Class<? extends FBModelObject> targetObjectType, FBModelObject modelObject) {
+
+        if(targetObjectType.equals(Closure.class) &&
+                modelObject instanceof Closure) {
+            linkedClosure = (Closure) modelObject;
+        }
+        else if(targetObjectType.equals(Event.class) &&
+                modelObject instanceof Event) {
+            linkedEvent = (Event) modelObject;
+        }
+        else if(targetObjectType.equals(Location.class) &&
+                modelObject instanceof Location) {
+            linkedLocation = (Location) modelObject;
+        }
+        else if(targetObjectType.equals(Reservation.class) &&
+                modelObject instanceof Reservation) {
+            linkedReservation = (Reservation) modelObject;
+        }
     }
 }
