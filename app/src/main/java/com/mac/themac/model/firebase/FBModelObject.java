@@ -79,14 +79,21 @@ public abstract class FBModelObject {
 
     @JsonIgnore
     protected void setLinkedObject(Class<? extends FBModelObject> targetObjectType,
-                                    FBModelObject modelObject){
+                                    FBModelObject modelObject, int secondaryIdentifier){
 
     }
 
     @JsonIgnore
     protected void loadLinkedObject(final Class<? extends FBModelObject> targetObjectType,
+                                    FirebaseHelper.FBRootContainerNames containerName,
+                                    String key) {
+        loadLinkedObject(targetObjectType,containerName,key, 0);
+    }
+
+    @JsonIgnore
+    protected void loadLinkedObject(final Class<? extends FBModelObject> targetObjectType,
                                      FirebaseHelper.FBRootContainerNames containerName,
-                                     String key){
+                                     String key, final int secondaryIdentifier){
 
         if (key != null) {
 
@@ -100,7 +107,7 @@ public abstract class FBModelObject {
                         Object modelObject = dataSnapshot.getValue(targetObjectType);
                         if(modelObject instanceof FBModelObject) {
                             ((FBModelObject) modelObject).FBKey = dataSnapshot.getKey();
-                            setLinkedObject(targetObjectType, (FBModelObject) modelObject);
+                            setLinkedObject(targetObjectType, (FBModelObject) modelObject, secondaryIdentifier);
                         }
                     }
                 }

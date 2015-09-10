@@ -68,7 +68,8 @@ public class Login extends FBModelObject {
 
     @JsonIgnore
     @Override
-    protected void setLinkedObject(Class<? extends FBModelObject> targetObjectType, FBModelObject modelObject) {
+    protected void setLinkedObject(Class<? extends FBModelObject> targetObjectType,
+                                    FBModelObject modelObject, int secondaryIdentifier) {
 
         if(targetObjectType.equals(User.class) &&
                 modelObject instanceof User){

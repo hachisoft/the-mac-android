@@ -138,7 +138,8 @@ public class User extends FBModelObject{
 
     @JsonIgnore
     @Override
-    protected void setLinkedObject(Class<? extends FBModelObject> targetObjectType, FBModelObject modelObject) {
+    protected void setLinkedObject(Class<? extends FBModelObject> targetObjectType,
+                                   FBModelObject modelObject, int secondaryIdentifier) {
 
         if(targetObjectType.equals(MemberProfile.class) &&
                 modelObject instanceof MemberProfile) {
