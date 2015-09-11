@@ -3,9 +3,8 @@ package com.mac.themac.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mac.themac.model.firebase.FBModelObject;
+import com.mac.themac.model.firebase.FBModelIdentifier;
 import com.mac.themac.utility.FirebaseHelper;
-
-import java.util.HashMap;
 
 /**
  * Created by Samir on 9/11/2015.
@@ -40,11 +39,10 @@ public class Address extends FBModelObject {
 
     @JsonIgnore
     @Override
-    protected void setLinkedObject(Class<? extends FBModelObject> targetObjectType,
-                                   FBModelObject modelObject, int secondaryIdentifier) {
+    protected void setLinkedObject(FBModelIdentifier fbModelIdentifier,
+                                   FBModelObject modelObject) {
 
-        if(targetObjectType.equals(MemberProfile.class) &&
-                modelObject instanceof MemberProfile) {
+        if(fbModelIdentifier.IsIntendedObject(modelObject,MemberProfile.class)) {
             linkedMemberProfile = (MemberProfile) modelObject;
         }
     }

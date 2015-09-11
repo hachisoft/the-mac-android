@@ -2,6 +2,7 @@ package com.mac.themac.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.mac.themac.model.firebase.FBModelIdentifier;
 import com.mac.themac.model.firebase.FBModelObject;
 import com.mac.themac.utility.FirebaseHelper;
 
@@ -39,11 +40,10 @@ public class Invitation extends FBModelObject{
 
     @JsonIgnore
     @Override
-    protected void setLinkedObject(Class<? extends FBModelObject> targetObjectType,
-                                   FBModelObject modelObject, int secondaryIdentifier) {
+    protected void setLinkedObject(FBModelIdentifier fbModelIdentifier,
+                                   FBModelObject modelObject) {
 
-        if(targetObjectType.equals(MemberProfilePublic.class) &&
-                modelObject instanceof MemberProfilePublic) {
+        if(fbModelIdentifier.IsIntendedObject(modelObject, MemberProfilePublic.class)) {
             linkedRecipient = (MemberProfilePublic) modelObject;
         }
     }

@@ -10,9 +10,6 @@ import com.mac.themac.model.firebase.FBModelObject;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class EmployeeProfile extends FBModelObject{
 
-    @JsonIgnore
-    public String FBKey;
-
     public EmployeeProfile() {
     }
 }

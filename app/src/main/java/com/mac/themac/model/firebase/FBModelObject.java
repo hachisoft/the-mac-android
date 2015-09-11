@@ -9,7 +9,6 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.mac.themac.TheMACApplication;
-import com.mac.themac.model.Interest;
 import com.mac.themac.utility.FirebaseHelper;
 
 import java.util.HashMap;
@@ -78,8 +77,7 @@ public abstract class FBModelObject {
     }
 
     @JsonIgnore
-    protected void setLinkedObject(Class<? extends FBModelObject> targetObjectType,
-                                    FBModelObject modelObject, int secondaryIdentifier){
+    protected void setLinkedObject(FBModelIdentifier fbModelIdentifier, FBModelObject modelObject){
 
     }
 
@@ -87,13 +85,13 @@ public abstract class FBModelObject {
     protected void loadLinkedObject(final Class<? extends FBModelObject> targetObjectType,
                                     FirebaseHelper.FBRootContainerNames containerName,
                                     String key) {
-        loadLinkedObject(targetObjectType,containerName,key, 0);
+        loadLinkedObject(new FBModelIdentifier(targetObjectType), containerName,key);
     }
 
     @JsonIgnore
-    protected void loadLinkedObject(final Class<? extends FBModelObject> targetObjectType,
+    protected void loadLinkedObject(final FBModelIdentifier fbModelIdentifier,
                                      FirebaseHelper.FBRootContainerNames containerName,
-                                     String key, final int secondaryIdentifier){
+                                     String key){
 
         if (key != null) {
 
@@ -104,10 +102,10 @@ public abstract class FBModelObject {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {
-                        Object modelObject = dataSnapshot.getValue(targetObjectType);
+                        Object modelObject = dataSnapshot.getValue(fbModelIdentifier.getIntendedClass());
                         if(modelObject instanceof FBModelObject) {
                             ((FBModelObject) modelObject).FBKey = dataSnapshot.getKey();
-                            setLinkedObject(targetObjectType, (FBModelObject) modelObject, secondaryIdentifier);
+                            setLinkedObject(fbModelIdentifier, (FBModelObject) modelObject);
                         }
                     }
                 }

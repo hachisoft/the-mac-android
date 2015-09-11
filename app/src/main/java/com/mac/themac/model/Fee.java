@@ -2,6 +2,7 @@ package com.mac.themac.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.mac.themac.model.firebase.FBModelIdentifier;
 import com.mac.themac.model.firebase.FBModelObject;
 import com.mac.themac.utility.FirebaseHelper;
 
@@ -33,11 +34,10 @@ public class Fee extends FBModelObject {
 
     @JsonIgnore
     @Override
-    protected void setLinkedObject(Class<? extends FBModelObject> targetObjectType,
-                                   FBModelObject modelObject, int secondaryIdentifier) {
+    protected void setLinkedObject(FBModelIdentifier fbModelIdentifier,
+                                   FBModelObject modelObject) {
 
-        if(targetObjectType.equals(Event.class) &&
-                modelObject instanceof Event) {
+        if(fbModelIdentifier.IsIntendedObject(modelObject, Event.class)) {
             linkedEvent = (Event) modelObject;
         }
     }

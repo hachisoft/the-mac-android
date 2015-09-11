@@ -2,6 +2,7 @@ package com.mac.themac.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.mac.themac.model.firebase.FBModelIdentifier;
 import com.mac.themac.model.firebase.FBModelObject;
 import com.mac.themac.utility.FirebaseHelper;
 
@@ -41,11 +42,11 @@ public class Registration extends FBModelObject{
     public void loadLinkedObjects() {
 
         if( registeredUser != null && !registeredUser.isEmpty()) {
-            loadLinkedObject(User.class, FirebaseHelper.FBRootContainerNames.users, registeredUser, 0);
+            loadLinkedObject(new FBModelIdentifier(User.class), FirebaseHelper.FBRootContainerNames.users, registeredUser);
         }
 
         if(registeringUser != null && !registeringUser.isEmpty()) {
-            loadLinkedObject(User.class, FirebaseHelper.FBRootContainerNames.users, registeringUser, 1);
+            loadLinkedObject(new FBModelIdentifier(User.class, 1), FirebaseHelper.FBRootContainerNames.users, registeringUser);
         }
 
         if(fee != null && !fee.isEmpty()) {
@@ -60,26 +61,19 @@ public class Registration extends FBModelObject{
 
     @JsonIgnore
     @Override
-    protected void setLinkedObject(Class<? extends FBModelObject> targetObjectType,
-                                   FBModelObject modelObject, int secondaryIdentifier) {
+    protected void setLinkedObject(FBModelIdentifier fbModelIdentifier,
+                                   FBModelObject modelObject) {
 
-        if(targetObjectType.equals(User.class) &&
-                modelObject instanceof User) {
-
-            if(secondaryIdentifier ==0 ){
-                linkedRegisteredUser = (User) modelObject;
-            }
-            else if(secondaryIdentifier == 1){
-                linkedRegisteringUser = (User) modelObject;
-            }
-
+        if(fbModelIdentifier.IsIntendedObject(modelObject, User.class)) {
+            linkedRegisteredUser = (User) modelObject;
         }
-        else if(targetObjectType.equals(Fee.class) &&
-                modelObject instanceof Fee) {
+        else if(fbModelIdentifier.IsIntendedObject(modelObject, User.class, 1)){
+            linkedRegisteringUser = (User) modelObject;
+        }
+        else if(fbModelIdentifier.IsIntendedObject(modelObject, Fee.class)) {
             linkedFee = (Fee) modelObject;
         }
-        else if(targetObjectType.equals(Event.class) &&
-                modelObject instanceof Event) {
+        else if(fbModelIdentifier.IsIntendedObject(modelObject, Event.class)) {
             linkedEvent = (Event) modelObject;
         }
     }

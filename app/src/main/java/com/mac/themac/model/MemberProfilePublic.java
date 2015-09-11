@@ -3,6 +3,7 @@ package com.mac.themac.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mac.themac.model.firebase.FBModelObject;
+import com.mac.themac.model.firebase.FBModelIdentifier;
 import com.mac.themac.utility.FirebaseHelper;
 
 import java.util.HashMap;
@@ -52,11 +53,10 @@ public class MemberProfilePublic extends FBModelObject{
 
     @Override
     @JsonIgnore
-    protected void setLinkedObject(Class<? extends FBModelObject> targetObjectType,
-                                   FBModelObject modelObject, int secondaryIdentifier) {
+    protected void setLinkedObject(FBModelIdentifier fbModelIdentifier,
+                                   FBModelObject modelObject) {
 
-        if(targetObjectType.equals(User.class) &&
-                modelObject instanceof User) {
+        if(fbModelIdentifier.IsIntendedObject(modelObject, User.class)) {
             linkedUser = (User) modelObject;
         }
     }

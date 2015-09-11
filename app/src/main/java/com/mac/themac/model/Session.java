@@ -2,12 +2,11 @@ package com.mac.themac.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.mac.themac.TheMACApplication;
 import com.mac.themac.model.firebase.FBModelObject;
+import com.mac.themac.model.firebase.FBModelIdentifier;
 import com.mac.themac.utility.FirebaseHelper;
 
 import java.util.Date;
-import java.util.HashMap;
 
 /**
  * Created by Bryan on 9/8/2015.
@@ -104,23 +103,19 @@ public class Session extends FBModelObject {
 
     @JsonIgnore
     @Override
-    protected void setLinkedObject(Class<? extends FBModelObject> targetObjectType,
-                                   FBModelObject modelObject, int secondaryIdentifier) {
+    protected void setLinkedObject(FBModelIdentifier fbModelIdentifier,
+                                   FBModelObject modelObject) {
 
-        if(targetObjectType.equals(Closure.class) &&
-                modelObject instanceof Closure) {
+        if(fbModelIdentifier.IsIntendedObject(modelObject, Closure.class)) {
             linkedClosure = (Closure) modelObject;
         }
-        else if(targetObjectType.equals(Event.class) &&
-                modelObject instanceof Event) {
+        else if(fbModelIdentifier.IsIntendedObject(modelObject, Event.class)) {
             linkedEvent = (Event) modelObject;
         }
-        else if(targetObjectType.equals(Location.class) &&
-                modelObject instanceof Location) {
+        else if(fbModelIdentifier.IsIntendedObject(modelObject, Location.class)) {
             linkedLocation = (Location) modelObject;
         }
-        else if(targetObjectType.equals(Reservation.class) &&
-                modelObject instanceof Reservation) {
+        else if(fbModelIdentifier.IsIntendedObject(modelObject, Reservation.class)) {
             linkedReservation = (Reservation) modelObject;
         }
     }

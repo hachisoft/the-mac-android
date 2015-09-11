@@ -2,20 +2,14 @@ package com.mac.themac.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
-import com.mac.themac.TheMACApplication;
 import com.mac.themac.model.firebase.FBModelObject;
+import com.mac.themac.model.firebase.FBModelIdentifier;
 import com.mac.themac.utility.FirebaseHelper;
 
-import java.lang.reflect.Member;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import android.util.Pair;
 
 /**
  * Created by Samir on 9/9/2015.
@@ -138,19 +132,16 @@ public class User extends FBModelObject{
 
     @JsonIgnore
     @Override
-    protected void setLinkedObject(Class<? extends FBModelObject> targetObjectType,
-                                   FBModelObject modelObject, int secondaryIdentifier) {
+    protected void setLinkedObject(FBModelIdentifier fbModelIdentifier,
+                                   FBModelObject modelObject) {
 
-        if(targetObjectType.equals(MemberProfile.class) &&
-                modelObject instanceof MemberProfile) {
+        if(fbModelIdentifier.IsIntendedObject(modelObject, MemberProfile.class)) {
             linkedMemberProfile = (MemberProfile) modelObject;
         }
-        else if(targetObjectType.equals(EmployeeProfile.class) &&
-                modelObject instanceof EmployeeProfile) {
+        else if(fbModelIdentifier.IsIntendedObject(modelObject, EmployeeProfile.class)) {
             linkedEmployeeProfile = (EmployeeProfile) modelObject;
         }
-        else if(targetObjectType.equals(MemberProfilePublic.class) &&
-                modelObject instanceof MemberProfilePublic) {
+        else if(fbModelIdentifier.IsIntendedObject(modelObject, MemberProfilePublic.class)) {
             linkedMemberProfilePublic = (MemberProfilePublic) modelObject;
         }
     }

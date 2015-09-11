@@ -3,10 +3,8 @@ package com.mac.themac.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mac.themac.model.firebase.FBModelObject;
+import com.mac.themac.model.firebase.FBModelIdentifier;
 import com.mac.themac.utility.FirebaseHelper;
-
-import java.util.Date;
-import java.util.HashMap;
 
 /**
  * Created by Samir on 9/9/2015.
@@ -52,11 +50,10 @@ public class ReservationRule extends FBModelObject{
 
     @JsonIgnore
     @Override
-    protected void setLinkedObject(Class<? extends FBModelObject> targetObjectType,
-                                   FBModelObject modelObject, int secondaryIdentifier) {
+    protected void setLinkedObject(FBModelIdentifier fbModelIdentifier,
+                                   FBModelObject modelObject) {
 
-        if(targetObjectType.equals(Interest.class) &&
-                modelObject instanceof Interest) {
+        if(fbModelIdentifier.IsIntendedObject(modelObject, Interest.class)) {
             linkedInterest = (Interest) modelObject;
         }
     }
