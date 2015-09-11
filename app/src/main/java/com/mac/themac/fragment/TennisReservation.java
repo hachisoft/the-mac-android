@@ -210,17 +210,17 @@ public class TennisReservation extends FragmentWithTopActionBar {
         long end;
         long duration;
         if(day == Calendar.SATURDAY){
-            begin = reservationRule.getSaturdayPlayBegins();
-            end = reservationRule.getSaturdayPlayEnds();
+            begin = reservationRule.saturdayPlayBegins;
+            end = reservationRule.saturdayPlayEnds;
         } else if(day == Calendar.SUNDAY){
-            begin = reservationRule.getSundayPlayBegins();
-            end = reservationRule.getSundayPlayEnds();
+            begin = reservationRule.sundayPlayBegins;
+            end = reservationRule.sundayPlayEnds;
         } else {
-            begin = reservationRule.getWeekdayPlayBegins();
-            end = reservationRule.getWeekdayPlayEnds();
+            begin = reservationRule.weekdayPlayBegins;
+            end = reservationRule.weekdayPlayEnds;
 
         }
-        duration = reservationRule.getSessionLength();
+        duration = reservationRule.sessionLength;
 
         for(long i = begin; i < end; i+= duration){
             TimeSlot slot = new TimeSlot();
@@ -244,9 +244,9 @@ public class TennisReservation extends FragmentWithTopActionBar {
                 if(dataSnapshot.exists()) {
                     reservationRule = dataSnapshot.getValue(ReservationRule.class);
                     constructScheduleForDay();
-                    daysToShow = reservationRule.getGeneralWindowLength();
-                    if (calendar.get(Calendar.MINUTE) + (calendar.get(Calendar.HOUR_OF_DAY) * 60) >= reservationRule.getTimeRegistrationOpens())
-                        daysToShow += reservationRule.getAdvancedWindowLength();
+                    daysToShow = reservationRule.generalWindowLength;
+                    if (calendar.get(Calendar.MINUTE) + (calendar.get(Calendar.HOUR_OF_DAY) * 60) >= reservationRule.timeRegistrationOpens)
+                        daysToShow += reservationRule.advancedWindowLength;
 
                     updateCountLabel();
                 }
@@ -302,7 +302,7 @@ public class TennisReservation extends FragmentWithTopActionBar {
             long mins = cal.get(Calendar.MINUTE) + (calendar.get(Calendar.HOUR_OF_DAY) * 60);
             for(int i = 0; i < mAdapter.getCount(); i++){
                 TimeSlot slot = mAdapter.getItem(i);
-                if(mins >= slot.startTime && mins < slot.startTime + reservationRule.getSessionLength()){
+                if(mins >= slot.startTime && mins < slot.startTime + reservationRule.sessionLength){
                     slot.sessions.put(pos, session);
                 }
             }

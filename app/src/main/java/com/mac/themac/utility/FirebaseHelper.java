@@ -17,7 +17,7 @@ public class FirebaseHelper {
     public enum FBRootContainerNames{
         logins, users, sessions, interests, events, reservations, reservationRules, registrations,
         fees, closures, locations, memberProfiles, memberProfilePublics, employeeProfiles,
-        addresses, vehicles, emergencyContacts, invitations, groups
+        addresses, vehicles, emergencyContacts, invitations, groups, rules
     }
 
     public FirebaseHelper(String firebaseUrl) {

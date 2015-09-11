@@ -1,48 +1,86 @@
 package com.mac.themac.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.firebase.client.DataSnapshot;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.firebase.client.DataSnapshot;
 import com.mac.themac.model.firebase.FBModelObject;
+import com.mac.themac.utility.FirebaseHelper;
 
 /**
  * Created by Bryan on 9/1/2015.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Location extends FBModelObject {
-    String key;
-    String interest;
-    String name;
-    long nsCourseLocationId;
-    long nsLocationId;
-    HashMap<String, Boolean> sessions;
+
+    public String name;
+    public String description;
+    public String interest;
+    public String photoId;
+    public HashMap<String, Boolean> sessions;
+    public HashMap<String, Boolean> rules;
+    public HashMap<String, Boolean> reservations;
+
+    @JsonIgnore
+    public Interest linkedInterest;
+    @JsonIgnore
+    public List<FBModelObject> linkedSessions;
+    @JsonIgnore
+    public List<FBModelObject> linkedRules;
+    @JsonIgnore
+    public List<FBModelObject> linkedReservations;
 
     public Location(){}
 
-    public String getKey() {
-        return key;
+    @Override
+    @JsonIgnore
+    public void loadLinkedObjects() {
+
+        if(interest != null && !interest.isEmpty()) {
+            loadLinkedObject(Interest.class, FirebaseHelper.FBRootContainerNames.interests, interest);
+        }
+
+        if (sessions == null) {
+            sessions = new HashMap<String, Boolean>();
+        }
+        if (sessions != null) {
+
+            loadLinkedObjects(Session.class, FirebaseHelper.FBRootContainerNames.sessions,
+                    sessions, linkedSessions);
+        }
+
+        if(reservations == null){
+            reservations = new HashMap<String, Boolean>();
+        }
+        if (reservations != null) {
+            loadLinkedObjects(Reservation.class, FirebaseHelper.FBRootContainerNames.reservations,
+                    reservations, linkedReservations);
+        }
+
+        if(rules == null){
+            rules = new HashMap<String, Boolean>();
+        }
+        if (rules != null) {
+            loadLinkedObjects(Rule.class, FirebaseHelper.FBRootContainerNames.rules,
+                    rules, linkedRules);
+        }
+
     }
 
-    public String getInterest() {
-        return interest;
+    @JsonIgnore
+    @Override
+    protected void setLinkedObject(Class<? extends FBModelObject> targetObjectType,
+                                   FBModelObject modelObject, int secondaryIdentifier) {
+
+        if(targetObjectType.equals(Interest.class) &&
+                modelObject instanceof Interest) {
+            linkedInterest = (Interest) modelObject;
+        }
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public long getNsCourseLocationId() {
-        return nsCourseLocationId;
-    }
-
-    public long getNsLocationId() {
-        return nsLocationId;
-    }
-    public HashMap<String, Boolean> getSessions() {
-        return sessions;
-    }
 }
