@@ -18,6 +18,7 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 import com.mac.themac.R;
+import com.mac.themac.TheMACApplication;
 import com.mac.themac.activity.TennisCourts;
 import com.mac.themac.model.ReservationRule;
 import com.mac.themac.model.Interest;
@@ -137,7 +138,8 @@ public class TennisReservation extends FragmentWithTopActionBar {
     }
 
     private void getInterest(){
-        Firebase tennis = new Firebase(getString(R.string.firebase_url) + "/interests");
+        Firebase tennis = TheMACApplication.theApp.getFirebaseHelper().
+                getRootKeyedObjectRef(FirebaseHelper.FBRootContainerNames.interests, true);
         Query queryRef = tennis.orderByChild("name").equalTo("Tennis");
         queryRef.addChildEventListener(new ChildEventListener() {
 
@@ -234,17 +236,20 @@ public class TennisReservation extends FragmentWithTopActionBar {
     }
 
     private void getReservationRules(String interest){
-        Firebase rulesRef = new Firebase(getString(R.string.firebase_url) + "/reservationRule");
+        Firebase rulesRef = _FBHelper.getRootKeyedObjectRef(FirebaseHelper.FBRootContainerNames.reservationRules, true);
         Query queryRef = rulesRef.orderByChild("interest").equalTo(interest);
         queryRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                reservationRule = dataSnapshot.getValue(ReservationRule.class);
-                constructScheduleForDay();
-                daysToShow = reservationRule.getGeneralWindowLength();
-                if (calendar.getTime().compareTo( reservationRule.getTimeRegistrationOpens()) >= 0)
-                    daysToShow += reservationRule.getAdvancedWindowLength();
-                updateCountLabel();
+                if(dataSnapshot.exists()) {
+                    reservationRule = dataSnapshot.getValue(ReservationRule.class);
+                    constructScheduleForDay();
+                    daysToShow = reservationRule.getGeneralWindowLength();
+                    if (calendar.get(Calendar.MINUTE) + (calendar.get(Calendar.HOUR_OF_DAY) * 60) >= reservationRule.getTimeRegistrationOpens())
+                        daysToShow += reservationRule.getAdvancedWindowLength();
+
+                    updateCountLabel();
+                }
             }
 
             @Override
@@ -270,7 +275,7 @@ public class TennisReservation extends FragmentWithTopActionBar {
     }
 
     private void getSession(String key, final int pos){
-        Firebase sessionRef = new Firebase(getString(R.string.firebase_url) + "/sessions/" + key);
+        Firebase sessionRef = _FBHelper.getRootKeyedObjectRef(FirebaseHelper.FBRootContainerNames.sessions, key);
         sessionRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -306,23 +311,29 @@ public class TennisReservation extends FragmentWithTopActionBar {
 
 
     private void getLocations(String interest){
-        Firebase locationsRef = new Firebase(getString(R.string.firebase_url) + "/locations");
+        Firebase locationsRef = _FBHelper.getRootKeyedObjectRef(FirebaseHelper.FBRootContainerNames.locations, true);
         Query queryRef = locationsRef.orderByChild("interest").equalTo(interest);
-        locationsRef.push().setValue(new Location());
+        //locationsRef.push().setValue(new Location());
         queryRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Location location = dataSnapshot.getValue(Location.class);
-                locations.add(location);
-                sessions.add(new ArrayList<Session>());
-                DataSnapshot session = dataSnapshot.child("sessions");
-                for(DataSnapshot ds: session.getChildren()){
-                    if(((boolean)ds.getValue())==true){
-                        getSession(ds.getKey(), sessions.size()-1);
+                if(dataSnapshot.exists()) {
+                    Location location = dataSnapshot.getValue(Location.class);
+                    locations.add(location);
+                    sessions.add(new ArrayList<Session>());
+                    DataSnapshot session = dataSnapshot.child("sessions");
+                    if(session != null && session.exists()) {
+                        for (DataSnapshot ds : session.getChildren()) {
+                            if (((boolean) ds.getValue()) == true) {
+                                getSession(ds.getKey(), sessions.size() - 1);
+                            }
+                        }
+                    }
+                    if(widgetList != null) {
+                        mAdapter.notifyDataSetChanged();
+                        widgetList.invalidate();
                     }
                 }
-                mAdapter.notifyDataSetChanged();
-                widgetList.invalidate();
             }
 
             @Override

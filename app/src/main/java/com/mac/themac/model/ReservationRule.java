@@ -29,8 +29,8 @@ public class ReservationRule extends FBModelObject{
     public long allowedPerDay; //-2:varies -1:unlimited 0:none, 1:1 ...
     public long guestAllowed;
     public long reservationChangeDeadline;
-    public Date timeRegistrationOpens;
-    public Date timeRegistrationCloses;
+    public long timeRegistrationOpens;
+    public long timeRegistrationCloses;
     public String interest;
 
     @JsonIgnore
@@ -95,11 +95,11 @@ public class ReservationRule extends FBModelObject{
         return reservationChangeDeadline;
     }
 
-    public Date getTimeRegistrationOpens() {
+    public long getTimeRegistrationOpens() {
         return timeRegistrationOpens;
     }
 
-    public Date getTimeRegistrationCloses() {
+    public long getTimeRegistrationCloses() {
         return timeRegistrationCloses;
     }
 
