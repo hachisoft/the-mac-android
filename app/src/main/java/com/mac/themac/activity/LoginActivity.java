@@ -40,11 +40,14 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 import com.mac.themac.R;
 import com.mac.themac.TheMACApplication;
+import com.mac.themac.model.Location;
 import com.mac.themac.model.Login;
 import com.mac.themac.model.User;
+import com.mac.themac.model.firebase.FBChildListener;
 import com.mac.themac.model.firebase.FBModelIdentifier;
 import com.mac.themac.model.firebase.FBModelListener;
 import com.mac.themac.model.firebase.FBModelObject;
+import com.mac.themac.model.firebase.FBQueryIdentifier;
 import com.mac.themac.utility.FirebaseHelper;
 
 import java.io.IOException;
@@ -73,7 +76,7 @@ public class LoginActivity extends AppCompatActivity implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         Firebase.AuthStateListener,
-        FBModelListener{
+        FBModelListener, FBChildListener {
 
     private static final String TAG = LoginActivity.class.getSimpleName();
 
@@ -188,8 +191,12 @@ public class LoginActivity extends AppCompatActivity implements
 
     @OnClick(R.id.btnValidateMemberId)
     public void validateMemberId(){
-        Firebase ref = mFBHelper.getFirebaseRef().child(FirebaseHelper.FBRootContainerNames.users.name());
-        Query queryRef = ref.orderByChild("memberNumber").equalTo(mMemberId.getText().toString()).limitToFirst(1);
+        mFBHelper.SubscribeToChildUpdates(this, new FBModelIdentifier(Location.class),
+                new FBQueryIdentifier(FBQueryIdentifier.OrderBy.Child,
+                        "memberNumber",
+                        FBQueryIdentifier.Qualifier.equalTo, mMemberId.getText().toString()));
+        /*Firebase ref = mFBHelper.getFirebaseRef().child(FirebaseHelper.FBRootContainerNames.users.name());
+        Query queryRef = ref.orderByChild("memberNumber").equalTo(mMemberId.getText().toString());
         queryRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String prevChild) {
@@ -231,7 +238,7 @@ public class LoginActivity extends AppCompatActivity implements
             public void onCancelled(FirebaseError firebaseError) {
 
             }
-        });
+        });*/
 
     }
 
@@ -489,8 +496,8 @@ public class LoginActivity extends AppCompatActivity implements
             final Firebase loginRef = mFBHelper.getLoginRef(authData.getUid());
             final Activity loginActivity = this;
 
-            //mFBHelper.SubscribeToModelUpdates(this, FBModelIdentifier.getIdentfier(Login.class, 0, authData), authData.getUid(), true);
-            loginRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            mFBHelper.SubscribeToModelUpdates(this, FBModelIdentifier.getIdentfier(Login.class, 0, authData), authData.getUid(), true);
+            /*loginRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     Login login = null;
@@ -526,7 +533,7 @@ public class LoginActivity extends AppCompatActivity implements
                 public void onCancelled(FirebaseError firebaseError) {
                     showErrorDialog(firebaseError.getMessage());
                 }
-            });
+            });*/
         } else {
 
             /* No authenticated user show all the login buttons*/
@@ -605,10 +612,45 @@ public class LoginActivity extends AppCompatActivity implements
             mFBHelper.setFBModelObject(login, key, Login.class);
             mFBHelper.addModelListener(key, login, this);
         }
+        if(identifier.getIntendedClass().equals(User.class)) {
+            showErrorDialog("Invalid Member Number. Please retry with valid Member Number.");
+            mMemberId.setText("");
+        }
     }
 
     @Override
     public void onException(Exception x) {
+
+    }
+
+    @Override
+    public void onChildAdded(FBModelIdentifier modelIdentifier, FBQueryIdentifier queryIdentifier, FBModelObject model, String prevChild) {
+
+        if(modelIdentifier.IsIntendedObject(model, User.class)){
+            Login login = mFBHelper.getLogin();
+            User user = (User)model;
+
+            login.user = user.FBKey;
+            login.isNotProvisioned = false;
+            login.linkedUser = user;
+
+            mFBHelper.getLoginRef(login.FBKey).setValue(login);
+            mLoggedinViewSwitcher.setDisplayedChild(mLoggedinViewSwitcher.indexOfChild(findViewById(R.id.logged_in_home)));
+        }
+    }
+
+    @Override
+    public void onChildChanged(FBModelIdentifier modelIdentifier, FBQueryIdentifier queryIdentifier, FBModelObject model, String key) {
+
+    }
+
+    @Override
+    public void onChildRemoved(FBModelIdentifier modelIdentifier, FBQueryIdentifier queryIdentifier, FBModelObject model) {
+
+    }
+
+    @Override
+    public void onChildMoved(FBModelIdentifier modelIdentifier, FBQueryIdentifier queryIdentifier, FBModelObject model, String key) {
 
     }
 

@@ -5,7 +5,7 @@ import com.mac.themac.model.firebase.FBModelObject;
 /**
  * Created by Samir on 9/11/2015.
  */
-public class FBModelIdentifier {
+public class FBModelIdentifier{
 
     private Class<? extends FBModelObject> intendedClass;
     private int secondaryIdentifier;
@@ -37,6 +37,12 @@ public class FBModelIdentifier {
     public FBModelIdentifier(Class<? extends FBModelObject> intendedClass, int secondaryIdentifier, Object payload) {
         this.intendedClass = intendedClass;
         this.secondaryIdentifier = secondaryIdentifier;
+        this.payload = payload;
+    }
+
+    public FBModelIdentifier(Class<? extends FBModelObject> intendedClass, Object payload) {
+        this.intendedClass = intendedClass;
+        this.secondaryIdentifier = 0;
         this.payload = payload;
     }
 

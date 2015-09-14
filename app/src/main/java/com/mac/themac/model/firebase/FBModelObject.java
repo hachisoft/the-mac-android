@@ -19,7 +19,7 @@ import java.util.Map;
  * Created by Samir on 9/9/2015.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public abstract class FBModelObject {
+public abstract class FBModelObject implements FBModelListener{
 
     protected Map<String , Object> nonMappedProperties = new HashMap<String , Object>();
 
@@ -45,7 +45,7 @@ public abstract class FBModelObject {
     protected void loadLinkedObjects(final Class<? extends FBModelObject> targetObjectType,
                                      FirebaseHelper.FBRootContainerNames containerName,
                                      HashMap<String, Boolean> keyHashMap,
-                                     final List<FBModelObject> linkedModels){
+                                     List<FBModelObject> linkedModels){
 
         if (keyHashMap != null) {
 
@@ -53,8 +53,8 @@ public abstract class FBModelObject {
             linkedModels.clear();
             for (String key : keyHashMap.keySet()) {
 
-                Firebase fbRef = fbHelper.getRootKeyedObjectRef(containerName, key);
-
+                fbHelper.SubscribeToModelUpdates(this, new FBModelIdentifier(targetObjectType, linkedModels), key);
+                /*Firebase fbRef = fbHelper.getRootKeyedObjectRef(containerName, key);
                 fbRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -71,7 +71,7 @@ public abstract class FBModelObject {
                     public void onCancelled(FirebaseError firebaseError) {
 
                     }
-                });
+                });*/
             }
         }
     }
@@ -96,7 +96,8 @@ public abstract class FBModelObject {
         if (key != null) {
 
             final FirebaseHelper fbHelper = TheMACApplication.theApp.getFirebaseHelper();
-            Firebase fbRef = fbHelper.getRootKeyedObjectRef(containerName, key);
+            fbHelper.SubscribeToModelUpdates(this, fbModelIdentifier, key);
+            /*Firebase fbRef = fbHelper.getRootKeyedObjectRef(containerName, key);
 
             fbRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -114,7 +115,36 @@ public abstract class FBModelObject {
                 public void onCancelled(FirebaseError firebaseError) {
 
                 }
-            });
+            });*/
         }
+    }
+
+    @Override
+    public void onDataChange(FBModelIdentifier identifier, FBModelObject modelObject) {
+
+        if(identifier.getPayload() == null) {//Update for parent(this) model object
+            setLinkedObject(identifier, (FBModelObject) modelObject);
+        }
+        else{ //Update for child(linked) model object
+            if(identifier.getPayload() instanceof List){
+                List<FBModelObject> linkedModels = (List<FBModelObject>)identifier.getPayload();
+                linkedModels.add(modelObject);
+            }
+        }
+    }
+
+    @Override
+    public void onCancel(FBModelIdentifier identifier, FirebaseError error) {
+
+    }
+
+    @Override
+    public void onNullData(FBModelIdentifier identifier, String key) {
+
+    }
+
+    @Override
+    public void onException(Exception x) {
+
     }
 }

@@ -3,6 +3,7 @@ package com.mac.themac.fragment;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Pair;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,12 +25,18 @@ import com.mac.themac.model.ReservationRule;
 import com.mac.themac.model.Interest;
 import com.mac.themac.model.Location;
 import com.mac.themac.model.Session;
+import com.mac.themac.model.firebase.FBChildListener;
+import com.mac.themac.model.firebase.FBModelIdentifier;
+import com.mac.themac.model.firebase.FBModelListener;
+import com.mac.themac.model.firebase.FBModelObject;
+import com.mac.themac.model.firebase.FBQueryIdentifier;
 import com.mac.themac.utility.FirebaseHelper;
 import com.mac.themac.widget.CourtReservationTimeBlockWidget;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -38,7 +45,7 @@ import butterknife.OnClick;
 /**
  * Created by Bryan on 9/1/2015.
  */
-public class TennisReservation extends FragmentWithTopActionBar {
+public class TennisReservation extends FragmentWithTopActionBar implements FBModelListener, FBChildListener {
     private Calendar calendar;
     private long daysToShow = 1;
     private int dayCount = 1;
@@ -138,7 +145,12 @@ public class TennisReservation extends FragmentWithTopActionBar {
     }
 
     private void getInterest(){
-        Firebase tennis = TheMACApplication.theApp.getFirebaseHelper().
+
+        FirebaseHelper fbHelper = TheMACApplication.theApp.getFirebaseHelper();
+        fbHelper.SubscribeToChildUpdates(this, new FBModelIdentifier(Interest.class),
+                                                new FBQueryIdentifier(FBQueryIdentifier.OrderBy.Child, "name",
+                                                        FBQueryIdentifier.Qualifier.equalTo, "Tennis"));
+        /*Firebase tennis = TheMACApplication.theApp.getFirebaseHelper().
                 getRootKeyedObjectRef(FirebaseHelper.FBRootContainerNames.interests, true);
         Query queryRef = tennis.orderByChild("name").equalTo("Tennis");
         queryRef.addChildEventListener(new ChildEventListener() {
@@ -174,7 +186,7 @@ public class TennisReservation extends FragmentWithTopActionBar {
             public void onCancelled(FirebaseError firebaseError) {
 
             }
-        });
+        });*/
 //        queryRef.addChildEventListener(new ChildEventListener() {
 //            @Override
 //            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -236,7 +248,13 @@ public class TennisReservation extends FragmentWithTopActionBar {
     }
 
     private void getReservationRules(String interest){
-        Firebase rulesRef = _FBHelper.getRootKeyedObjectRef(FirebaseHelper.FBRootContainerNames.reservationRules, true);
+
+        FirebaseHelper fbHelper = TheMACApplication.theApp.getFirebaseHelper();
+        fbHelper.SubscribeToChildUpdates(this, ReservationRule.class,
+                new FBQueryIdentifier(FBQueryIdentifier.OrderBy.Child, "interest",
+                        FBQueryIdentifier.Qualifier.equalTo, interest));
+
+        /*Firebase rulesRef = _FBHelper.getRootKeyedObjectRef(FirebaseHelper.FBRootContainerNames.reservationRules, true);
         Query queryRef = rulesRef.orderByChild("interest").equalTo(interest);
         queryRef.addChildEventListener(new ChildEventListener() {
             @Override
@@ -271,11 +289,13 @@ public class TennisReservation extends FragmentWithTopActionBar {
             public void onCancelled(FirebaseError firebaseError) {
 
             }
-        });
+        });*/
     }
 
     private void getSession(String key, final int pos){
-        Firebase sessionRef = _FBHelper.getRootKeyedObjectRef(FirebaseHelper.FBRootContainerNames.sessions, key);
+
+        _FBHelper.SubscribeToModelUpdates(this, new FBModelIdentifier(Session.class, pos), key);
+        /*Firebase sessionRef = _FBHelper.getRootKeyedObjectRef(FirebaseHelper.FBRootContainerNames.sessions, key);
         sessionRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -291,7 +311,7 @@ public class TennisReservation extends FragmentWithTopActionBar {
             public void onCancelled(FirebaseError firebaseError) {
 
             }
-        });
+        });*/
     }
 
     private void assignSessionToTimeSlot(Session session, int pos){
@@ -311,7 +331,13 @@ public class TennisReservation extends FragmentWithTopActionBar {
 
 
     private void getLocations(String interest){
-        Firebase locationsRef = _FBHelper.getRootKeyedObjectRef(FirebaseHelper.FBRootContainerNames.locations, true);
+
+        FirebaseHelper fbHelper = TheMACApplication.theApp.getFirebaseHelper();
+        fbHelper.SubscribeToChildUpdates(this, new FBModelIdentifier(Location.class),
+                new FBQueryIdentifier(FBQueryIdentifier.OrderBy.Child, "interest",
+                        FBQueryIdentifier.Qualifier.equalTo, interest));
+
+        /*Firebase locationsRef = _FBHelper.getRootKeyedObjectRef(FirebaseHelper.FBRootContainerNames.locations, true);
         Query queryRef = locationsRef.orderByChild("interest").equalTo(interest);
         //locationsRef.push().setValue(new Location());
         queryRef.addChildEventListener(new ChildEventListener() {
@@ -355,7 +381,85 @@ public class TennisReservation extends FragmentWithTopActionBar {
             public void onCancelled(FirebaseError firebaseError) {
 
             }
-        });
+        });*/
+    }
+
+    @Override
+    public void onDataChange(FBModelIdentifier identifier, FBModelObject model) {
+        if(identifier.IsIntendedObject(model, Session.class)) {
+            Session session = (Session)model;
+            int pos = (int)identifier.getPayload();
+            //TODO determine if Date fits window here?
+            sessions.get(pos).add(session);
+            assignSessionToTimeSlot(session, pos);
+        }
+    }
+
+    @Override
+    public void onCancel(FBModelIdentifier identifier, FirebaseError error) {
+
+    }
+
+    @Override
+    public void onNullData(FBModelIdentifier identifier, String key) {
+
+    }
+
+    @Override
+    public void onException(Exception x) {
+
+    }
+
+    @Override
+    public void onChildAdded(FBModelIdentifier modelIdentifier, FBQueryIdentifier queryIdentifier, FBModelObject model, String prevChild) {
+
+        if(modelIdentifier.IsIntendedObject(model, Interest.class)) {
+            interest = (Interest)model;
+            getReservationRules(interest.FBKey);
+            getLocations(interest.FBKey);
+        }
+
+        else if(modelIdentifier.IsIntendedObject(model, Location.class)){
+            Location location = (Location)model;
+            locations.add(location);
+            sessions.add(new ArrayList<Session>());
+            if(location.sessions != null) {
+                for (String ds : location.sessions.keySet()) {
+                    if (location.sessions.get(ds) == true) {
+                        getSession(ds, sessions.size() - 1);
+                    }
+                }
+            }
+            if(widgetList != null) {
+                mAdapter.notifyDataSetChanged();
+                widgetList.invalidate();
+            }
+        }
+
+        else if(modelIdentifier.IsIntendedObject(model, ReservationRule.class)){
+            reservationRule = (ReservationRule) model;
+            constructScheduleForDay();
+            daysToShow = reservationRule.generalWindowLength;
+            if (calendar.get(Calendar.MINUTE) + (calendar.get(Calendar.HOUR_OF_DAY) * 60) >= reservationRule.timeRegistrationOpens)
+                daysToShow += reservationRule.advancedWindowLength;
+
+            updateCountLabel();
+        }
+    }
+
+    @Override
+    public void onChildChanged(FBModelIdentifier modelIdentifier, FBQueryIdentifier queryIdentifier, FBModelObject model, String key) {
+
+    }
+
+    @Override
+    public void onChildRemoved(FBModelIdentifier modelIdentifier, FBQueryIdentifier queryIdentifier, FBModelObject model) {
+
+    }
+
+    @Override
+    public void onChildMoved(FBModelIdentifier modelIdentifier, FBQueryIdentifier queryIdentifier, FBModelObject model, String key) {
+
     }
 
     private class TimeSlot {

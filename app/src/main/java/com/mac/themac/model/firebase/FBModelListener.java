@@ -6,9 +6,6 @@ import com.firebase.client.FirebaseError;
 /**
  * Created by Samir on 9/11/2015.
  */
-public interface FBModelListener {
+public interface FBModelListener  extends FBListener{
     void onDataChange(FBModelIdentifier identifier, FBModelObject model);
-    void onCancel(FBModelIdentifier identifier, FirebaseError error);
-    void onNullData(FBModelIdentifier identifier, String key);
-    void onException(Exception x);
 }

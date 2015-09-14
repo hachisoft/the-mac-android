@@ -13,10 +13,15 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.mac.themac.R;
+import com.mac.themac.TheMACApplication;
 import com.mac.themac.model.Closure;
 import com.mac.themac.model.Event;
 import com.mac.themac.model.Reservation;
 import com.mac.themac.model.Session;
+import com.mac.themac.model.firebase.FBModelIdentifier;
+import com.mac.themac.model.firebase.FBModelListener;
+import com.mac.themac.model.firebase.FBModelObject;
+import com.mac.themac.utility.FirebaseHelper;
 
 import java.util.ArrayList;
 
@@ -27,7 +32,7 @@ import butterknife.OnClick;
 /**
  * Created by Bryan on 9/7/2015.
  */
-public class CourtReservationTimeBlockWidget extends LinearLayout {
+public class CourtReservationTimeBlockWidget extends LinearLayout implements FBModelListener {
     @Bind(R.id.time_label) TextView timeLabel;
     @Bind(R.id.detail_label) TextView detailLabel;
     @Bind(R.id.action_button) Button actionButton;
@@ -69,7 +74,10 @@ public class CourtReservationTimeBlockWidget extends LinearLayout {
     }
 
     private void getReservationForLabel(String id){
-        Firebase fire = new Firebase(getContext().getString(R.string.firebase_url) + "/reservations/" + id);
+
+        FirebaseHelper fbHelper = TheMACApplication.theApp.getFirebaseHelper();
+        fbHelper.SubscribeToModelUpdates(this, new FBModelIdentifier(Reservation.class), id);
+        /*Firebase fire = new Firebase(getContext().getString(R.string.firebase_url) + "/reservations/" + id);
         fire.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -86,11 +94,13 @@ public class CourtReservationTimeBlockWidget extends LinearLayout {
             public void onCancelled(FirebaseError firebaseError) {
 
             }
-        });
+        });*/
     }
 
     private void getClosureForLabel(String id){
-        Firebase fire = new Firebase(getContext().getString(R.string.firebase_url) + "/closures/" + id);
+        FirebaseHelper fbHelper = TheMACApplication.theApp.getFirebaseHelper();
+        fbHelper.SubscribeToModelUpdates(this, new FBModelIdentifier(Closure.class), id);
+        /*Firebase fire = new Firebase(getContext().getString(R.string.firebase_url) + "/closures/" + id);
         fire.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -107,11 +117,13 @@ public class CourtReservationTimeBlockWidget extends LinearLayout {
             public void onCancelled(FirebaseError firebaseError) {
 
             }
-        });
+        });*/
     }
 
     private void getEventForLabel(String id){
-        Firebase fire = new Firebase(getContext().getString(R.string.firebase_url) + "/events/" + id);
+        FirebaseHelper fbHelper = TheMACApplication.theApp.getFirebaseHelper();
+        fbHelper.SubscribeToModelUpdates(this, new FBModelIdentifier(Event.class), id);
+        /*Firebase fire = new Firebase(getContext().getString(R.string.firebase_url) + "/events/" + id);
         fire.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -128,7 +140,7 @@ public class CourtReservationTimeBlockWidget extends LinearLayout {
             public void onCancelled(FirebaseError firebaseError) {
 
             }
-        });
+        });*/
     }
 
     private ArrayList<CourtButton> courtButtons = new ArrayList<>();
@@ -195,5 +207,45 @@ public class CourtReservationTimeBlockWidget extends LinearLayout {
 
     public int getSelected() {
         return selected;
+    }
+
+    @Override
+    public void onDataChange(FBModelIdentifier identifier, FBModelObject model) {
+        if(identifier.IsIntendedObject(model, Closure.class)) {
+            Closure closure = (Closure)model;
+            if (closure.getTitle() != null) {
+                detailLabel.setText(closure.getTitle());
+                detailLabel.setVisibility(View.VISIBLE);
+            }
+        }
+        else if(identifier.IsIntendedObject(model, Event.class)){
+            Event event = (Event)model;
+            if(event.getTitle()!=null){
+                detailLabel.setText(event.getTitle());
+                detailLabel.setVisibility(View.VISIBLE);
+            }
+        }
+        else if(identifier.IsIntendedObject(model, Reservation.class)){
+            Reservation reservation = (Reservation)model;
+            if(reservation.getName()!=null){
+                detailLabel.setText(reservation.getName());
+                detailLabel.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    @Override
+    public void onCancel(FBModelIdentifier identifier, FirebaseError error) {
+
+    }
+
+    @Override
+    public void onNullData(FBModelIdentifier identifier, String key) {
+
+    }
+
+    @Override
+    public void onException(Exception x) {
+
     }
 }
