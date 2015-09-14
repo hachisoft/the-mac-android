@@ -48,6 +48,7 @@ public class ReservationRule extends FBModelObject{
         }
     }
 
+
     @JsonIgnore
     @Override
     protected void setLinkedObject(FBModelIdentifier fbModelIdentifier,
