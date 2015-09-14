@@ -2,17 +2,118 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.mac.themac.activity.FindEvents">
+    tools:context="com.mac.themac.activity.FindEvents" android:background="@color/light_gray"
+    android:paddingTop="5dp">
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <CheckBox android:id="@+id/cb_simple_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/simple_search"
+            android:checked="true"/>
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="match_parent"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Find Events"
-        android:layout_above="@id/bottom_action_bar"
-        android:id="@+id/textView"
-        android:gravity="center"/>
+        <LinearLayout
+            style="@style/UIEntryLayout">
+            <EditText android:id="@+id/search_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"/>
+        </LinearLayout>
 
+        <CheckBox android:id="@+id/cb_advanced_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/advanced_search"/>
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="1"
+            android:shrinkColumns="0">
+            <TableRow
+                style="@style/UIEntryLayout">
+
+                <TextView
+                    style="@style/MediumRowHeaderText"
+                    android:text="@string/event_types"/>
+
+                <TextView
+                    style="@style/UIGrayColumnBox"
+                    android:text="6"
+                    android:id="@+id/tv_event_types"
+                    />
+            </TableRow>
+            <TableRow
+                style="@style/UIEntryLayout">
+
+                <TextView
+                    style="@style/MediumRowHeaderText"
+                    android:text="@string/from_date"/>
+
+                <TextView
+                    style="@style/UIGrayColumnBox"
+                    android:text="6"
+                    android:id="@+id/tv_from_date"
+                    />
+            </TableRow>
+            <TableRow
+                style="@style/UIEntryLayout">
+
+                <TextView
+                    style="@style/MediumRowHeaderText"
+                    android:text="@string/to_date"/>
+
+                <TextView
+                    style="@style/UIGrayColumnBox"
+                    android:text="6"
+                    android:id="@+id/tv_to_date"
+                    />
+            </TableRow>
+            <TableRow
+                style="@style/UIEntryLayout">
+
+                <TextView
+                    style="@style/MediumRowHeaderText"
+                    android:text="@string/start_time"/>
+
+                <TextView
+                    style="@style/UIGrayColumnBox"
+                    android:text="6"
+                    android:id="@+id/tv_start_time"
+                    />
+            </TableRow>
+            <TableRow
+                style="@style/UIEntryLayout">
+
+                <TextView
+                    style="@style/MediumRowHeaderText"
+                    android:text="@string/end_time"/>
+
+                <TextView
+                    style="@style/UIGrayColumnBox"
+                    android:text="6"
+                    android:id="@+id/tv_end_time"
+                    />
+            </TableRow>
+        </TableLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15dp">
+            <Button android:id="@+id/search"
+                style="@style/UIButton.FormButton"
+                android:layout_marginRight="5dp"
+                android:text="@string/search"/>
+            <Button android:id="@+id/clear"
+                style="@style/UIButton.FormButton"
+                android:text="@string/clear"/>
+        </LinearLayout>
+    </RadioGroup>
     <include android:id="@+id/bottom_action_bar"
         layout="@layout/bottom_action_bar"
         android:layout_height="wrap_content"

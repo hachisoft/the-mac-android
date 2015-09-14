@@ -14,6 +14,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:layout_gravity="bottom"
+        android:paddingBottom="3dp"
         style="@style/ActionButtonLayout">
 
         <ToggleButton

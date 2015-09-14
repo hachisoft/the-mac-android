@@ -14,7 +14,6 @@ import com.mac.themac.model.firebase.FBModelObject;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Location extends FBModelObject {
-    String key;
     String interest;
     String name;
     long nsCourseLocationId;
@@ -22,10 +21,6 @@ public class Location extends FBModelObject {
     HashMap<String, Boolean> sessions;
 
     public Location(){}
-
-    public String getKey() {
-        return key;
-    }
 
     public String getInterest() {
         return interest;

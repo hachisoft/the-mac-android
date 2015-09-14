@@ -75,8 +75,8 @@ public class CourtReservationTimeBlockWidget extends LinearLayout {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.getValue()!=null){
                     Reservation reservation = dataSnapshot.getValue(Reservation.class);
-                    if(reservation.getName()!=null){
-                        detailLabel.setText(reservation.getName());
+                    if(reservation.name!=null){
+                        detailLabel.setText(reservation.name);
                         detailLabel.setVisibility(View.VISIBLE);
                     }
                 }
@@ -191,6 +191,14 @@ public class CourtReservationTimeBlockWidget extends LinearLayout {
             cb.setCourtState(CourtButton.CourtState.mac_reserved);
         }
         cb.setTag(session);
+    }
+
+    public Button getActionButton() {
+        return actionButton;
+    }
+
+    public CourtButton.CourtState getSelectedButtonState(){
+        return courtButtons.get(selected).getCourtState();
     }
 
     public int getSelected() {

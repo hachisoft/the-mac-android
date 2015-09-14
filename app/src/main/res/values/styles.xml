@@ -12,6 +12,7 @@
         <item name="colorAccent">@color/red</item>
         <!--<item name="android:buttonStyle">@style/UIButton</item>-->
         <item name="actionBarStyle">@style/ActionBarTheme</item>
+        <item name="android:editTextStyle">@style/UIGrayColumnBox</item>
     </style>
     <style name="ActionBarTheme" parent="@style/Widget.AppCompat.Light.ActionBar">
         <item name="windowActionBarOverlay">true</item>
@@ -97,7 +98,7 @@
         <item name="android:background">@color/white</item>
         <item name="android:layout_marginRight">5dp</item>
         <item name="android:layout_marginLeft">5dp</item>
-        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginTop">2dp</item>
         <item name="android:padding">10dp</item>
     </style>
 
