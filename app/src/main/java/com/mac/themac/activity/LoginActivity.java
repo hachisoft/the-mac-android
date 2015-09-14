@@ -42,6 +42,9 @@ import com.mac.themac.R;
 import com.mac.themac.TheMACApplication;
 import com.mac.themac.model.Login;
 import com.mac.themac.model.User;
+import com.mac.themac.model.firebase.FBModelIdentifier;
+import com.mac.themac.model.firebase.FBModelListener;
+import com.mac.themac.model.firebase.FBModelObject;
 import com.mac.themac.utility.FirebaseHelper;
 
 import java.io.IOException;
@@ -69,7 +72,8 @@ import butterknife.OnClick;
 public class LoginActivity extends AppCompatActivity implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
-        Firebase.AuthStateListener{
+        Firebase.AuthStateListener,
+        FBModelListener{
 
     private static final String TAG = LoginActivity.class.getSimpleName();
 
@@ -485,6 +489,7 @@ public class LoginActivity extends AppCompatActivity implements
             final Firebase loginRef = mFBHelper.getLoginRef(authData.getUid());
             final Activity loginActivity = this;
 
+            //mFBHelper.SubscribeToModelUpdates(this, FBModelIdentifier.getIdentfier(Login.class, 0, authData), authData.getUid(), true);
             loginRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -559,6 +564,52 @@ public class LoginActivity extends AppCompatActivity implements
         if(authData == null) {
             mLoginViewSwitcher.setDisplayedChild(mLoginViewSwitcher.indexOfChild(findViewById(R.id.login_view)));
         }
+    }
+
+    @Override
+    public void onDataChange(FBModelIdentifier identifier, FBModelObject model) {
+
+        if (identifier.IsIntendedObject(model, Login.class)) {
+
+            Login login = (Login) model;
+
+            if (login != null) {
+
+                mFBHelper.set_login(login);
+                mLoginViewSwitcher.setDisplayedChild(mLoginViewSwitcher.indexOfChild(findViewById(R.id.logged_in_view)));
+
+                if (login.getIsNotProvisioned() == true ||
+                        login.getUser().length() != 20) { //Find and associate User
+                    mLoggedinViewSwitcher.setDisplayedChild(mLoggedinViewSwitcher.indexOfChild(findViewById(R.id.logged_in_ask_memberid)));
+                } else {
+                    mLoggedinViewSwitcher.setDisplayedChild(mLoggedinViewSwitcher.indexOfChild(findViewById(R.id.logged_in_home)));
+                    mFBHelper.set_loggedInUser(login.linkedUser);
+                }
+            }
+
+        }
+    }
+
+    @Override
+    public void onCancel(FBModelIdentifier identifier, FirebaseError error) {
+
+    }
+
+    @Override
+    public void onNullData(FBModelIdentifier identifier, String key) {
+
+        if (identifier.getIntendedClass().equals(Login.class)) {
+            //First time login with this auth
+            AuthData authData = (AuthData)identifier.getPayload();
+            Login login = new Login(authData.getProvider());
+            mFBHelper.setFBModelObject(login, key, Login.class);
+            mFBHelper.addModelListener(key, login, this);
+        }
+    }
+
+    @Override
+    public void onException(Exception x) {
+
     }
 
     /**
