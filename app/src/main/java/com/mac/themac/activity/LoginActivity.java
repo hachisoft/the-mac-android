@@ -188,10 +188,15 @@ public class LoginActivity extends AppCompatActivity implements
         mLoginOptionsViewSwitcher.setDisplayedChild(mLoginOptionsViewSwitcher.indexOfChild(findViewById(R.id.login_view1)));
     }
 
+    @OnClick(R.id.btnCancelMemberId)
+    public void cancelMemberId(){
+        mLoginOptionsViewSwitcher.setDisplayedChild(mLoginOptionsViewSwitcher.indexOfChild(findViewById(R.id.login_view1)));
+    }
+
 
     @OnClick(R.id.btnValidateMemberId)
     public void validateMemberId(){
-        mFBHelper.SubscribeToChildUpdates(this, new FBModelIdentifier(Location.class),
+        mFBHelper.SubscribeToChildUpdates(this, new FBModelIdentifier(User.class),
                 new FBQueryIdentifier(FBQueryIdentifier.OrderBy.Child,
                         "memberNumber",
                         FBQueryIdentifier.Qualifier.equalTo, mMemberId.getText().toString()));

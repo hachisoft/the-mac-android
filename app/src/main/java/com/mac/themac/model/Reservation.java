@@ -83,4 +83,92 @@ public class Reservation extends FBModelObject{
             linkedSession = (Session) modelObject;
         }
     }
+
+    public Date getDateReserved() {
+        return dateReserved;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public boolean isHasGuest() {
+        return hasGuest;
+    }
+
+    public String getInterest() {
+        return interest;
+    }
+
+    public boolean isAdvRes() {
+        return isAdvRes;
+    }
+
+    public boolean isJunior() {
+        return isJunior;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public String getMemberNumber() {
+        return memberNumber;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public long getNsReservationId() {
+        return nsReservationId;
+    }
+
+    public String getReservationUser() {
+        return reservationUser;
+    }
+
+    public String getReservingUser() {
+        return reservingUser;
+    }
+
+    public String getSession() {
+        return session;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public boolean isWantsPartner() {
+        return wantsPartner;
+    }
+
+    public User getLinkedReservingUser() {
+        return linkedReservingUser;
+    }
+
+    public User getLinkedReservationUser() {
+        return linkedReservationUser;
+    }
+
+    public Session getLinkedSession() {
+        return linkedSession;
+    }
+
+    public Location getLinkedLocation() {
+        return linkedLocation;
+    }
 }
