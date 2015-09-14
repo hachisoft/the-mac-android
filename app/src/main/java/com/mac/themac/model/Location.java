@@ -42,10 +42,6 @@ public class Location extends FBModelObject {
         if(interest != null && !interest.isEmpty()) {
             loadLinkedObject(Interest.class, FirebaseHelper.FBRootContainerNames.interests, interest);
         }
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/master
 
         if (sessions == null) {
             sessions = new HashMap<String, Boolean>();
