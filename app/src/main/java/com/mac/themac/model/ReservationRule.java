@@ -48,6 +48,7 @@ public class ReservationRule extends FBModelObject{
         }
     }
 
+
     @JsonIgnore
     @Override
     protected void setLinkedObject(FBModelIdentifier fbModelIdentifier,
@@ -57,4 +58,81 @@ public class ReservationRule extends FBModelObject{
             linkedInterest = (Interest) modelObject;
         }
     }
+
+    public long getWeekdayPlayBegins() {
+        return weekdayPlayBegins;
+    }
+
+    public long getSaturdayPlayBegins() {
+        return saturdayPlayBegins;
+    }
+
+    public long getSundayPlayBegins() {
+        return sundayPlayBegins;
+    }
+
+    public long getWeekdayPlayEnds() {
+        return weekdayPlayEnds;
+    }
+
+    public long getSaturdayPlayEnds() {
+        return saturdayPlayEnds;
+    }
+
+    public long getSundayPlayEnds() {
+        return sundayPlayEnds;
+    }
+
+    public long getSessionLength() {
+        return sessionLength;
+    }
+
+    public long getGeneralWindowLength() {
+        return generalWindowLength;
+    }
+
+    public long getAdvancedWindowLength() {
+        return advancedWindowLength;
+    }
+
+    public boolean isAllowBackToBack() {
+        return allowBackToBack;
+    }
+
+    public long getFrequency() {
+        return frequency;
+    }
+
+    public long getAllowed() {
+        return allowed;
+    }
+
+    public long getAllowedPerDay() {
+        return allowedPerDay;
+    }
+
+    public long getGuestAllowed() {
+        return guestAllowed;
+    }
+
+    public long getReservationChangeDeadline() {
+        return reservationChangeDeadline;
+    }
+
+    public long getTimeRegistrationOpens() {
+        return timeRegistrationOpens;
+    }
+
+    public long getTimeRegistrationCloses() {
+        return timeRegistrationCloses;
+    }
+
+    public String getInterest() {
+        return interest;
+    }
+
+    public Interest getLinkedInterest() {
+        return linkedInterest;
+    }
+
 }
