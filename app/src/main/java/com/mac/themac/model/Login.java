@@ -1,18 +1,13 @@
 package com.mac.themac.model;
 
-import android.util.Pair;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 import com.mac.themac.TheMACApplication;
 import com.mac.themac.model.firebase.FBModelObject;
+import com.mac.themac.model.firebase.FBModelIdentifier;
 import com.mac.themac.utility.FirebaseHelper;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -68,11 +63,10 @@ public class Login extends FBModelObject {
 
     @JsonIgnore
     @Override
-    protected void setLinkedObject(Class<? extends FBModelObject> targetObjectType,
-                                    FBModelObject modelObject, int secondaryIdentifier) {
+    protected void setLinkedObject(FBModelIdentifier fbModelIdentifier,
+                                    FBModelObject modelObject) {
 
-        if(targetObjectType.equals(User.class) &&
-                modelObject instanceof User){
+        if(fbModelIdentifier.IsIntendedObject(modelObject, User.class)){
 
             linkedUser =  (User)modelObject;
 

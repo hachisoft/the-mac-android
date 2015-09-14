@@ -2,15 +2,19 @@ package com.mac.themac.model;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mac.themac.model.firebase.FBModelObject;
+import com.mac.themac.utility.FirebaseHelper;
 
 /**
  * Created by Samir on 9/9/2015.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Event extends FBModelObject{
+
     boolean allowGuests;
     boolean allowJuniors;
     boolean allowWaitlist;
@@ -23,15 +27,25 @@ public class Event extends FBModelObject{
     long nsEventId;
     long nsEventTypeId;
     long nsLocationId;
-    HashMap<String, Boolean> sessions;
-    HashMap<String, Boolean> fees;
     Date startDate;
     String status;
     String title;
     String number;
-	
+    String imageId;
+    String billingId;
+    HashMap<String, Boolean> sessions;
+    HashMap<String, Boolean> fees;
+    HashMap<String, Boolean> interests;
+    HashMap<String, Boolean> registrations;
+
     @JsonIgnore
-    public String FBKey;
+    public List<FBModelObject> linkedSessions;
+    @JsonIgnore
+    public List<FBModelObject> linkedFees;
+    @JsonIgnore
+    public List<FBModelObject> linkedInterests;
+    @JsonIgnore
+    public List<FBModelObject> linkedRegistrations;
 
     public Event() {}
 
@@ -105,5 +119,43 @@ public class Event extends FBModelObject{
 
     public HashMap<String, Boolean> getFees() {
         return fees;
+    }
+
+    @Override
+    @JsonIgnore
+    public void loadLinkedObjects() {
+
+        if(interests == null){
+            interests = new HashMap<String, Boolean>();
+        }
+        if (interests != null) {
+            loadLinkedObjects(Interest.class, FirebaseHelper.FBRootContainerNames.interests,
+                    interests, linkedInterests);
+        }
+
+        if(registrations == null){
+            registrations = new HashMap<String, Boolean>();
+        }
+        if(registrations != null){
+            loadLinkedObjects(Registration.class, FirebaseHelper.FBRootContainerNames.registrations,
+                    registrations, linkedRegistrations);
+        }
+
+        if(sessions == null){
+            sessions = new HashMap<String, Boolean>();
+        }
+        if(sessions != null){
+            loadLinkedObjects(Session.class, FirebaseHelper.FBRootContainerNames.sessions,
+                    sessions, linkedSessions);
+        }
+
+        if(fees == null){
+            fees = new HashMap<String, Boolean>();
+        }
+        if(fees != null){
+            loadLinkedObjects(Fee.class, FirebaseHelper.FBRootContainerNames.fees,
+                    fees, linkedFees);
+        }
+
     }
 }

@@ -5,6 +5,7 @@ import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mac.themac.model.firebase.FBModelObject;
+import com.mac.themac.model.firebase.FBModelIdentifier;
 import com.mac.themac.utility.FirebaseHelper;
 
 /**
@@ -51,11 +52,11 @@ public class Reservation extends FBModelObject{
         }
 
         if( reservationUser != null && !reservationUser.isEmpty()) {
-            loadLinkedObject(User.class, FirebaseHelper.FBRootContainerNames.users, reservationUser, 0);
+            loadLinkedObject( new FBModelIdentifier(User.class), FirebaseHelper.FBRootContainerNames.users, reservationUser);
         }
 
         if(reservingUser != null && !reservingUser.isEmpty()) {
-            loadLinkedObject(User.class, FirebaseHelper.FBRootContainerNames.users, reservingUser, 1);
+            loadLinkedObject( new FBModelIdentifier(User.class, 1), FirebaseHelper.FBRootContainerNames.users, reservingUser);
         }
 
         if(session != null && !session.isEmpty()) {
@@ -66,26 +67,19 @@ public class Reservation extends FBModelObject{
 
     @JsonIgnore
     @Override
-    protected void setLinkedObject(Class<? extends FBModelObject> targetObjectType,
-                                    FBModelObject modelObject, int secondaryIdentifier) {
+    protected void setLinkedObject(FBModelIdentifier fbModelIdentifier,
+                                    FBModelObject modelObject) {
 
-        if(targetObjectType.equals(Location.class) &&
-                modelObject instanceof Location) {
+        if(fbModelIdentifier.IsIntendedObject(modelObject, Location.class)) {
             linkedLocation = (Location) modelObject;
         }
-        else if(targetObjectType.equals(User.class) &&
-                modelObject instanceof User) {
-
-            if(secondaryIdentifier ==0 ){
-                linkedReservationUser = (User) modelObject;
-            }
-            else if(secondaryIdentifier == 1){
-                linkedReservingUser = (User) modelObject;
-            }
-
+        else if(fbModelIdentifier.IsIntendedObject(modelObject, User.class)){
+            linkedReservationUser = (User) modelObject;
         }
-        else if(targetObjectType.equals(Session.class) &&
-                modelObject instanceof Session) {
+        else if(fbModelIdentifier.IsIntendedObject(modelObject, User.class, 1)){
+            linkedReservingUser = (User) modelObject;
+        }
+        else if(fbModelIdentifier.IsIntendedObject(modelObject, Session.class)) {
             linkedSession = (Session) modelObject;
         }
     }
