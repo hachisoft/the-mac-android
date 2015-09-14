@@ -28,6 +28,8 @@ public class TheMACApplication extends Application {
 
         //initialize Firebase
         Firebase.setAndroidContext(this);
+        /*TODO: Enable following line if we need to add OFFLINE app functionality using cached data
+        Firebase.getDefaultConfig().setPersistenceEnabled(true);*/
         mFirebaseHelper = new FirebaseHelper( getString(R.string.firebase_url));
 
         //initialize Facebook
