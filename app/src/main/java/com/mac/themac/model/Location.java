@@ -15,19 +15,6 @@ import com.mac.themac.utility.FirebaseHelper;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Location extends FBModelObject {
-<<<<<<< HEAD
-    String interest;
-    String name;
-    long nsCourseLocationId;
-    long nsLocationId;
-    HashMap<String, Boolean> sessions;
-
-    public Location(){}
-
-    public String getInterest() {
-        return interest;
-    }
-=======
 
     public String name;
     public String description;
@@ -55,7 +42,6 @@ public class Location extends FBModelObject {
         if(interest != null && !interest.isEmpty()) {
             loadLinkedObject(Interest.class, FirebaseHelper.FBRootContainerNames.interests, interest);
         }
->>>>>>> 8a964fd1c61f5ac5f525667565b4b5b3eff468bd
 
         if (sessions == null) {
             sessions = new HashMap<String, Boolean>();
