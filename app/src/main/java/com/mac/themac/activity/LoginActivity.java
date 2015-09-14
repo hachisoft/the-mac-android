@@ -595,7 +595,6 @@ public class LoginActivity extends AppCompatActivity implements
                     mLoggedinViewSwitcher.setDisplayedChild(mLoggedinViewSwitcher.indexOfChild(findViewById(R.id.logged_in_ask_memberid)));
                 } else {
                     mLoggedinViewSwitcher.setDisplayedChild(mLoggedinViewSwitcher.indexOfChild(findViewById(R.id.logged_in_home)));
-                    mFBHelper.set_loggedInUser(login.linkedUser);
                 }
             }
 
@@ -614,6 +613,7 @@ public class LoginActivity extends AppCompatActivity implements
             //First time login with this auth
             AuthData authData = (AuthData)identifier.getPayload();
             Login login = new Login(authData.getProvider());
+            mFBHelper.set_login(login);
             mFBHelper.setFBModelObject(login, key, Login.class);
             mFBHelper.addModelListener(key, login, this);
         }
@@ -639,6 +639,7 @@ public class LoginActivity extends AppCompatActivity implements
             login.isNotProvisioned = false;
             login.linkedUser = user;
 
+            mFBHelper.set_loggedInUser(user);
             mFBHelper.getLoginRef(login.FBKey).setValue(login);
             mLoggedinViewSwitcher.setDisplayedChild(mLoggedinViewSwitcher.indexOfChild(findViewById(R.id.logged_in_home)));
         }

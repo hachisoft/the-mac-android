@@ -84,7 +84,6 @@ public abstract class ActivityWithBottomActionBar extends AppCompatActivity impl
 
         _FBHelper = TheMACApplication.theApp.getFirebaseHelper();
 
-        User loggedInUser = _FBHelper.getLoggedInUser();
         getActiveButton().setChecked(true);
     }
 

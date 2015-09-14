@@ -70,6 +70,7 @@ public class Login extends FBModelObject {
 
             linkedUser =  (User)modelObject;
 
+            TheMACApplication.theApp.getFirebaseHelper().set_loggedInUser(linkedUser);
             if(linkedUser.logins == null){
                 linkedUser.logins = new HashMap<String, Boolean>();
             }
@@ -79,6 +80,7 @@ public class Login extends FBModelObject {
 
                 Firebase ref = TheMACApplication.theApp.getFirebaseHelper().getUserRef(linkedUser.FBKey);
                 ref.setValue(linkedUser);
+
             }
 
             linkedUser.loadLinkedObjects();
