@@ -642,6 +642,8 @@ public class LoginActivity extends AppCompatActivity implements
             mFBHelper.set_loggedInUser(user);
             mFBHelper.getLoginRef(login.FBKey).setValue(login);
             mLoggedinViewSwitcher.setDisplayedChild(mLoggedinViewSwitcher.indexOfChild(findViewById(R.id.logged_in_home)));
+
+            user.loadLinkedObjects();
         }
     }
 

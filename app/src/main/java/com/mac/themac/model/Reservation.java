@@ -48,19 +48,24 @@ public class Reservation extends FBModelObject{
     @JsonIgnore
     public void loadLinkedObjects() {
         if(location != null && !location.isEmpty()) {
-            loadLinkedObject(Location.class, FirebaseHelper.FBRootContainerNames.locations, location);
+            loadLinkedObject(Location.class, FirebaseHelper.FBRootContainerNames.locations,
+                    location, linkedLocation);
         }
 
         if( reservationUser != null && !reservationUser.isEmpty()) {
-            loadLinkedObject( new FBModelIdentifier(User.class), FirebaseHelper.FBRootContainerNames.users, reservationUser);
+            loadLinkedObject( User.class, FirebaseHelper.FBRootContainerNames.users,
+                                reservationUser, linkedReservationUser);
         }
 
         if(reservingUser != null && !reservingUser.isEmpty()) {
-            loadLinkedObject( new FBModelIdentifier(User.class, 1), FirebaseHelper.FBRootContainerNames.users, reservingUser);
+            loadLinkedObject( new FBModelIdentifier(User.class, 1),
+                    FirebaseHelper.FBRootContainerNames.users, reservingUser,
+                    linkedReservingUser);
         }
 
         if(session != null && !session.isEmpty()) {
-            loadLinkedObject(Session.class, FirebaseHelper.FBRootContainerNames.sessions, session);
+            loadLinkedObject(Session.class,
+                    FirebaseHelper.FBRootContainerNames.sessions, session, linkedSession);
         }
 
     }
@@ -82,6 +87,17 @@ public class Reservation extends FBModelObject{
         else if(fbModelIdentifier.IsIntendedObject(modelObject, Session.class)) {
             linkedSession = (Session) modelObject;
         }
+    }
+
+    @JsonIgnore
+    @Override
+    public void resetLinkedObjects() {
+
+        linkedLocation = null;
+        linkedReservationUser = null;
+        linkedReservingUser = null;
+        linkedSession = null;
+
     }
 
     public Date getDateReserved() {

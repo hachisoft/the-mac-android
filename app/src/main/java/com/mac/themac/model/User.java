@@ -63,20 +63,49 @@ public class User extends FBModelObject{
     public User() {
     }
 
+    @JsonIgnore
+    public void loadMemberProfileInterestsRegistrations(){
+        if(memberProfile != null && !memberProfile.isEmpty()) {
+            loadLinkedObject(MemberProfile.class,
+                    FirebaseHelper.FBRootContainerNames.memberProfiles,
+                    memberProfile, linkedMemberProfile);
+        }
+        if(interests == null){
+            interests = new HashMap<String, Boolean>();
+        }
+        if (interests != null) {
+            loadLinkedObjects(Interest.class, FirebaseHelper.FBRootContainerNames.interests,
+                    interests, linkedInterests);
+        }
+        if(registrations == null){
+            registrations = new HashMap<String, Boolean>();
+        }
+        if(registrations != null){
+            loadLinkedObjects(Registration.class, FirebaseHelper.FBRootContainerNames.registrations,
+                    registrations, linkedRegistrations);
+        }
+    }
+
     @Override
     @JsonIgnore
     public void loadLinkedObjects() {
 
         if(memberProfile != null && !memberProfile.isEmpty()) {
-            loadLinkedObject(MemberProfile.class, FirebaseHelper.FBRootContainerNames.memberProfiles, memberProfile);
+            loadLinkedObject(MemberProfile.class,
+                    FirebaseHelper.FBRootContainerNames.memberProfiles,
+                    memberProfile, linkedMemberProfile);
         }
 
         if(memberProfilePublic != null && !memberProfilePublic.isEmpty()) {
-            loadLinkedObject(MemberProfilePublic.class, FirebaseHelper.FBRootContainerNames.memberProfilePublics, memberProfilePublic);
+            loadLinkedObject(MemberProfilePublic.class,
+                    FirebaseHelper.FBRootContainerNames.memberProfilePublics,
+                    memberProfilePublic, linkedMemberProfilePublic);
         }
 
         if(employeeProfile != null && !employeeProfile.isEmpty()) {
-            loadLinkedObject(EmployeeProfile.class, FirebaseHelper.FBRootContainerNames.employeeProfiles, employeeProfile);
+            loadLinkedObject(EmployeeProfile.class,
+                    FirebaseHelper.FBRootContainerNames.employeeProfiles,
+                    employeeProfile, linkedEmployeeProfile);
         }
 
         if (logins == null) {
@@ -144,5 +173,21 @@ public class User extends FBModelObject{
         else if(fbModelIdentifier.IsIntendedObject(modelObject, MemberProfilePublic.class)) {
             linkedMemberProfilePublic = (MemberProfilePublic) modelObject;
         }
+    }
+
+    @JsonIgnore
+    @Override
+    public void resetLinkedObjects() {
+
+        linkedMemberProfile = null;
+        linkedMemberProfilePublic = null;
+        linkedEmployeeProfile = null;
+        linkedLogins.clear();
+        linkedInterests.clear();
+        linkedDependents.clear();
+        linkedCreatedReservations.clear();
+        linkedRegistrations.clear();
+        linkedReservations.clear();
+
     }
 }

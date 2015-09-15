@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.mac.themac.model.firebase.FBModelIdentifier;
 import com.mac.themac.model.firebase.FBModelObject;
 import com.mac.themac.utility.FirebaseHelper;
 
@@ -156,6 +157,20 @@ public class Event extends FBModelObject{
             loadLinkedObjects(Fee.class, FirebaseHelper.FBRootContainerNames.fees,
                     fees, linkedFees);
         }
+
+    }
+
+    @JsonIgnore
+    @Override
+    public void resetLinkedObjects() {
+        linkedFees.clear();
+        linkedRegistrations.clear();
+        linkedInterests.clear();
+        linkedSessions.clear();
+    }
+
+    @Override
+    protected void setLinkedObject(FBModelIdentifier fbModelIdentifier, FBModelObject modelObject) {
 
     }
 }

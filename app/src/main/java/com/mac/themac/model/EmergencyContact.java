@@ -28,9 +28,17 @@ public class EmergencyContact extends FBModelObject {
     public void loadLinkedObjects() {
 
         if(memberProfile != null && !memberProfile.isEmpty()) {
-            loadLinkedObject(MemberProfile.class, FirebaseHelper.FBRootContainerNames.memberProfiles, memberProfile);
+            loadLinkedObject(MemberProfile.class,
+                    FirebaseHelper.FBRootContainerNames.memberProfiles,
+                    memberProfile, linkedMemberProfile);
         }
 
+    }
+
+    @JsonIgnore
+    @Override
+    public void resetLinkedObjects() {
+        linkedMemberProfile = null;
     }
 
     @JsonIgnore

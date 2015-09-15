@@ -34,7 +34,9 @@ public class Vehicle extends FBModelObject {
     public void loadLinkedObjects() {
 
         if(memberProfile != null && !memberProfile.isEmpty()) {
-            loadLinkedObject(MemberProfile.class, FirebaseHelper.FBRootContainerNames.memberProfiles, memberProfile);
+            loadLinkedObject(MemberProfile.class,
+                    FirebaseHelper.FBRootContainerNames.memberProfiles,
+                    memberProfile, linkedMemberProfile);
         }
 
     }
@@ -47,5 +49,13 @@ public class Vehicle extends FBModelObject {
         if(fbModelIdentifier.IsIntendedObject(modelObject, MemberProfile.class)) {
             linkedMemberProfile = (MemberProfile) modelObject;
         }
+    }
+
+    @JsonIgnore
+    @Override
+    public void resetLinkedObjects() {
+
+        linkedMemberProfile = null;
+
     }
 }

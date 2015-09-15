@@ -84,19 +84,23 @@ public class Session extends FBModelObject {
     @JsonIgnore
     public void loadLinkedObjects() {
         if(closure != null && !closure.isEmpty()) {
-            loadLinkedObject(Closure.class, FirebaseHelper.FBRootContainerNames.closures, closure);
+            loadLinkedObject(Closure.class, FirebaseHelper.FBRootContainerNames.closures,
+                    closure, linkedClosure);
         }
 
         if(event != null && !event.isEmpty()) {
-            loadLinkedObject(Event.class, FirebaseHelper.FBRootContainerNames.events, event);
+            loadLinkedObject(Event.class, FirebaseHelper.FBRootContainerNames.events, event,
+                    linkedEvent);
         }
 
         if(location != null && !location.isEmpty()) {
-            loadLinkedObject(Location.class, FirebaseHelper.FBRootContainerNames.locations, location);
+            loadLinkedObject(Location.class, FirebaseHelper.FBRootContainerNames.locations,
+                    location, linkedLocation);
         }
 
         if(reservation != null && !reservation.isEmpty()) {
-            loadLinkedObject(Reservation.class, FirebaseHelper.FBRootContainerNames.reservations, reservation);
+            loadLinkedObject(Reservation.class, FirebaseHelper.FBRootContainerNames.reservations,
+                    reservation, linkedReservation);
         }
 
     }
@@ -118,5 +122,16 @@ public class Session extends FBModelObject {
         else if(fbModelIdentifier.IsIntendedObject(modelObject, Reservation.class)) {
             linkedReservation = (Reservation) modelObject;
         }
+    }
+
+    @JsonIgnore
+    @Override
+    public void resetLinkedObjects() {
+
+        linkedClosure = null;
+        linkedEvent = null;
+        linkedLocation = null;
+        linkedReservation = null;
+
     }
 }

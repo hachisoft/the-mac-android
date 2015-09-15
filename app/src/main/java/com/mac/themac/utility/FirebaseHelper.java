@@ -286,6 +286,13 @@ public class FirebaseHelper {
         }
     }
 
+    public void SubscribeToModelUpdates(FBModelListener listener,
+                                        Class<? extends FBModelObject> classType,
+                                        final String key) throws InvalidParameterException {
+
+        SubscribeToModelUpdates(listener, new FBModelIdentifier(classType), key, false);
+    }
+
     public void SubscribeToModelUpdates(final FBModelListener listener,
                                         final FBModelIdentifier fbModelIdentifier,
                                         final String key) throws InvalidParameterException {

@@ -38,7 +38,8 @@ public class MemberProfilePublic extends FBModelObject{
     public void loadLinkedObjects() {
 
         if(user != null && !user.isEmpty()) {
-            loadLinkedObject(User.class, FirebaseHelper.FBRootContainerNames.users, user);
+            loadLinkedObject(User.class, FirebaseHelper.FBRootContainerNames.users,
+                    user, linkedUser);
         }
 
         if(receivedInvitations == null){
@@ -59,5 +60,14 @@ public class MemberProfilePublic extends FBModelObject{
         if(fbModelIdentifier.IsIntendedObject(modelObject, User.class)) {
             linkedUser = (User) modelObject;
         }
+    }
+
+    @JsonIgnore
+    @Override
+    public void resetLinkedObjects() {
+
+        linkedUser = null;
+        linkedReceivedInvitations.clear();
+
     }
 }

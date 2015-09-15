@@ -2,6 +2,7 @@ package com.mac.themac.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.mac.themac.model.firebase.FBModelIdentifier;
 import com.mac.themac.model.firebase.FBModelObject;
 import com.mac.themac.utility.FirebaseHelper;
 
@@ -77,7 +78,7 @@ public class Closure extends FBModelObject{
         if(interests == null){
             interests = new HashMap<String, Boolean>();
         }
-        if (interests != null) {
+        if (interests != null ) {
             loadLinkedObjects(Interest.class, FirebaseHelper.FBRootContainerNames.interests,
                     interests, linkedInterests);
         }
@@ -85,10 +86,24 @@ public class Closure extends FBModelObject{
         if(sessions == null){
             sessions = new HashMap<String, Boolean>();
         }
-        if(sessions != null){
+        if(sessions != null ){
             loadLinkedObjects(Session.class, FirebaseHelper.FBRootContainerNames.sessions,
                     sessions, linkedSessions);
         }
+
+    }
+
+    @JsonIgnore
+    @Override
+    public void resetLinkedObjects() {
+
+        linkedInterests.clear();
+        linkedSessions.clear();
+
+    }
+
+    @Override
+    protected void setLinkedObject(FBModelIdentifier fbModelIdentifier, FBModelObject modelObject) {
 
     }
 }
