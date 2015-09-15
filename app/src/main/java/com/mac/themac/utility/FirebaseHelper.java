@@ -116,6 +116,7 @@ public class FirebaseHelper {
     public void unauth() {
         _loggedInUser = null;
         _login = null;
+        _fbModelListenerMap.clear();
         if(_firebaseRef != null){
             _firebaseRef.unauth();
         }
@@ -275,15 +276,16 @@ public class FirebaseHelper {
         }
     }
 
-    public void setFBModelObject(FBModelObject fbModelObject, String key, Class<? extends FBModelObject> classType){
-        Firebase fbRef = null;
+    public void setFBModelValue(String key, FBModelObject fbModelObject){
 
-        if(classType.equals(Login.class)){
-            if(key != null && key.length() > 0) {
-                fbRef = getRootKeyedObjectRef(FBRootContainerNames.logins, key);
+        if(key != null && key.length() > 0) {
+
+            Firebase fbRef = getRootKeyedObjectRef(fbModelObject.getClass(), key);
+
+            if(fbRef != null)
                 fbRef.setValue(fbModelObject);
-            }
         }
+
     }
 
     public void SubscribeToModelUpdates(FBModelListener listener,
