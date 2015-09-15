@@ -42,6 +42,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+//TODO set up reservation rules checks
 public class TennisCourts extends ActivityWithBottomActionBar
                             implements FragmentWithTopActionBar.OnFragmentInteractionListener,
                                         FBChildListener,FBModelListener
@@ -108,8 +109,8 @@ public class TennisCourts extends ActivityWithBottomActionBar
         updateDateLabel();
     }
 
-    public void showCourtReservationFragment(Long date, Long duration, boolean isAdvRes, String location, String interest){
-        CourtReservation courtReservation = CourtReservation.newInstance(date, duration, isAdvRes, location, interest);
+    public void showCourtReservationFragment(Long date, Long duration, boolean isAdvRes, String location, String interest, String locationName){
+        CourtReservation courtReservation = CourtReservation.newInstance(date, duration, isAdvRes, location, interest, locationName);
         showFragment(courtReservation, R.id.holder);
     }
 
@@ -269,18 +270,22 @@ public class TennisCourts extends ActivityWithBottomActionBar
         cal.setTime(session.getDate());
         if(cal.get(Calendar.MONTH) == calendar.get(Calendar.MONTH) &&
                 cal.get(Calendar.DAY_OF_MONTH) == calendar.get(Calendar.DAY_OF_MONTH)){
-            long mins = cal.get(Calendar.MINUTE) + (calendar.get(Calendar.HOUR_OF_DAY) * 60);
+            long mins = cal.get(Calendar.MINUTE) + (cal.get(Calendar.HOUR_OF_DAY) * 60);
             for(int i = 0; i < mAdapter.getCount(); i++){
                 TimeSlot slot = mAdapter.getItem(i);
                 if(mins >= slot.startTime && mins < slot.startTime + reservationRule.sessionLength){
                     slot.sessions.put(pos, session);
+                    if (widgetList != null) {
+                        mAdapter.notifyDataSetChanged();
+                        widgetList.invalidate();
+                    }
                 }
             }
         }
     }
 
 
-    private void getLocations(String interest){
+    private void getLocations(String interest) {
 
         _FBHelper.SubscribeToChildUpdates(this, Location.class,
                 new FBQueryIdentifier(FBQueryIdentifier.OrderBy.Child, "interest",
@@ -402,13 +407,22 @@ public class TennisCourts extends ActivityWithBottomActionBar
                         case available:
                             calendar.set(Calendar.HOUR_OF_DAY, getItem(position).startTime.intValue()/60);
                             calendar.set(Calendar.MINUTE, getItem(position).startTime.intValue()%60);
-                            showCourtReservationFragment(calendar.getTimeInMillis(), reservationRule.sessionLength, dayCount>reservationRule.generalWindowLength, locations.get(view.getSelected()).FBKey, interest.FBKey);
+                            showCourtReservationFragment(calendar.getTimeInMillis(), reservationRule.sessionLength, dayCount>reservationRule.generalWindowLength, locations.get(view.getSelected()).FBKey, interest.FBKey, locations.get(view.getSelected()).name);
                             break;
                     }
 
                 }
             });
             return view;
+        }
+    }
+
+    public void addSession(Session session){
+        for(int i = 0; i < locations.size(); i ++){
+            if(locations.get(i).FBKey.equals(session.getLocation())){
+                assignSessionToTimeSlot(session, i);
+                break;
+            }
         }
     }
 
