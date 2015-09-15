@@ -1,5 +1,6 @@
 package com.mac.themac.activity;
 
+import android.app.backup.FileBackupHelper;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -25,6 +26,11 @@ import com.mac.themac.model.Interest;
 import com.mac.themac.model.Location;
 import com.mac.themac.model.ReservationRule;
 import com.mac.themac.model.Session;
+import com.mac.themac.model.firebase.FBChildListener;
+import com.mac.themac.model.firebase.FBModelIdentifier;
+import com.mac.themac.model.firebase.FBModelListener;
+import com.mac.themac.model.firebase.FBModelObject;
+import com.mac.themac.model.firebase.FBQueryIdentifier;
 import com.mac.themac.utility.FirebaseHelper;
 import com.mac.themac.widget.CourtReservationTimeBlockWidget;
 
@@ -36,7 +42,10 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class TennisCourts extends ActivityWithBottomActionBar implements FragmentWithTopActionBar.OnFragmentInteractionListener {
+public class TennisCourts extends ActivityWithBottomActionBar
+                            implements FragmentWithTopActionBar.OnFragmentInteractionListener,
+                                        FBChildListener,FBModelListener
+{
     private Calendar calendar;
     private long daysToShow = 1;
     private int dayCount = 1;
@@ -114,7 +123,12 @@ public class TennisCourts extends ActivityWithBottomActionBar implements Fragmen
     }
 
     private void getInterest(){
-        Firebase tennis = TheMACApplication.theApp.getFirebaseHelper().
+
+        _FBHelper.SubscribeToChildUpdates(this, Interest.class,
+                new FBQueryIdentifier(FBQueryIdentifier.OrderBy.Child, "name",
+                        FBQueryIdentifier.Qualifier.equalTo, "Tennis"));
+
+        /*Firebase tennis = TheMACApplication.theApp.getFirebaseHelper().
                 getRootKeyedObjectRef(FirebaseHelper.FBRootContainerNames.interests, true);
         Query queryRef = tennis.orderByChild("name").equalTo("Tennis");
         queryRef.addChildEventListener(new ChildEventListener() {
@@ -148,7 +162,7 @@ public class TennisCourts extends ActivityWithBottomActionBar implements Fragmen
             public void onCancelled(FirebaseError firebaseError) {
 
             }
-        });
+        });*/
     }
 
     private void constructScheduleForDay(){
@@ -184,7 +198,12 @@ public class TennisCourts extends ActivityWithBottomActionBar implements Fragmen
     }
 
     private void getReservationRules(String interest){
-        Firebase rulesRef = _FBHelper.getRootKeyedObjectRef(FirebaseHelper.FBRootContainerNames.reservationRules, true);
+
+        _FBHelper.SubscribeToChildUpdates(this, ReservationRule.class,
+                new FBQueryIdentifier(FBQueryIdentifier.OrderBy.Child, "interest",
+                        FBQueryIdentifier.Qualifier.equalTo, interest));
+
+        /*Firebase rulesRef = _FBHelper.getRootKeyedObjectRef(FirebaseHelper.FBRootContainerNames.reservationRules, true);
         Query queryRef = rulesRef.orderByChild("interest").equalTo(interest);
         queryRef.addChildEventListener(new ChildEventListener() {
             @Override
@@ -219,11 +238,14 @@ public class TennisCourts extends ActivityWithBottomActionBar implements Fragmen
             public void onCancelled(FirebaseError firebaseError) {
 
             }
-        });
+        });*/
     }
 
     private void getSession(String key, final int pos){
-        Firebase sessionRef = _FBHelper.getRootKeyedObjectRef(FirebaseHelper.FBRootContainerNames.sessions, key);
+
+        _FBHelper.SubscribeToModelUpdates(this, new FBModelIdentifier(Session.class, 0, pos), key);
+
+        /*Firebase sessionRef = _FBHelper.getRootKeyedObjectRef(FirebaseHelper.FBRootContainerNames.sessions, key);
         sessionRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -239,7 +261,7 @@ public class TennisCourts extends ActivityWithBottomActionBar implements Fragmen
             public void onCancelled(FirebaseError firebaseError) {
 
             }
-        });
+        });*/
     }
 
     private void assignSessionToTimeSlot(Session session, int pos){
@@ -259,52 +281,86 @@ public class TennisCourts extends ActivityWithBottomActionBar implements Fragmen
 
 
     private void getLocations(String interest){
-        Firebase locationsRef = _FBHelper.getRootKeyedObjectRef(FirebaseHelper.FBRootContainerNames.locations, true);
-        Query queryRef = locationsRef.orderByChild("interest").equalTo(interest);
-        //locationsRef.push().setValue(new Location());
-        queryRef.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                if(dataSnapshot.exists()) {
-                    Location location = dataSnapshot.getValue(Location.class);
-                    location.FBKey = dataSnapshot.getKey();
-                    locations.add(location);
-                    sessions.add(new ArrayList<Session>());
-                    DataSnapshot session = dataSnapshot.child("sessions");
-                    if(session != null && session.exists()) {
-                        for (DataSnapshot ds : session.getChildren()) {
-                            if (((boolean) ds.getValue()) == true) {
-                                getSession(ds.getKey(), sessions.size() - 1);
-                            }
-                        }
-                    }
-                    if(widgetList != null) {
-                        mAdapter.notifyDataSetChanged();
-                        widgetList.invalidate();
+
+        _FBHelper.SubscribeToChildUpdates(this, Location.class,
+                new FBQueryIdentifier(FBQueryIdentifier.OrderBy.Child, "interest",
+                        FBQueryIdentifier.Qualifier.equalTo, interest));
+    }
+
+    @Override
+    public void onChildAdded(FBModelIdentifier modelIdentifier, FBQueryIdentifier queryIdentifier, FBModelObject model, String prevChild) {
+
+        if(modelIdentifier.IsIntendedObject(model, Location.class)) {
+            Location location = (Location)model;
+            locations.add(location);
+            sessions.add(new ArrayList<Session>());
+            if (location.sessions != null) {
+                for (String sessionKey : location.sessions.keySet()) {
+                    if ( location.sessions.get(sessionKey) == true) {
+                        getSession(sessionKey, sessions.size() - 1);
                     }
                 }
             }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
+            if (widgetList != null) {
+                mAdapter.notifyDataSetChanged();
+                widgetList.invalidate();
             }
+        }
+        else if(modelIdentifier.IsIntendedObject(model, Interest.class)){
+            interest = (Interest)model;
+            getReservationRules(interest.FBKey);
+            getLocations(interest.FBKey);
+        }
+        else if(modelIdentifier.IsIntendedObject(model, ReservationRule.class)){
+            reservationRule = (ReservationRule)model;
+            constructScheduleForDay();
+            daysToShow = reservationRule.generalWindowLength;
+            if (calendar.get(Calendar.MINUTE) + (calendar.get(Calendar.HOUR_OF_DAY) * 60) >= reservationRule.timeRegistrationOpens)
+                daysToShow += reservationRule.advancedWindowLength;
 
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
+            updateCountLabel();
+        }
+    }
 
-            }
+    @Override
+    public void onChildChanged(FBModelIdentifier modelIdentifier, FBQueryIdentifier queryIdentifier, FBModelObject model, String key) {
 
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+    }
 
-            }
+    @Override
+    public void onChildRemoved(FBModelIdentifier modelIdentifier, FBQueryIdentifier queryIdentifier, FBModelObject model) {
 
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
+    }
 
-            }
-        });
+    @Override
+    public void onChildMoved(FBModelIdentifier modelIdentifier, FBQueryIdentifier queryIdentifier, FBModelObject model, String key) {
+
+    }
+
+    @Override
+    public void onDataChange(FBModelIdentifier identifier, FBModelObject model) {
+        if(identifier.IsIntendedObject(model, Session.class)){
+            Session session = (Session)model;
+            int pos = (int)identifier.getPayload();
+            //TODO determine if Date fits window here?
+            sessions.get(pos).add(session);
+            assignSessionToTimeSlot(session, pos);
+        }
+    }
+
+    @Override
+    public void onCancel(FBModelIdentifier identifier, FirebaseError error) {
+
+    }
+
+    @Override
+    public void onNullData(FBModelIdentifier identifier, String key) {
+
+    }
+
+    @Override
+    public void onException(Exception x) {
+
     }
 
     private class TimeSlot {
