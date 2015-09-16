@@ -6,6 +6,7 @@ import com.mac.themac.model.firebase.FBModelIdentifier;
 import com.mac.themac.model.firebase.FBModelObject;
 import com.mac.themac.utility.FirebaseHelper;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -28,9 +29,9 @@ public class Closure extends FBModelObject{
     HashMap<String, Boolean> sessions;
 
     @JsonIgnore
-    public List<FBModelObject> linkedInterests;
+    public List<FBModelObject> linkedInterests = new ArrayList<FBModelObject>();;
     @JsonIgnore
-    public List<FBModelObject> linkedSessions;
+    public List<FBModelObject> linkedSessions = new ArrayList<FBModelObject>();;
 
 
     public Closure(){}

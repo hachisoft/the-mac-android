@@ -6,6 +6,7 @@ import com.mac.themac.model.firebase.FBModelIdentifier;
 import com.mac.themac.model.firebase.FBModelObject;
 import com.mac.themac.utility.FirebaseHelper;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -39,7 +40,7 @@ public class Rule extends FBModelObject{
     @JsonIgnore
     public Interest linkedInterest;
     @JsonIgnore
-    public List<FBModelObject> linkedLocations;
+    public List<FBModelObject> linkedLocations = new ArrayList<FBModelObject>();
 
     public Rule() {
     }

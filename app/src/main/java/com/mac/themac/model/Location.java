@@ -3,6 +3,7 @@ package com.mac.themac.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -27,11 +28,11 @@ public class Location extends FBModelObject {
     @JsonIgnore
     public Interest linkedInterest;
     @JsonIgnore
-    public List<FBModelObject> linkedSessions;
+    public List<FBModelObject> linkedSessions  = new ArrayList<FBModelObject>();
     @JsonIgnore
-    public List<FBModelObject> linkedRules;
+    public List<FBModelObject> linkedRules = new ArrayList<FBModelObject>();
     @JsonIgnore
-    public List<FBModelObject> linkedReservations;
+    public List<FBModelObject> linkedReservations = new ArrayList<FBModelObject>();
 
     public Location(){}
 
