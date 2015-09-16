@@ -23,12 +23,9 @@ import com.facebook.CallbackManager;
 import com.facebook.login.LoginManager;
 import com.facebook.login.widget.LoginButton;
 import com.firebase.client.AuthData;
-import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.firebase.client.Query;
-import com.firebase.client.ValueEventListener;
 import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.auth.UserRecoverableAuthException;
@@ -40,7 +37,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 import com.mac.themac.R;
 import com.mac.themac.TheMACApplication;
-import com.mac.themac.model.Location;
 import com.mac.themac.model.Login;
 import com.mac.themac.model.User;
 import com.mac.themac.model.firebase.FBChildListener;
@@ -190,7 +186,7 @@ public class LoginActivity extends AppCompatActivity implements
 
     @OnClick(R.id.btnCancelMemberId)
     public void cancelMemberId(){
-        mLoginOptionsViewSwitcher.setDisplayedChild(mLoginOptionsViewSwitcher.indexOfChild(findViewById(R.id.login_view1)));
+        onClickLogout();
     }
 
 
@@ -613,9 +609,19 @@ public class LoginActivity extends AppCompatActivity implements
             //First time login with this auth
             AuthData authData = (AuthData)identifier.getPayload();
             Login login = new Login(authData.getProvider());
+            login.FBKey = key;
             mFBHelper.set_login(login);
-            mFBHelper.setFBModelObject(login, key, Login.class);
+            mFBHelper.setFBModelValue(key, login);
             mFBHelper.addModelListener(key, login, this);
+
+            mLoginViewSwitcher.setDisplayedChild(mLoginViewSwitcher.indexOfChild(findViewById(R.id.logged_in_view)));
+
+            if (login.getIsNotProvisioned() == true ||
+                    login.getUser().length() != 20) { //Find and associate User
+                mLoggedinViewSwitcher.setDisplayedChild(mLoggedinViewSwitcher.indexOfChild(findViewById(R.id.logged_in_ask_memberid)));
+            } else {
+                mLoggedinViewSwitcher.setDisplayedChild(mLoggedinViewSwitcher.indexOfChild(findViewById(R.id.logged_in_home)));
+            }
         }
         if(identifier.getIntendedClass().equals(User.class)) {
             showErrorDialog("Invalid Member Number. Please retry with valid Member Number.");
@@ -625,7 +631,7 @@ public class LoginActivity extends AppCompatActivity implements
 
     @Override
     public void onException(Exception x) {
-
+        showErrorDialog(x.getMessage());
     }
 
     @Override
@@ -636,12 +642,25 @@ public class LoginActivity extends AppCompatActivity implements
             User user = (User)model;
 
             login.user = user.FBKey;
-            login.isNotProvisioned = false;
+            if(login.isNotProvisioned == true) {
+                login.isNotProvisioned = false;
+                mFBHelper.setFBModelValue(login.FBKey, login);
+            }
             login.linkedUser = user;
+
+            if(user.logins == null){
+                user.logins = new HashMap<String, Boolean>();
+            }
+            if(!user.logins.containsKey(login.FBKey)){
+                user.logins.put(login.FBKey, true);
+                mFBHelper.setFBModelValue(user.FBKey, user);
+            }
 
             mFBHelper.set_loggedInUser(user);
             mFBHelper.getLoginRef(login.FBKey).setValue(login);
             mLoggedinViewSwitcher.setDisplayedChild(mLoggedinViewSwitcher.indexOfChild(findViewById(R.id.logged_in_home)));
+
+            user.loadLinkedObjects();
         }
     }
 

@@ -37,10 +37,9 @@ public abstract class FBModelObject implements FBModelListener{
         nonMappedProperties.put(name, value);
     }
 
-    @JsonIgnore
-    public void loadLinkedObjects(){
+    @JsonIgnore abstract public void loadLinkedObjects();
 
-    }
+    @JsonIgnore abstract public void resetLinkedObjects();
 
     @JsonIgnore
     protected void loadLinkedObjects(final Class<? extends FBModelObject> targetObjectType,
@@ -48,55 +47,37 @@ public abstract class FBModelObject implements FBModelListener{
                                      HashMap<String, Boolean> keyHashMap,
                                      List<FBModelObject> linkedModels){
 
-        if (keyHashMap != null) {
+        //Only load linked objects if linkedModels is not already loaded(size=0), to avoid
+        // cyclic infinite recursions. If you want to reload a map use reset() on model first
+        // to clear out cached linked objects.
+        if (keyHashMap != null && linkedModels.size() == 0) {
 
             final FirebaseHelper fbHelper = TheMACApplication.theApp.getFirebaseHelper();
-            if(linkedModels == null)
-                linkedModels = new ArrayList<>();
-            linkedModels.clear();
             for (String key : keyHashMap.keySet()) {
 
                 fbHelper.SubscribeToModelUpdates(this, new FBModelIdentifier(targetObjectType, linkedModels), key);
-                /*Firebase fbRef = fbHelper.getRootKeyedObjectRef(containerName, key);
-                fbRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()) {
-                            Object modelObject = dataSnapshot.getValue(targetObjectType);
-                            if(modelObject instanceof FBModelObject) {
-                                ((FBModelObject)modelObject).FBKey = dataSnapshot.getKey();
-                                linkedModels.add((FBModelObject) modelObject);
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(FirebaseError firebaseError) {
-
-                    }
-                });*/
             }
         }
     }
 
-    @JsonIgnore
-    protected void setLinkedObject(FBModelIdentifier fbModelIdentifier, FBModelObject modelObject){
-
-    }
+    @JsonIgnore abstract protected void setLinkedObject(FBModelIdentifier fbModelIdentifier, FBModelObject modelObject);
 
     @JsonIgnore
     protected void loadLinkedObject(final Class<? extends FBModelObject> targetObjectType,
                                     FirebaseHelper.FBRootContainerNames containerName,
-                                    String key) {
-        loadLinkedObject(new FBModelIdentifier(targetObjectType), containerName,key);
+                                    String key, FBModelObject linkedModel) {
+        loadLinkedObject(new FBModelIdentifier(targetObjectType), containerName,key, linkedModel);
     }
 
     @JsonIgnore
     protected void loadLinkedObject(final FBModelIdentifier fbModelIdentifier,
                                      FirebaseHelper.FBRootContainerNames containerName,
-                                     String key){
+                                     String key, FBModelObject linkedModel){
 
-        if (key != null) {
+        //Only load linked object if linkedModel is not already loaded(==null), to avoid
+        // cyclic infinite recursions. If you want to reload a linkedModel use reset() on model first
+        // to clear out cached linked model.
+        if (key != null && linkedModel == null) {
 
             final FirebaseHelper fbHelper = TheMACApplication.theApp.getFirebaseHelper();
             fbHelper.SubscribeToModelUpdates(this, fbModelIdentifier, key);

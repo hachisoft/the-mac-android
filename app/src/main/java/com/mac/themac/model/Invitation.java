@@ -29,11 +29,14 @@ public class Invitation extends FBModelObject{
     public void loadLinkedObjects() {
 
         if(event != null && !event.isEmpty()) {
-            loadLinkedObject(Event.class, FirebaseHelper.FBRootContainerNames.events, event);
+            loadLinkedObject(Event.class, FirebaseHelper.FBRootContainerNames.events,
+                    event, linkedEvent);
         }
 
         if(recipient != null && !recipient.isEmpty()) {
-            loadLinkedObject(MemberProfilePublic.class, FirebaseHelper.FBRootContainerNames.memberProfilePublics, recipient);
+            loadLinkedObject(MemberProfilePublic.class,
+                    FirebaseHelper.FBRootContainerNames.memberProfilePublics,
+                    recipient, linkedRecipient);
         }
 
     }
@@ -46,5 +49,18 @@ public class Invitation extends FBModelObject{
         if(fbModelIdentifier.IsIntendedObject(modelObject, MemberProfilePublic.class)) {
             linkedRecipient = (MemberProfilePublic) modelObject;
         }
+        else if(fbModelIdentifier.IsIntendedObject(modelObject, Event.class)){
+            linkedEvent = (Event)modelObject;
+        }
+
+    }
+
+    @JsonIgnore
+    @Override
+    public void resetLinkedObjects() {
+
+        linkedEvent = null;
+        linkedRecipient = null;
+
     }
 }

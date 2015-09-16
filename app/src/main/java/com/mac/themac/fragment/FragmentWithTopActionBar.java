@@ -8,7 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.mac.themac.TheMACApplication;
 import com.mac.themac.activity.ActivityWithBottomActionBar;
+import com.mac.themac.utility.FirebaseHelper;
 
 /**
  * Created by Samir on 7/8/2015.
@@ -16,9 +18,15 @@ import com.mac.themac.activity.ActivityWithBottomActionBar;
 public abstract class FragmentWithTopActionBar extends Fragment {
 
     protected OnFragmentInteractionListener mListener;
-
+    protected FirebaseHelper mFBHelper;
     protected abstract int getFragmentLayoutId();
     protected abstract int getTitleResourceId();
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mFBHelper = TheMACApplication.theApp.getFirebaseHelper();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

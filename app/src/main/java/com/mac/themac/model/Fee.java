@@ -28,7 +28,7 @@ public class Fee extends FBModelObject {
     @JsonIgnore
     public void loadLinkedObjects() {
         if(event != null && !event.isEmpty()) {
-            loadLinkedObject(Event.class, FirebaseHelper.FBRootContainerNames.events, event);
+            loadLinkedObject(Event.class, FirebaseHelper.FBRootContainerNames.events, event, linkedEvent);
         }
     }
 
@@ -40,5 +40,11 @@ public class Fee extends FBModelObject {
         if(fbModelIdentifier.IsIntendedObject(modelObject, Event.class)) {
             linkedEvent = (Event) modelObject;
         }
+    }
+
+    @JsonIgnore
+    @Override
+    public void resetLinkedObjects() {
+        linkedEvent = null;
     }
 }

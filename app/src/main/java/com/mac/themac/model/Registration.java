@@ -42,19 +42,25 @@ public class Registration extends FBModelObject{
     public void loadLinkedObjects() {
 
         if( registeredUser != null && !registeredUser.isEmpty()) {
-            loadLinkedObject(new FBModelIdentifier(User.class), FirebaseHelper.FBRootContainerNames.users, registeredUser);
+            loadLinkedObject(new FBModelIdentifier(User.class),
+                    FirebaseHelper.FBRootContainerNames.users, registeredUser,
+                    linkedRegisteredUser);
         }
 
         if(registeringUser != null && !registeringUser.isEmpty()) {
-            loadLinkedObject(new FBModelIdentifier(User.class, 1), FirebaseHelper.FBRootContainerNames.users, registeringUser);
+            loadLinkedObject(new FBModelIdentifier(User.class, 1),
+                    FirebaseHelper.FBRootContainerNames.users, registeringUser,
+                    linkedRegisteringUser);
         }
 
         if(fee != null && !fee.isEmpty()) {
-            loadLinkedObject(Fee.class, FirebaseHelper.FBRootContainerNames.fees, fee);
+            loadLinkedObject(Fee.class, FirebaseHelper.FBRootContainerNames.fees, fee,
+                    linkedFee);
         }
 
         if(event != null && !event.isEmpty()) {
-            loadLinkedObject(Event.class, FirebaseHelper.FBRootContainerNames.events, event);
+            loadLinkedObject(Event.class, FirebaseHelper.FBRootContainerNames.events, event,
+                    linkedEvent);
         }
 
     }
@@ -76,5 +82,15 @@ public class Registration extends FBModelObject{
         else if(fbModelIdentifier.IsIntendedObject(modelObject, Event.class)) {
             linkedEvent = (Event) modelObject;
         }
+    }
+
+    @JsonIgnore
+    @Override
+    public void resetLinkedObjects() {
+
+        linkedRegisteredUser = null;
+        linkedRegisteringUser = null;
+        linkedFee = null;
+        linkedEvent = null;
     }
 }

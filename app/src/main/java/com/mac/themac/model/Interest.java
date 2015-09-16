@@ -5,6 +5,7 @@ import android.util.Pair;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mac.themac.model.ReservationRule;
+import com.mac.themac.model.firebase.FBModelIdentifier;
 import com.mac.themac.model.firebase.FBModelObject;
 
 import java.util.HashMap;
@@ -44,5 +45,28 @@ public class Interest extends FBModelObject{
     public ReservationRule linkedReservationRule;
 
     public Interest() {   }
+
+    @Override
+    public void loadLinkedObjects() {
+
+    }
+
+    @JsonIgnore
+    @Override
+    public void resetLinkedObjects() {
+
+        linkedPosts.clear();
+        linkedEvents.clear();
+        linkedReservations.clear();
+        linkedTidbits.clear();
+        linkedLocations.clear();
+
+        linkedReservationRule = null;
+    }
+
+    @Override
+    protected void setLinkedObject(FBModelIdentifier fbModelIdentifier, FBModelObject modelObject) {
+
+    }
 
 }

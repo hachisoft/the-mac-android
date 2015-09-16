@@ -44,7 +44,8 @@ public class ReservationRule extends FBModelObject{
     public void loadLinkedObjects() {
 
         if(interest != null && !interest.isEmpty()) {
-            loadLinkedObject(Interest.class, FirebaseHelper.FBRootContainerNames.interests, interest);
+            loadLinkedObject(Interest.class, FirebaseHelper.FBRootContainerNames.interests,
+                    interest, linkedInterest);
         }
     }
 
@@ -57,5 +58,12 @@ public class ReservationRule extends FBModelObject{
         if(fbModelIdentifier.IsIntendedObject(modelObject, Interest.class)) {
             linkedInterest = (Interest) modelObject;
         }
+    }
+
+    @JsonIgnore
+    @Override
+    public void resetLinkedObjects() {
+
+        linkedInterest = null;
     }
 }

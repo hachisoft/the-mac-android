@@ -70,7 +70,7 @@
                         android:text="@string/name"/>
 
                     <EditText
-                        style="@style/UIGrayColumnBox"
+
                         android:inputType="textPersonName"
                         android:text="@string/name"
                         android:id="@+id/editName"

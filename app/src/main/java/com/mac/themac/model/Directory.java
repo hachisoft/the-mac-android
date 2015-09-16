@@ -2,6 +2,7 @@ package com.mac.themac.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.mac.themac.model.firebase.FBModelIdentifier;
 import com.mac.themac.model.firebase.FBModelObject;
 import com.mac.themac.utility.FirebaseHelper;
 
@@ -56,6 +57,18 @@ public class Directory extends FBModelObject {
             loadLinkedObjects(Group.class, FirebaseHelper.FBRootContainerNames.groups,
                     groups, linkedGroups);
         }
+
+    }
+
+    @Override
+    public void resetLinkedObjects() {
+        linkedEmployees.clear();
+        linkedMembers.clear();
+        linkedGroups.clear();
+    }
+
+    @Override
+    protected void setLinkedObject(FBModelIdentifier fbModelIdentifier, FBModelObject modelObject) {
 
     }
 }

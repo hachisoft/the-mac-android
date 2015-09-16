@@ -55,8 +55,10 @@ public class Login extends FBModelObject {
     @JsonIgnore
     public void loadLinkedObjects(){
 
-        if(user != null && !user.isEmpty()) {
-            loadLinkedObject(User.class, FirebaseHelper.FBRootContainerNames.users, user);
+        if(user != null && !user.isEmpty() && linkedUser == null) {
+            loadLinkedObject(User.class,
+                    FirebaseHelper.FBRootContainerNames.users,
+                    user, linkedUser);
         }
 
     }
@@ -83,7 +85,14 @@ public class Login extends FBModelObject {
 
             }
 
-            linkedUser.loadLinkedObjects();
+            linkedUser.loadMemberProfileInterestsRegistrations();
         }
+    }
+
+    @JsonIgnore
+    @Override
+    public void resetLinkedObjects() {
+
+        linkedUser = null;
     }
 }
