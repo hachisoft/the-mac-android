@@ -24,7 +24,7 @@ public class Session extends FBModelObject {
     @JsonIgnore
     Location linkedLocation;
     @JsonIgnore
-    Event linkedEvent;
+    public Event linkedEvent;
     @JsonIgnore
     Closure linkedClosure;
     @JsonIgnore

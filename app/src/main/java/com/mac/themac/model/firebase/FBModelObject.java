@@ -11,6 +11,7 @@ import com.firebase.client.ValueEventListener;
 import com.mac.themac.TheMACApplication;
 import com.mac.themac.utility.FirebaseHelper;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,6 +51,8 @@ public abstract class FBModelObject implements FBModelListener{
         if (keyHashMap != null) {
 
             final FirebaseHelper fbHelper = TheMACApplication.theApp.getFirebaseHelper();
+            if(linkedModels == null)
+                linkedModels = new ArrayList<>();
             linkedModels.clear();
             for (String key : keyHashMap.keySet()) {
 
