@@ -3,6 +3,7 @@ package com.mac.themac.activity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ToggleButton;
 
@@ -117,8 +118,11 @@ public abstract class ActivityWithBottomActionBar extends AppCompatActivity impl
     }
 
     public void showTopActionBar() {
-        if(getSupportActionBar() != null)
+        if(getSupportActionBar() != null) {
+            ActionBar actionBar = getSupportActionBar();
+            actionBar.setHomeAsUpIndicator(R.drawable.app_home);
             getSupportActionBar().show();
+        }
     }
 
     public void showFragment(FragmentWithTopActionBar fragment, int replacingResourceId){
