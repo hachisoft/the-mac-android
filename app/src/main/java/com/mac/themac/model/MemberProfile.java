@@ -6,6 +6,7 @@ import com.mac.themac.model.firebase.FBModelObject;
 import com.mac.themac.model.firebase.FBModelIdentifier;
 import com.mac.themac.utility.FirebaseHelper;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -51,11 +52,11 @@ public class MemberProfile extends FBModelObject{
     @JsonIgnore
     public User linkedUser;
     @JsonIgnore
-    public List<FBModelObject> linkedAddresses;
+    public List<FBModelObject> linkedAddresses = new ArrayList<FBModelObject>();
     @JsonIgnore
-    public List<FBModelObject> linkedVehicles;
+    public List<FBModelObject> linkedVehicles = new ArrayList<FBModelObject>();
     @JsonIgnore
-    public List<FBModelObject> linkedEmergencyContacts;
+    public List<FBModelObject> linkedEmergencyContacts = new ArrayList<FBModelObject>();
 
     @Override
     @JsonIgnore

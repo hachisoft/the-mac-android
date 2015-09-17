@@ -1,5 +1,6 @@
 package com.mac.themac.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -40,13 +41,13 @@ public class Event extends FBModelObject{
     HashMap<String, Boolean> registrations;
 
     @JsonIgnore
-    public List<FBModelObject> linkedSessions;
+    public List<FBModelObject> linkedSessions = new ArrayList<FBModelObject>();;
     @JsonIgnore
-    public List<FBModelObject> linkedFees;
+    public List<FBModelObject> linkedFees = new ArrayList<FBModelObject>();;
     @JsonIgnore
-    public List<FBModelObject> linkedInterests;
+    public List<FBModelObject> linkedInterests = new ArrayList<FBModelObject>();;
     @JsonIgnore
-    public List<FBModelObject> linkedRegistrations;
+    public List<FBModelObject> linkedRegistrations = new ArrayList<FBModelObject>();;
 
     public Event() {}
 

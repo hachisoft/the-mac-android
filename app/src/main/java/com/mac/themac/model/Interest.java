@@ -8,6 +8,7 @@ import com.mac.themac.model.ReservationRule;
 import com.mac.themac.model.firebase.FBModelIdentifier;
 import com.mac.themac.model.firebase.FBModelObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -32,15 +33,15 @@ public class Interest extends FBModelObject{
 
 
     @JsonIgnore
-    public List<Post> linkedPosts;
+    public List<FBModelObject> linkedPosts = new ArrayList<FBModelObject>();
     @JsonIgnore
-    public List<Event> linkedEvents;
+    public List<FBModelObject> linkedEvents = new ArrayList<FBModelObject>();
     @JsonIgnore
-    public List<Reservation> linkedReservations;
+    public List<FBModelObject> linkedReservations = new ArrayList<FBModelObject>();
     @JsonIgnore
-    public List<Tidbit> linkedTidbits;
+    public List<FBModelObject> linkedTidbits = new ArrayList<FBModelObject>();
     @JsonIgnore
-    public List<Location> linkedLocations;
+    public List<FBModelObject> linkedLocations = new ArrayList<FBModelObject>();
     @JsonIgnore
     public ReservationRule linkedReservationRule;
 

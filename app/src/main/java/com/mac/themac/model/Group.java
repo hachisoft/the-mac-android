@@ -6,6 +6,7 @@ import com.mac.themac.model.firebase.FBModelIdentifier;
 import com.mac.themac.model.firebase.FBModelObject;
 import com.mac.themac.utility.FirebaseHelper;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -20,9 +21,9 @@ public class Group extends FBModelObject{
     public HashMap<String, Boolean>leaders;
 
     @JsonIgnore
-    public List<FBModelObject> linkedMembers;
+    public List<FBModelObject> linkedMembers = new ArrayList<FBModelObject>();;
     @JsonIgnore
-    public List<FBModelObject> linkedLeaders;
+    public List<FBModelObject> linkedLeaders = new ArrayList<FBModelObject>();;
 
     public Group() {
     }
