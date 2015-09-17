@@ -67,13 +67,15 @@
 
                     <TextView
                         style="@style/MediumRowHeaderText"
-                        android:text="@string/name"/>
+                        android:text="@string/name"
+                        android:labelFor="@+id/editName" />
 
                     <EditText
-
-                        android:inputType="textPersonName"
+                        style="@style/UIGrayColumnBox"
+                        android:inputType="textCapWords|textPersonName|textAutoComplete"
                         android:text="@string/name"
                         android:id="@+id/editName"
+                        android:nextFocusDown="@+id/selGender"
                         />
                 </TableRow>
 
@@ -82,13 +84,17 @@
 
                     <TextView
                         style="@style/MediumRowHeaderText"
-                        android:text="@string/gender"/>
+                        android:text="@string/gender"
+                        android:labelFor="@+id/selGender" />
 
                     <Spinner
                         style="@style/UIGrayColumnBox"
                         android:id="@+id/selGender"
                         android:entries="@array/gender_array"
-                        android:prompt="@string/gender"/>
+                        android:prompt="@string/gender"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:spinnerMode="dialog" />
 
                 </TableRow>
                 <TableRow
@@ -96,12 +102,13 @@
 
                     <TextView
                         style="@style/MediumRowHeaderText"
-                        android:text="@string/date_of_birth"/>
+                        android:text="@string/date_of_birth"
+                        android:labelFor="@+id/pickDateOfBirth" />
 
                     <EditText
                         style="@style/UIGrayColumnBox"
-                        android:inputType="date"
-                        android:id="@+id/pickDateOfBirth" />
+                        android:id="@+id/pickDateOfBirth"
+                        android:inputType="date"/>
 
                 </TableRow>
                 <TableRow
@@ -109,7 +116,8 @@
 
                     <TextView
                         style="@style/MediumRowHeaderText"
-                        android:text="@string/phone"/>
+                        android:text="@string/phone"
+                        android:labelFor="@+id/editPhone" />
 
                     <EditText
                         style="@style/UIGrayColumnBox"
@@ -122,7 +130,8 @@
 
                     <TextView
                         style="@style/MediumRowHeaderText"
-                        android:text="@string/email"/>
+                        android:text="@string/email"
+                        android:labelFor="@+id/editEmail" />
 
                     <EditText
                         style="@style/UIGrayColumnBox"
@@ -136,11 +145,12 @@
 
                     <TextView
                         style="@style/MediumRowHeaderText"
-                        android:text="@string/address"/>
+                        android:text="@string/address"
+                        android:labelFor="@+id/editAddress" />
 
                     <EditText
                         style="@style/UIGrayColumnBox"
-                        android:inputType="textAutoComplete"
+                        android:inputType="textAutoComplete|textPostalAddress"
                         android:text="@string/address"
                         android:id="@+id/editAddress" />
                 </TableRow>
@@ -149,7 +159,8 @@
 
                     <TextView
                         style="@style/MediumRowHeaderText"
-                        android:text="@string/occupation"/>
+                        android:text="@string/occupation"
+                        android:labelFor="@+id/editOccupation" />
 
                     <EditText
                         style="@style/UIGrayColumnBox"
@@ -162,11 +173,12 @@
 
                     <TextView
                         style="@style/MediumRowHeaderText"
-                        android:text="@string/office_address"/>
+                        android:text="@string/office_address"
+                        android:labelFor="@+id/editOfficeAddress" />
 
                     <EditText
                         style="@style/UIGrayColumnBox"
-                        android:inputType="textAutoComplete"
+                        android:inputType="textAutoComplete|textPostalAddress"
                         android:text="@string/office_address"
                         android:id="@+id/editOfficeAddress" />
                 </TableRow>
