@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.firebase.client.FirebaseError;
@@ -33,6 +34,7 @@ public class EventDetails extends FragmentWithTopActionBar implements FBModelLis
     @Bind(R.id.tv_timeslot) TextView tvTimeSlot;
     @Bind(R.id.tv_dates) TextView tvDates;
     @Bind(R.id.tv_description) TextView tvDescription;
+    @Bind(R.id.indicator) ImageView ivIndicator;
 
     private static String ARG_EVENT_KEY = "event_key";
     private String eventKey;
@@ -69,6 +71,17 @@ public class EventDetails extends FragmentWithTopActionBar implements FBModelLis
             cost = cost.substring(0, cost.length()-2);
         }
         tvCost.setText(cost);
+        if(event.getStatus().equals("Reserved"))
+            ivIndicator.setImageResource(R.drawable.status_reserved);
+        else if(event.getStatus().equals("SoldOut"))
+            ivIndicator.setImageResource(R.drawable.status_sold_out);
+        else if(event.getStatus().equals("Unavailable"))
+            ivIndicator.setImageResource(R.drawable.status_unavailable);
+        else if(event.getStatus().equals("Waitlist"))
+            ivIndicator.setImageResource(R.drawable.status_waitlist);
+        else if(event.getStatus().equals("NoRegistrationRequired"))
+            ivIndicator.setImageResource(R.drawable.status_no_registration);
+
     }
 
     @Override

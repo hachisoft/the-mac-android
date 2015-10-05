@@ -75,6 +75,9 @@
     <string name="event_results">Event Results</string>
     <string name="register">REGISTER</string>
     <string name="cancel_registration">CANCEL REGISTRATION</string>
+    <string name="about_mac_text">The Multnomah Athletic Club is open everyday, except Christmas. Normal hours are listed below but may change on holidays. Staff are available during regular business hours. If Members don\'t know who to contact for assistance, call the main switchboard at 503-223-6251</string>
+    <string name="hours_label">Club Hours</string>
+    <string name="m_f">Monday-Friday: 5am - 11pm</string>
 
 
 </resources>

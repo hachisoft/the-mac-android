@@ -144,8 +144,16 @@ public class EventList extends FragmentWithTopActionBar {
                 view = View.inflate(getContext(), R.layout.event_list_row, null);
             }
             ImageView status = (ImageView) view.findViewById(R.id.indicator);
-            if(!getItem(position).linkedEvent.getStatus().equals("Available"))
-                status.setImageDrawable(null);
+            if(getItem(position).linkedEvent.getStatus().equals("Reserved"))
+                status.setImageResource(R.drawable.status_reserved);
+            else if(getItem(position).linkedEvent.getStatus().equals("SoldOut"))
+                status.setImageResource(R.drawable.status_sold_out);
+            else if(getItem(position).linkedEvent.getStatus().equals("Unavailable"))
+                status.setImageResource(R.drawable.status_unavailable);
+            else if(getItem(position).linkedEvent.getStatus().equals("Waitlist"))
+                status.setImageResource(R.drawable.status_waitlist);
+            else if(getItem(position).linkedEvent.getStatus().equals("NoRegistrationRequired"))
+                status.setImageResource(R.drawable.status_no_registration);
             TextView title = (TextView) view.findViewById(R.id.tv_title);
             TextView time = (TextView) view.findViewById(R.id.tv_time);
             title.setText(getItem(position).linkedEvent.getTitle());

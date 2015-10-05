@@ -7,10 +7,14 @@ import android.widget.ToggleButton;
 
 import com.firebase.client.FirebaseError;
 import com.mac.themac.R;
+import com.mac.themac.TheMACApplication;
+import com.mac.themac.fragment.DatePickerFragment;
+import com.mac.themac.fragment.DatePickerFragment.DatePickerFragmentInterface;
 import com.mac.themac.fragment.EventDetails;
 import com.mac.themac.fragment.EventList;
 import com.mac.themac.fragment.EventTypeSelect;
 import com.mac.themac.fragment.FragmentWithTopActionBar;
+import com.mac.themac.fragment.TimePickerFragment;
 import com.mac.themac.model.Session;
 import com.mac.themac.model.firebase.FBChildListener;
 import com.mac.themac.model.firebase.FBModelIdentifier;
@@ -27,7 +31,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class FindEvents extends ActivityWithBottomActionBar implements FragmentWithTopActionBar.OnFragmentInteractionListener,
-        FBChildListener{
+        FBChildListener, DatePickerFragmentInterface, TimePickerFragment.TimePickerFragmentInterface {
+
+    private static final int FROM_DATE = 111;
+    private static final int TO_DATE = 112;
+    private static final int START_TIME = 113;
+    private static final int END_TIME = 114;
 
     @Bind(R.id.tv_event_types) TextView tvEventTypes;
     @Bind(R.id.tv_start_time) TextView tvStartTime;
@@ -43,7 +52,6 @@ public class FindEvents extends ActivityWithBottomActionBar implements FragmentW
     private long startTime = 345;
     private long endTime = 1380;
 
-    //TODO build date picker
     //TODO build time picker
     //TODO get selected event types back from fragment
 
@@ -57,8 +65,8 @@ public class FindEvents extends ActivityWithBottomActionBar implements FragmentW
         toDate.add(Calendar.DAY_OF_YEAR, 6);
         ButterKnife.bind(this);
         tvEventTypes.setText("All");
-        tvStartTime.setText("5:45 AM");
-        tvEndTime.setText("11:00 PM");
+        ((TheMACApplication)getApplication()).setTimeLabel(tvStartTime, startTime);
+        ((TheMACApplication)getApplication()).setTimeLabel(tvEndTime, endTime);
         SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
         tvFromDate.setText(format.format(fromDate.getTime()));
         tvToDate.setText(format.format(toDate.getTime()));
@@ -90,6 +98,26 @@ public class FindEvents extends ActivityWithBottomActionBar implements FragmentW
     @OnClick(R.id.tv_event_types)
     public void selectEventTypes(){
         showFragment(EventTypeSelect.newInstance(selectedEventTypes), R.id.container);
+    }
+
+    @OnClick(R.id.tv_from_date)
+    public void selectFromDate(){
+        DatePickerFragment.newInstance(FROM_DATE, fromDate.get(Calendar.YEAR), fromDate.get(Calendar.MONTH), fromDate.get(Calendar.DAY_OF_MONTH)).show(getSupportFragmentManager(), "DatePicker");
+    }
+
+    @OnClick(R.id.tv_to_date)
+    public void selectToDATE(){
+        DatePickerFragment.newInstance(TO_DATE, toDate.get(Calendar.YEAR), toDate.get(Calendar.MONTH), toDate.get(Calendar.DAY_OF_MONTH)).show(getSupportFragmentManager(), "DatePicker");
+    }
+
+    @OnClick(R.id.tv_start_time)
+    public void setStartTime(){
+        TimePickerFragment.newInstance(START_TIME, startTime).show(getSupportFragmentManager(), "TimePicker");
+    }
+
+    @OnClick(R.id.tv_end_time)
+    public void setEndTime(){
+        TimePickerFragment.newInstance(END_TIME, endTime).show(getSupportFragmentManager(), "TimePicker");
     }
 
     @Override
@@ -162,5 +190,33 @@ public class FindEvents extends ActivityWithBottomActionBar implements FragmentW
     @Override
     public void onException(Exception x) {
 
+    }
+
+    @Override
+    public void onDateSet(int dateType, int year, int month, int day) {
+        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+        if(dateType == FROM_DATE){
+            fromDate.set(Calendar.YEAR, year);
+            fromDate.set(Calendar.MONTH, month);
+            fromDate.set(Calendar.DAY_OF_MONTH, day);
+            tvFromDate.setText(format.format(fromDate.getTime()));
+
+        } else if(dateType == TO_DATE){
+            toDate.set(Calendar.YEAR, year);
+            toDate.set(Calendar.MONTH, month);
+            toDate.set(Calendar.DAY_OF_MONTH, day);
+            tvToDate.setText(format.format(toDate.getTime()));
+        }
+    }
+
+    @Override
+    public void onTimeSet(int timeType, int hourOfDay, int minute) {
+        if(timeType == START_TIME) {
+            startTime = hourOfDay * 60 + minute;
+            ((TheMACApplication) getApplication()).setTimeLabel(tvStartTime, startTime);
+        } else {
+            endTime = hourOfDay * 60 + minute;
+            ((TheMACApplication) getApplication()).setTimeLabel(tvEndTime, endTime);
+        }
     }
 }

@@ -3,6 +3,7 @@ package com.mac.themac;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Intent;
+import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
 import com.facebook.FacebookSdk;
@@ -76,5 +77,9 @@ public class TheMACApplication extends Application {
             currentActivity.overridePendingTransition(0, 0);
         }
         currentActivity.startActivity(intent);
+    }
+
+    public void setTimeLabel(TextView label, Long time){
+        label.setText(Long.toString(time / 60 % 12 == 0 ? 12 : time / 60 % 12) + ":" + String.format("%02d", time % 60) + " " + (time / 60 >= 12 ? "PM" : "AM"));
     }
 }

@@ -175,7 +175,7 @@ public class CourtReservationTimeBlockWidget extends LinearLayout implements FBM
     }
 
     public void setTimeLabel(Long time){
-        timeLabel.setText(Long.toString(time / 60 % 12 == 0 ? 12 : time / 60 % 12) + ":" + String.format("%02d", time % 60) + " " + (time / 60 >= 12 ? "PM" : "AM"));
+        ((TheMACApplication)getContext().getApplicationContext()).setTimeLabel(timeLabel, time);
     }
 
     public void resetButtons(){

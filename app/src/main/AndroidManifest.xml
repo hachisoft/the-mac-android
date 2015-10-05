@@ -69,6 +69,9 @@
             android:parentActivityName=".activity.LoginActivity"
             android:screenOrientation="portrait" >
         </activity>
+        <activity android:name=".activity.MACInformation"
+            android:label="Information"
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -76,7 +79,9 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBxMcgoWRfMmBy1YVecnavXR7K5uEdMcl8" />
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="de5b0fa0010bda3e2397839f872f992e1dc78cbe" />

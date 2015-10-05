@@ -4,10 +4,10 @@ import android.net.Uri;
 import android.widget.ToggleButton;
 
 import com.mac.themac.R;
+import com.mac.themac.TheMACApplication;
 import com.mac.themac.fragment.Closures;
 import com.mac.themac.fragment.Directory;
 import com.mac.themac.fragment.FragmentWithTopActionBar;
-import com.mac.themac.fragment.MACInformation;
 import com.mac.themac.fragment.MensBar;
 import com.mac.themac.fragment.Parking;
 
@@ -17,7 +17,7 @@ public class More extends ActivityWithBottomActionBar implements FragmentWithTop
 
     @OnClick(R.id.btnMacInformation)
     public void showMacInfo(){
-        showFragment(new MACInformation(), R.id.moreContainer);
+        TheMACApplication.startActivity(this, MACInformation.class);
     }
 
     @OnClick(R.id.btnMyAccountGrey)
