@@ -631,7 +631,7 @@ public class LoginActivity extends AppCompatActivity implements
 
     @Override
     public void onException(Exception x) {
-        showErrorDialog(x.getMessage());
+        showErrorDialog( x.getMessage() + (x.getCause() != null ? ":\r\n"+x.getCause().getMessage(): ""));
     }
 
     @Override

@@ -15,10 +15,10 @@ public class EmergencyContact extends FBModelObject {
     public String lastName;
     public String phone;
     public String email;
-    public String memberProfile;
+    public String user;
 
     @JsonIgnore
-    public MemberProfile linkedMemberProfile;
+    public User linkedUser;
 
     public EmergencyContact() {
     }
@@ -27,10 +27,10 @@ public class EmergencyContact extends FBModelObject {
     @JsonIgnore
     public void loadLinkedObjects() {
 
-        if(memberProfile != null && !memberProfile.isEmpty()) {
-            loadLinkedObject(MemberProfile.class,
-                    FirebaseHelper.FBRootContainerNames.memberProfiles,
-                    memberProfile, linkedMemberProfile);
+        if(user != null && !user.isEmpty()) {
+            loadLinkedObject(User.class,
+                    FirebaseHelper.FBRootContainerNames.users,
+                    user, linkedUser);
         }
 
     }
@@ -38,7 +38,7 @@ public class EmergencyContact extends FBModelObject {
     @JsonIgnore
     @Override
     public void resetLinkedObjects() {
-        linkedMemberProfile = null;
+        linkedUser = null;
     }
 
     @JsonIgnore
@@ -46,8 +46,8 @@ public class EmergencyContact extends FBModelObject {
     protected void setLinkedObject(FBModelIdentifier fbModelIdentifier,
                                    FBModelObject modelObject) {
 
-        if(fbModelIdentifier.IsIntendedObject(modelObject, MemberProfile.class)) {
-            linkedMemberProfile = (MemberProfile) modelObject;
+        if(fbModelIdentifier.IsIntendedObject(modelObject, User.class)) {
+            linkedUser = (User) modelObject;
         }
     }
 }

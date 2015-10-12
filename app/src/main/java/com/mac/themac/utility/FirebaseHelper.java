@@ -1,6 +1,5 @@
 package com.mac.themac.utility;
 
-import android.app.DownloadManager;
 import android.util.Pair;
 
 import com.firebase.client.ChildEventListener;
@@ -15,12 +14,10 @@ import com.mac.themac.model.EmergencyContact;
 import com.mac.themac.model.EmployeeProfile;
 import com.mac.themac.model.Event;
 import com.mac.themac.model.Fee;
-import com.mac.themac.model.Group;
 import com.mac.themac.model.Interest;
 import com.mac.themac.model.Invitation;
 import com.mac.themac.model.Location;
 import com.mac.themac.model.Login;
-import com.mac.themac.model.MemberProfile;
 import com.mac.themac.model.MemberProfilePublic;
 import com.mac.themac.model.Registration;
 import com.mac.themac.model.Reservation;
@@ -63,8 +60,8 @@ public class FirebaseHelper {
      */
     public enum FBRootContainerNames{
         logins, users, sessions, interests, events, reservations, reservationRules, registrations,
-        fees, closures, locations, memberProfiles, memberProfilePublics, employeeProfiles,
-        addresses, vehicles, emergencyContacts, invitations, groups, rules
+        fees, closures, locations, memberProfilePublics, employeeProfiles,
+        addresses, vehicles, emergencyContacts, invitations, rules
     }
 
     public FirebaseHelper(String firebaseUrl) {
@@ -195,9 +192,6 @@ public class FirebaseHelper {
         else if(classType.equals(Location.class)){
             return getRootKeyedObjectRef(FBRootContainerNames.locations, key);
         }
-        else if(classType.equals(MemberProfile.class)){
-            return getRootKeyedObjectRef(FBRootContainerNames.memberProfiles, key);
-        }
         else if(classType.equals(MemberProfilePublic.class)){
             return getRootKeyedObjectRef(FBRootContainerNames.memberProfilePublics, key);
         }
@@ -215,9 +209,6 @@ public class FirebaseHelper {
         }
         else if(classType.equals(Invitation.class)){
             return getRootKeyedObjectRef(FBRootContainerNames.invitations, key);
-        }
-        else if(classType.equals(Group.class)){
-            return getRootKeyedObjectRef(FBRootContainerNames.groups, key);
         }
         else if(classType.equals(Rule.class)){
             return getRootKeyedObjectRef(FBRootContainerNames.rules, key);
