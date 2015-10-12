@@ -81,6 +81,7 @@ public class Profile extends FragmentWithTopActionBar {
         mDOBPickerDialog.show();
     }
 
+    /*Keeping profile page read only
     @OnFocusChange({R.id.editName, R.id.selGender,R.id.pickDateOfBirth, R.id.editPhone,
             R.id.editEmail, R.id.editOccupation, R.id.editAddress, R.id.editOfficeAddress})
     public void updateModelFromUI(View v, boolean hasFocus){
@@ -149,7 +150,7 @@ public class Profile extends FragmentWithTopActionBar {
                     break;
             }
         }
-    }
+    }*/
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -157,9 +158,9 @@ public class Profile extends FragmentWithTopActionBar {
         ButterKnife.bind(this, view);
         User loggedInUser = mFBHelper.getLoggedInUser();
         updateUIFromModel(loggedInUser);
-        _gender.setFocusable(true);
+        /*_gender.setFocusable(true);
         _gender.setFocusableInTouchMode(true);
-
+        */
         return view;
     }
 
