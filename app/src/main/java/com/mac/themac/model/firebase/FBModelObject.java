@@ -45,7 +45,7 @@ public abstract class FBModelObject implements FBModelListener{
     protected void loadLinkedObjects(final Class<? extends FBModelObject> targetObjectType,
                                      FirebaseHelper.FBRootContainerNames containerName,
                                      HashMap<String, Boolean> keyHashMap,
-                                     List<FBModelObject> linkedModels){
+                                     List<? extends FBModelObject> linkedModels){
 
 
         //Only load linked objects if linkedModels is not already loaded(size=0), to avoid
