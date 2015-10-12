@@ -57,6 +57,7 @@ public class User extends FBModelObject{
     public HashMap<String, Boolean> logins;
     public HashMap<String, Boolean> dependents;
     public HashMap<String, Boolean> transactions;
+    public HashMap<String, Boolean> statements;
     public HashMap<String, Boolean> createdReservations;
     public HashMap<String, Boolean> createdRegistrations;
     public HashMap<String, Boolean> registrations;
@@ -90,6 +91,8 @@ public class User extends FBModelObject{
     public List<FBModelObject> linkedEmergencyContacts = new ArrayList<FBModelObject>();
     @JsonIgnore
     public List<Transaction> linkedTransactions = new ArrayList<Transaction>();
+    @JsonIgnore
+    public List<Statement> linkedStatements = new ArrayList<Statement>();
 
     public User() {
     }
@@ -117,6 +120,13 @@ public class User extends FBModelObject{
         if(transactions != null){
             loadLinkedObjects(Transaction.class, FirebaseHelper.FBRootContainerNames.transactions,
                     transactions, linkedTransactions);
+        }
+        if(statements == null){
+            statements = new HashMap<String, Boolean>();
+        }
+        if(statements != null){
+            loadLinkedObjects(Statement.class, FirebaseHelper.FBRootContainerNames.statements,
+                    statements, linkedStatements);
         }
     }
 
@@ -217,6 +227,14 @@ public class User extends FBModelObject{
             loadLinkedObjects(Transaction.class, FirebaseHelper.FBRootContainerNames.transactions,
                     transactions, linkedTransactions);
         }
+
+        if(statements == null){
+            statements = new HashMap<String, Boolean>();
+        }
+        if(statements != null){
+            loadLinkedObjects(Statement.class, FirebaseHelper.FBRootContainerNames.statements,
+                    statements, linkedStatements);
+        }
     }
 
     @JsonIgnore
@@ -248,5 +266,6 @@ public class User extends FBModelObject{
         linkedVehicles.clear();
         linkedEmergencyContacts.clear();
         linkedTransactions.clear();
+        linkedStatements.clear();
     }
 }

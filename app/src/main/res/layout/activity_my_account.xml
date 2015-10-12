@@ -79,7 +79,7 @@
 
             <Button
                 style="@style/RowButton"
-                android:text="@string/my_statement"
+                android:text="@string/my_statements"
                 android:id="@+id/btnMyStatement" />
 
         </LinearLayout>

@@ -76,7 +76,7 @@ public class CurrentCharges extends FragmentWithTopActionBar implements FBChildL
                     dAmount += t.amount;
                 }
             }
-            _curBalance.setText(new DecimalFormat("#.00").format(dAmount));
+            _curBalance.setText("$ " + new DecimalFormat("#.00").format(dAmount));
         }
 
         return view;
@@ -153,7 +153,7 @@ public class CurrentCharges extends FragmentWithTopActionBar implements FBChildL
                     dAmount += t.amount;
                 }
             }
-            _curBalance.setText(new DecimalFormat("#.00").format(dAmount));
+            _curBalance.setText("$ " + new DecimalFormat("#.00").format(dAmount));
             _adapter.notifyDataSetChanged();
         }
     }

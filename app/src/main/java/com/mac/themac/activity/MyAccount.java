@@ -10,6 +10,7 @@ import android.widget.ToggleButton;
 import com.firebase.client.FirebaseError;
 import com.mac.themac.R;
 import com.mac.themac.fragment.AccountStatement;
+import com.mac.themac.fragment.AccountStatements;
 import com.mac.themac.fragment.CurrentCharges;
 import com.mac.themac.fragment.FragmentWithTopActionBar;
 import com.mac.themac.fragment.Interests;
@@ -89,7 +90,7 @@ public class MyAccount extends ActivityWithBottomActionBar implements
 
     @OnClick(R.id.btnMyStatement)
     public void showMyStatement(){
-        showFragment(new AccountStatement(), R.id.myAccountContainer);
+        showFragment(new AccountStatements(), R.id.myAccountContainer);
     }
 
     @Override
