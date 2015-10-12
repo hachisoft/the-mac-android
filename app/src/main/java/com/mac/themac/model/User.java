@@ -56,7 +56,7 @@ public class User extends FBModelObject{
     public String interests;//comma seperated array string
     public HashMap<String, Boolean> logins;
     public HashMap<String, Boolean> dependents;
-
+    public HashMap<String, Boolean> transactions;
     public HashMap<String, Boolean> createdReservations;
     public HashMap<String, Boolean> createdRegistrations;
     public HashMap<String, Boolean> registrations;
@@ -88,7 +88,8 @@ public class User extends FBModelObject{
     public List<FBModelObject> linkedVehicles = new ArrayList<FBModelObject>();
     @JsonIgnore
     public List<FBModelObject> linkedEmergencyContacts = new ArrayList<FBModelObject>();
-
+    @JsonIgnore
+    public List<Transaction> linkedTransactions = new ArrayList<Transaction>();
 
     public User() {
     }
@@ -109,6 +110,13 @@ public class User extends FBModelObject{
         if(registrations != null){
             loadLinkedObjects(Registration.class, FirebaseHelper.FBRootContainerNames.registrations,
                     registrations, linkedRegistrations);
+        }
+        if(transactions == null){
+            transactions = new HashMap<String, Boolean>();
+        }
+        if(transactions != null){
+            loadLinkedObjects(Transaction.class, FirebaseHelper.FBRootContainerNames.transactions,
+                    transactions, linkedTransactions);
         }
     }
 
@@ -134,7 +142,7 @@ public class User extends FBModelObject{
         if (logins != null) {
 
             loadLinkedObjects(Login.class, FirebaseHelper.FBRootContainerNames.logins,
-                                    logins, linkedLogins);
+                    logins, linkedLogins);
         }
 
         /*if(interests == null){
@@ -202,6 +210,13 @@ public class User extends FBModelObject{
                     emergencyContacts, linkedEmergencyContacts);
         }
 
+        if(transactions == null){
+            transactions = new HashMap<String, Boolean>();
+        }
+        if (transactions != null) {
+            loadLinkedObjects(Transaction.class, FirebaseHelper.FBRootContainerNames.transactions,
+                    transactions, linkedTransactions);
+        }
     }
 
     @JsonIgnore
@@ -232,6 +247,6 @@ public class User extends FBModelObject{
         linkedAddresses.clear();
         linkedVehicles.clear();
         linkedEmergencyContacts.clear();
-
+        linkedTransactions.clear();
     }
 }

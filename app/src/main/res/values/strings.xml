@@ -46,6 +46,9 @@
     <string name="mens_bar">Men\'s Bar</string>
     <string name="parking">Parking</string>
     <string name="directory">Directory</string>
+    <string name="asof">as of</string>
+    <string name="current_blance">Current Balance</string>
+    <string name="transactions">Transactions</string>
 
     <string-array name="gender_array">
         <item>Male</item>

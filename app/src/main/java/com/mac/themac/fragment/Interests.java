@@ -3,8 +3,14 @@ package com.mac.themac.fragment;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.mac.themac.R;
+import com.mac.themac.model.User;
+
+import butterknife.ButterKnife;
 
 /**
  * Created by Samir on 7/9/2015.
@@ -20,6 +26,15 @@ public class Interests extends FragmentWithTopActionBar {
     private String mParam1;
     private String mParam2;
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = super.onCreateView(inflater, container, savedInstanceState);
+        ButterKnife.bind(this, view);
+        User loggedInUser = mFBHelper.getLoggedInUser();
+        updateUIFromModel(loggedInUser);
+
+        return view;
+    }
 
     /**
      * Use this factory method to create a new instance of
@@ -67,5 +82,11 @@ public class Interests extends FragmentWithTopActionBar {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
+    }
+
+    private void updateUIFromModel(User user){
+
+       //TODO: Load your interests UI here
+
     }
 }
