@@ -6,6 +6,7 @@ import com.mac.themac.model.firebase.FBModelIdentifier;
 import com.mac.themac.model.firebase.FBModelObject;
 import com.mac.themac.utility.FirebaseHelper;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -36,7 +37,7 @@ public class Statement extends FBModelObject {
     @JsonIgnore
     public User linkedUser;
     @JsonIgnore
-    public List<Transaction> linkedTransactions;
+    public List<Transaction> linkedTransactions = new ArrayList<Transaction>();
 
     @JsonIgnore
     @Override

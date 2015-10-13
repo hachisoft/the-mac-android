@@ -50,6 +50,9 @@
     <string name="asof">as of</string>
     <string name="current_blance">Current Balance</string>
     <string name="transactions">Transactions</string>
+    <string name="statement_information">Statement Information</string>
+    <string name="statement_date">Statement Date</string>
+    <string name="due_date">Due Date</string>
 
     <string-array name="gender_array">
         <item>Male</item>
@@ -82,6 +85,15 @@
     <string name="about_mac_text">The Multnomah Athletic Club is open everyday, except Christmas. Normal hours are listed below but may change on holidays. Staff are available during regular business hours. If Members don\'t know who to contact for assistance, call the main switchboard at 503-223-6251</string>
     <string name="hours_label">Club Hours</string>
     <string name="m_f">Monday-Friday: 5am - 11pm</string>
+    <string name="balance_due">Balance Due</string>
+    <string name="balance_forward">Balance Forward</string>
+    <string name="statement_transactions">Statment Transactions</string>
+    <string name="account_aging">Account Aging</string>
+    <string name="current">Current</string>
+    <string name="over_30">Over 30</string>
+    <string name="over_60">Over 60</string>
+    <string name="over_90">Over 90</string>
+    <string name="over_120">Over 120</string>
 
 
 </resources>

@@ -1,9 +1,201 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" tools:context="com.mac.themac.fragment.AccountStatement">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.mac.themac.fragment.AccountStatement"
+    android:background="@color/white">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-        android:text="Statement" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                style="@style/MediumRowHeaderText"
+                android:textStyle="bold"
+                android:layout_gravity="top"
+                android:gravity="center"
+                android:background="@color/light_gray"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="@string/statement_information" />
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:stretchColumns="1"
+                android:shrinkColumns="0">
+
+                <TableRow
+                    style="@style/UIEntryLayout">
+
+                    <TextView
+                        style="@style/MediumRowHeaderText"
+                        android:text="@string/statement_date"
+                        android:labelFor="@+id/editStatementDate" />
+
+                    <EditText
+                        style="@style/UIGrayColumnBoxDisabled"
+                        android:id="@+id/editStatementDate"
+                        />
+                </TableRow>
+                <TableRow
+                    style="@style/UIEntryLayout">
+
+                    <TextView
+                        style="@style/MediumRowHeaderText"
+                        android:text="@string/due_date"
+                        android:labelFor="@+id/editDueDate" />
+
+                    <EditText
+                        style="@style/UIGrayColumnBoxDisabled"
+                        android:id="@+id/editDueDate"
+                        />
+                </TableRow>
+                <TableRow
+                    style="@style/UIEntryLayout">
+
+                    <TextView
+                        style="@style/MediumRowHeaderText"
+                        android:text="@string/balance_due"
+                        android:labelFor="@+id/editBalDue" />
+
+                    <EditText
+                        style="@style/UIGrayColumnBoxDisabled"
+                        android:id="@+id/editBalDue"
+                        />
+                </TableRow>
+                <TableRow
+                    style="@style/UIEntryLayout">
+
+                    <TextView
+                        style="@style/MediumRowHeaderText"
+                        android:text="@string/balance_forward"
+                        android:labelFor="@+id/editBalForward" />
+
+                    <EditText
+                        style="@style/UIGrayColumnBoxDisabled"
+                        android:id="@+id/editBalForward"
+                        />
+                </TableRow>
+            </TableLayout>
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                style="@style/MediumRowHeaderText"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:background="@color/light_gray"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="@string/statement_transactions" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/transactions"
+                android:orientation="vertical"/>
+            <!--<ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:minHeight="75dp">
+                <ListView
+                    android:id="@+id/listViewTransactions"
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:fillViewport="true"/>
+            </ScrollView>-->
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                style="@style/MediumRowHeaderText"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:background="@color/light_gray"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="@string/account_aging" />
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:stretchColumns="1"
+                android:shrinkColumns="0">
+
+                <TableRow
+                    style="@style/UIEntryLayout">
+
+                    <TextView
+                        style="@style/MediumRowHeaderText"
+                        android:text="@string/current"
+                        android:labelFor="@+id/editCurrent" />
+
+                    <EditText
+                        style="@style/UIGrayColumnBoxDisabled"
+                        android:id="@+id/editCurrent"
+                        />
+                </TableRow>
+                <TableRow
+                    style="@style/UIEntryLayout">
+
+                    <TextView
+                        style="@style/MediumRowHeaderText"
+                        android:text="@string/over_30"
+                        android:labelFor="@+id/editOver30" />
+
+                    <EditText
+                        style="@style/UIGrayColumnBoxDisabled"
+                        android:id="@+id/editOver30"
+                        />
+                </TableRow>
+                <TableRow
+                    style="@style/UIEntryLayout">
+
+                    <TextView
+                        style="@style/MediumRowHeaderText"
+                        android:text="@string/over_60"
+                        android:labelFor="@+id/editOver60" />
+
+                    <EditText
+                        style="@style/UIGrayColumnBoxDisabled"
+                        android:id="@+id/editOver60"
+                        />
+                </TableRow>
+                <TableRow
+                    style="@style/UIEntryLayout">
+
+                    <TextView
+                        style="@style/MediumRowHeaderText"
+                        android:text="@string/over_90"
+                        android:labelFor="@+id/editOver90" />
+
+                    <EditText
+                        style="@style/UIGrayColumnBoxDisabled"
+                        android:id="@+id/editOver90"
+                        />
+                </TableRow>
+                <TableRow
+                    style="@style/UIEntryLayout">
+
+                    <TextView
+                        style="@style/MediumRowHeaderText"
+                        android:text="@string/over_120"
+                        android:labelFor="@+id/editOver120" />
+
+                    <EditText
+                        style="@style/UIGrayColumnBoxDisabled"
+                        android:id="@+id/editOver120"
+                        />
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+    </ScrollView>
 </FrameLayout>
