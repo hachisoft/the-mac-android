@@ -44,11 +44,6 @@ public class MyAccount extends ActivityWithBottomActionBar implements
         showFragment(profileFragment, R.id.myAccountContainer);
     }
 
-    @OnClick(R.id.btnMyInterests)
-    public void showMyInterests(){
-        showFragment(new Interests(), R.id.myAccountContainer);
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

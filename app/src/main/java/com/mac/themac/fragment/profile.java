@@ -229,7 +229,8 @@ public class Profile extends FragmentWithTopActionBar {
         _memberId.setText("Member: " + user.memberNumber);
         _memberSince.setText("Since: " + dateFormat.format(user.memberSince));
         _memberStatus.setText("Status: " + user.status);
-
+        _phone.setText(user.homePhone);
+        _occupation.setText(user.occupation);
     }
 
     @Override

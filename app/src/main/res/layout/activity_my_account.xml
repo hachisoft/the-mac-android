@@ -13,7 +13,7 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@id/bottom_action_bar"
+            android:layout_above="@+id/bottom_action_bar"
             android:padding="5dp">
 
             <ImageView
@@ -61,11 +61,6 @@
                 style="@style/RowButton"
                 android:text="@string/my_profile"
                 android:id="@+id/btnMyProfile" />
-
-            <Button
-                style="@style/RowButton"
-                android:text="@string/my_interests"
-                android:id="@+id/btnMyInterests" />
 
             <Button
                 style="@style/RowButton"
