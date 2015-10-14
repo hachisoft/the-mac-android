@@ -60,6 +60,7 @@ dependencies {
     compile 'com.google.android.gms:play-services-plus:7.5.0'
     compile 'com.google.android.gms:play-services-identity:7.5.0'
     compile 'com.google.android.gms:play-services-base:7.5.0'
+    compile 'com.google.android.gms:play-services-maps:7.5.0'
     compile 'org.twitter4j:twitter4j-core:4.0.2'
     compile 'com.facebook.android:facebook-android-sdk:4.1.0'
     compile 'com.jakewharton:butterknife:7.0.1'
