@@ -71,7 +71,7 @@
                         android:labelFor="@+id/editName" />
 
                     <EditText
-                        style="@style/UIGrayColumnBox"
+                        style="@style/UIGrayColumnBoxDisabled"
                         android:inputType="textCapWords|textPersonName|textAutoComplete"
                         android:text="@string/name"
                         android:id="@+id/editName"
@@ -88,7 +88,7 @@
                         android:labelFor="@+id/selGender" />
 
                     <Spinner
-                        style="@style/UIGrayColumnBox"
+                        style="@style/UIGrayColumnBoxDisabled"
                         android:id="@+id/selGender"
                         android:entries="@array/gender_array"
                         android:prompt="@string/gender"
@@ -106,7 +106,7 @@
                         android:labelFor="@+id/pickDateOfBirth" />
 
                     <EditText
-                        style="@style/UIGrayColumnBox"
+                        style="@style/UIGrayColumnBoxDisabled"
                         android:id="@+id/pickDateOfBirth"
                         android:inputType="date"/>
 
@@ -120,7 +120,7 @@
                         android:labelFor="@+id/editPhone" />
 
                     <EditText
-                        style="@style/UIGrayColumnBox"
+                        style="@style/UIGrayColumnBoxDisabled"
                         android:inputType="phone"
                         android:text="@string/phone"
                         android:id="@+id/editPhone" />
@@ -134,7 +134,7 @@
                         android:labelFor="@+id/editEmail" />
 
                     <EditText
-                        style="@style/UIGrayColumnBox"
+                        style="@style/UIGrayColumnBoxDisabled"
                         android:inputType="textEmailAddress"
                         android:text="@string/email"
                         android:id="@+id/editEmail" />
@@ -149,7 +149,7 @@
                         android:labelFor="@+id/editAddress" />
 
                     <EditText
-                        style="@style/UIGrayColumnBox"
+                        style="@style/UIGrayColumnBoxDisabled"
                         android:inputType="textAutoComplete|textPostalAddress"
                         android:text="@string/address"
                         android:id="@+id/editAddress" />
@@ -163,7 +163,7 @@
                         android:labelFor="@+id/editOccupation" />
 
                     <EditText
-                        style="@style/UIGrayColumnBox"
+                        style="@style/UIGrayColumnBoxDisabled"
                         android:inputType="textAutoComplete"
                         android:text="@string/occupation"
                         android:id="@+id/editOccupation" />
@@ -177,7 +177,7 @@
                         android:labelFor="@+id/editOfficeAddress" />
 
                     <EditText
-                        style="@style/UIGrayColumnBox"
+                        style="@style/UIGrayColumnBoxDisabled"
                         android:inputType="textAutoComplete|textPostalAddress"
                         android:text="@string/office_address"
                         android:id="@+id/editOfficeAddress" />

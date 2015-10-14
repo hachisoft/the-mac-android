@@ -21,10 +21,10 @@ public class Vehicle extends FBModelObject {
     public String color;
     public String permitNumber;
     public Date permitIssued;
-    public String memberProfile;
+    public String user;
 
     @JsonIgnore
-    public MemberProfile linkedMemberProfile;
+    public User linkedUser;
 
     public Vehicle() {
     }
@@ -33,10 +33,10 @@ public class Vehicle extends FBModelObject {
     @JsonIgnore
     public void loadLinkedObjects() {
 
-        if(memberProfile != null && !memberProfile.isEmpty()) {
-            loadLinkedObject(MemberProfile.class,
-                    FirebaseHelper.FBRootContainerNames.memberProfiles,
-                    memberProfile, linkedMemberProfile);
+        if(user != null && !user.isEmpty()) {
+            loadLinkedObject(User.class,
+                    FirebaseHelper.FBRootContainerNames.users,
+                    user, linkedUser);
         }
 
     }
@@ -46,8 +46,8 @@ public class Vehicle extends FBModelObject {
     protected void setLinkedObject(FBModelIdentifier fbModelIdentifier,
                                    FBModelObject modelObject) {
 
-        if(fbModelIdentifier.IsIntendedObject(modelObject, MemberProfile.class)) {
-            linkedMemberProfile = (MemberProfile) modelObject;
+        if(fbModelIdentifier.IsIntendedObject(modelObject, User.class)) {
+            linkedUser = (User) modelObject;
         }
     }
 
@@ -55,7 +55,7 @@ public class Vehicle extends FBModelObject {
     @Override
     public void resetLinkedObjects() {
 
-        linkedMemberProfile = null;
+        linkedUser = null;
 
     }
 }

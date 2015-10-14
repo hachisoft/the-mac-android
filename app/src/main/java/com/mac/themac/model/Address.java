@@ -19,10 +19,10 @@ public class Address extends FBModelObject {
     public String country;
     public String zip;
     public String company;
-    public String memberProfile;
+    public String user;
 
     @JsonIgnore
-    public MemberProfile linkedMemberProfile;
+    public User mUser;
 
     public Address() {
     }
@@ -31,10 +31,10 @@ public class Address extends FBModelObject {
     @JsonIgnore
     public void loadLinkedObjects() {
 
-        if(memberProfile != null && !memberProfile.isEmpty()) {
-            loadLinkedObject(MemberProfile.class,
-                    FirebaseHelper.FBRootContainerNames.memberProfiles,
-                    memberProfile, linkedMemberProfile);
+        if(user != null && !user.isEmpty()) {
+            loadLinkedObject(User.class,
+                    FirebaseHelper.FBRootContainerNames.users,
+                    user, mUser);
         }
 
     }
@@ -44,14 +44,14 @@ public class Address extends FBModelObject {
     protected void setLinkedObject(FBModelIdentifier fbModelIdentifier,
                                    FBModelObject modelObject) {
 
-        if(fbModelIdentifier.IsIntendedObject(modelObject,MemberProfile.class)) {
-            linkedMemberProfile = (MemberProfile) modelObject;
+        if(fbModelIdentifier.IsIntendedObject(modelObject,User.class)) {
+            mUser = (User) modelObject;
         }
     }
 
     @JsonIgnore
     @Override
     public void resetLinkedObjects(){
-        linkedMemberProfile = null;
+        mUser = null;
     }
 }

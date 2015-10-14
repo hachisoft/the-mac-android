@@ -7,14 +7,13 @@
     <RelativeLayout android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:id="@+id/myAccountContainer"
-        >
+        android:id="@+id/myAccountContainer">
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@id/bottom_action_bar"
+            android:layout_above="@+id/bottom_action_bar"
             android:padding="5dp">
 
             <ImageView
@@ -24,7 +23,8 @@
                 android:layout_gravity="center"
                 android:minHeight="100dp"
                 android:minWidth="90dp"
-                android:src="@drawable/profilepiclarge"/>
+                android:src="@drawable/profilepiclarge"
+                android:layout_marginTop="5dp"/>
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -64,11 +64,6 @@
 
             <Button
                 style="@style/RowButton"
-                android:text="@string/my_interests"
-                android:id="@+id/btnMyInterests" />
-
-            <Button
-                style="@style/RowButton"
                 android:text="@string/my_reservations"
                 android:id="@+id/btnMyReservations" />
 
@@ -79,7 +74,7 @@
 
             <Button
                 style="@style/RowButton"
-                android:text="@string/my_statement"
+                android:text="@string/my_statements"
                 android:id="@+id/btnMyStatement" />
 
         </LinearLayout>

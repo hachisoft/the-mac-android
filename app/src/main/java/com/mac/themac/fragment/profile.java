@@ -3,9 +3,7 @@ package com.mac.themac.fragment;
 import android.app.DatePickerDialog;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,20 +14,16 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.mac.themac.R;
-import com.mac.themac.model.MemberProfile;
 import com.mac.themac.model.User;
 import com.mac.themac.utility.DownloadImageTask;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import butterknife.OnFocusChange;
-import butterknife.OnTouch;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -51,7 +45,7 @@ public class Profile extends FragmentWithTopActionBar {
 
     private DatePickerDialog mDOBPickerDialog;
 
-    MemberProfile mMemberProfile;
+    User mUser;
 
     @Bind(R.id.profileImg) ImageView _profilePic;
     @Bind(R.id.txtMemberId) TextView _memberId;
@@ -67,8 +61,8 @@ public class Profile extends FragmentWithTopActionBar {
 
     public void showDOBPicker(){
         Calendar c = Calendar.getInstance();
-        if(mMemberProfile.dob != null)
-            c.setTime(mMemberProfile.dob);
+        if(mUser.dob != null)
+            c.setTime(mUser.dob);
 
         mDOBPickerDialog = new DatePickerDialog(this.getActivity(), new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -76,10 +70,10 @@ public class Profile extends FragmentWithTopActionBar {
 
                 Calendar dob = Calendar.getInstance();
                 dob.set(year, monthOfYear, dayOfMonth);
-                mMemberProfile.dob = dob.getTime();
+                mUser.dob = dob.getTime();
                 DateFormat dateFormat = new SimpleDateFormat("MM/dd/yy");
-                _dob.setText(dateFormat.format(mMemberProfile.dob));
-                mFBHelper.setFBModelValue(mMemberProfile.FBKey, mMemberProfile);
+                _dob.setText(dateFormat.format(mUser.dob));
+                mFBHelper.setFBModelValue(mUser.FBKey, mUser);
                 _phone.requestFocus();
             }
         }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
@@ -87,30 +81,31 @@ public class Profile extends FragmentWithTopActionBar {
         mDOBPickerDialog.show();
     }
 
+    /*Keeping profile page read only
     @OnFocusChange({R.id.editName, R.id.selGender,R.id.pickDateOfBirth, R.id.editPhone,
             R.id.editEmail, R.id.editOccupation, R.id.editAddress, R.id.editOfficeAddress})
     public void updateModelFromUI(View v, boolean hasFocus){
 
-        if(hasFocus == false && mMemberProfile != null) {//update  on lost focus
+        if(hasFocus == false && mUser != null) {//update  on lost focus
             switch (v.getId()) {
                 case R.id.editName:
                     String[] names = _name.getText().toString().split(" ", 3);
                     if (names.length == 0) {
-                        mMemberProfile.firstName = "";
-                        mMemberProfile.middleName = "";
-                        mMemberProfile.lastName = "";
+                        mUser.firstName = "";
+                        mUser.middleName = "";
+                        mUser.lastName = "";
                     } else if (names.length == 1) {
-                        mMemberProfile.firstName = names[0];
-                        mMemberProfile.middleName = "";
-                        mMemberProfile.lastName = "";
+                        mUser.firstName = names[0];
+                        mUser.middleName = "";
+                        mUser.lastName = "";
                     } else if (names.length == 2) {
-                        mMemberProfile.firstName = names[0];
-                        mMemberProfile.lastName = names[1];
-                        mMemberProfile.middleName = "";
+                        mUser.firstName = names[0];
+                        mUser.lastName = names[1];
+                        mUser.middleName = "";
                     } else {
-                        mMemberProfile.firstName = names[0];
-                        mMemberProfile.middleName = names[1];
-                        mMemberProfile.lastName = names[2];
+                        mUser.firstName = names[0];
+                        mUser.middleName = names[1];
+                        mUser.lastName = names[2];
                     }
                     _name.clearFocus();
                     _gender.requestFocus();
@@ -119,24 +114,24 @@ public class Profile extends FragmentWithTopActionBar {
                 case R.id.selGender:
                     switch (_gender.getSelectedItemPosition()){
                         case 0:
-                            mMemberProfile.gender = "Male";
+                            mUser.gender = "Male";
                             break;
                         case 1:
-                            mMemberProfile.gender = "Female";
+                            mUser.gender = "Female";
                             break;
                         default:
-                            mMemberProfile.gender = "Unspecified";
+                            mUser.gender = "Unspecified";
                             break;
                     }
                     break;
                 case R.id.editPhone:
-                    mMemberProfile.homePhone = _phone.getText().toString();
+                    mUser.homePhone = _phone.getText().toString();
                     break;
                 case R.id.editEmail:
-                    mMemberProfile.email = _email.getText().toString();
+                    mUser.email = _email.getText().toString();
                     break;
                 case R.id.editOccupation:
-                    mMemberProfile.occupation = _occupation.getText().toString();
+                    mUser.occupation = _occupation.getText().toString();
                     break;
                 case R.id.editAddress:
 
@@ -145,9 +140,9 @@ public class Profile extends FragmentWithTopActionBar {
 
                     break;
             }
-            mFBHelper.setFBModelValue(mMemberProfile.FBKey, mMemberProfile);
+            mFBHelper.setFBModelValue(mUser.FBKey, mUser);
         }
-        else if(hasFocus && mMemberProfile != null){
+        else if(hasFocus && mUser != null){
             switch (v.getId()) {
 
                 case R.id.pickDateOfBirth:
@@ -155,22 +150,17 @@ public class Profile extends FragmentWithTopActionBar {
                     break;
             }
         }
-    }
+    }*/
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, view);
         User loggedInUser = mFBHelper.getLoggedInUser();
-        if(loggedInUser.linkedMemberProfile == null){
-            loggedInUser.loadMemberProfileInterestsRegistrations();
-        }
-        else{
-            updateUIFromModel(loggedInUser.linkedMemberProfile);
-        }
-        _gender.setFocusable(true);
+        updateUIFromModel(loggedInUser);
+        /*_gender.setFocusable(true);
         _gender.setFocusableInTouchMode(true);
-
+        */
         return view;
     }
 
@@ -214,14 +204,14 @@ public class Profile extends FragmentWithTopActionBar {
         }
     }
 
-    private void updateUIFromModel(MemberProfile memberProfile){
+    private void updateUIFromModel(User user){
 
-        mMemberProfile = memberProfile;
-        if (memberProfile.thumbId != null && memberProfile.thumbId.length() > 0) {
+        mUser = user;
+        if (user.thumbId != null && user.thumbId.length() > 0) {
             try {
-                Uri imageUri = Uri.parse(memberProfile.thumbId);
+                Uri imageUri = Uri.parse(user.thumbId);
                 if (imageUri != null) {
-                    new DownloadImageTask(_profilePic).execute(memberProfile.thumbId);
+                    new DownloadImageTask(_profilePic).execute(user.thumbId);
                 }
             }
             catch (Exception x){}//ignore loading profile pic for now
@@ -229,17 +219,18 @@ public class Profile extends FragmentWithTopActionBar {
 
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yy");
 
-        _name.setText(memberProfile.firstName + " " +
-                        memberProfile.middleName + " " +
-                        memberProfile.lastName);
-        _dob.setText(dateFormat.format(memberProfile.dob));
-        _email.setText(memberProfile.email);
-        _gender.setSelection(memberProfile.gender.equalsIgnoreCase("Male") ?
-                0 : (memberProfile.gender.equalsIgnoreCase("Female") ? 1 : 2));
-        _memberId.setText("Member: " + memberProfile.number);
-        _memberSince.setText("Since: " + dateFormat.format(memberProfile.memberSince));
-        _memberStatus.setText("Status: " + memberProfile.status);
-
+        _name.setText(user.firstName + " " +
+                        user.middleName + " " +
+                        user.lastName);
+        _dob.setText(dateFormat.format(user.dob));
+        _email.setText(user.email);
+        _gender.setSelection(user.gender.equalsIgnoreCase("Male") ?
+                0 : (user.gender.equalsIgnoreCase("Female") ? 1 : 2));
+        _memberId.setText("Member: " + user.memberNumber);
+        _memberSince.setText("Since: " + dateFormat.format(user.memberSince));
+        _memberStatus.setText("Status: " + user.status);
+        _phone.setText(user.homePhone);
+        _occupation.setText(user.occupation);
     }
 
     @Override

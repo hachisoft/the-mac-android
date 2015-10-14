@@ -27,6 +27,10 @@ public abstract class ActivityWithBottomActionBar extends AppCompatActivity impl
     abstract int getLayoutResourceId();
     abstract ToggleButton getActiveButton();
 
+    public enum TransitionEffect{
+        Slide_from_right, Slide_from_top
+    }
+
     /* A reference to the Firebase */
     protected FirebaseHelper _FBHelper;
 
@@ -126,12 +130,28 @@ public abstract class ActivityWithBottomActionBar extends AppCompatActivity impl
     }
 
     public void showFragment(FragmentWithTopActionBar fragment, int replacingResourceId){
+        showFragment(fragment, replacingResourceId, TransitionEffect.Slide_from_top);
+    }
+
+    public void showFragment(FragmentWithTopActionBar fragment, int replacingResourceId,
+                             TransitionEffect effect){
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
+        switch (effect){
+            case Slide_from_right:
+                fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left,
+                        R.anim.enter_from_left, R.anim.exit_to_right);
+                break;
+            case Slide_from_top:
+                fragmentTransaction.setCustomAnimations(R.anim.abc_slide_in_top, R.anim.abc_slide_out_bottom,
+                        R.anim.abc_slide_in_bottom, R.anim.abc_slide_out_top);
+                default:
+        }
+
         fragmentTransaction.replace(replacingResourceId, fragment);
         fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        //fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         fragmentTransaction.commit();
     }
 }

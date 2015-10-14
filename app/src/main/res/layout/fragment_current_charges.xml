@@ -2,8 +2,67 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" tools:context="com.mac.themac.fragment.CurrentCharges">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-        android:text="Current Charges" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:background="@color/white">
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:stretchColumns="1"
+            android:shrinkColumns="0">
+
+            <TableRow
+                style="@style/UIEntryLayout">
+
+                <TextView
+                    style="@style/MediumRowHeaderText"
+                    android:text="@string/asof"
+                    android:labelFor="@+id/editAsOf" />
+
+                <EditText
+                    style="@style/UIGrayColumnBoxDisabled"
+                    android:id="@+id/editASOf"
+                    />
+            </TableRow>
+            <TableRow
+                style="@style/UIEntryLayout">
+
+                <TextView
+                    style="@style/MediumRowHeaderText"
+                    android:text="@string/current_blance"
+                    android:labelFor="@+id/editCurBal" />
+
+                <EditText
+                    style="@style/UIGrayColumnBoxDisabled"
+                    android:id="@+id/editCurBal"
+                    />
+            </TableRow>
+        </TableLayout>
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            style="@style/MediumRowHeaderText"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:background="@color/light_gray"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="@string/transactions"/>
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:fillViewport="true">
+            <ListView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/listViewTransactions"
+                android:dividerHeight="2dp" />
+        </ScrollView>
+    </LinearLayout>
 
 </FrameLayout>

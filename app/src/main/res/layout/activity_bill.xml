@@ -4,17 +4,14 @@
     android:orientation="vertical"
     tools:context="com.mac.themac.activity.Bill">
 
+    <fragment android:name="com.mac.themac.fragment.CurrentCharges"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/bottom_action_bar"/>
+
     <include android:id="@+id/bottom_action_bar"
         layout="@layout/bottom_action_bar"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
         android:layout_alignParentBottom="true"/>
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="match_parent"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Bill"
-        android:id="@+id/textView"
-        android:layout_above="@id/bottom_action_bar"
-        android:gravity="center"/>
 </RelativeLayout>

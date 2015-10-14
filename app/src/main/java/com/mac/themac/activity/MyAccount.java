@@ -2,8 +2,6 @@ package com.mac.themac.activity;
 
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -11,20 +9,18 @@ import android.widget.ToggleButton;
 
 import com.firebase.client.FirebaseError;
 import com.mac.themac.R;
-import com.mac.themac.TheMACApplication;
 import com.mac.themac.fragment.AccountStatement;
+import com.mac.themac.fragment.AccountStatements;
 import com.mac.themac.fragment.CurrentCharges;
 import com.mac.themac.fragment.FragmentWithTopActionBar;
 import com.mac.themac.fragment.Interests;
 import com.mac.themac.fragment.Profile;
 import com.mac.themac.fragment.Reservations;
-import com.mac.themac.model.MemberProfile;
 import com.mac.themac.model.User;
 import com.mac.themac.model.firebase.FBModelIdentifier;
 import com.mac.themac.model.firebase.FBModelListener;
 import com.mac.themac.model.firebase.FBModelObject;
 import com.mac.themac.utility.DownloadImageTask;
-import com.mac.themac.utility.FirebaseHelper;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -48,11 +44,6 @@ public class MyAccount extends ActivityWithBottomActionBar implements
         showFragment(profileFragment, R.id.myAccountContainer);
     }
 
-    @OnClick(R.id.btnMyInterests)
-    public void showMyInterests(){
-        showFragment(new Interests(), R.id.myAccountContainer);
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,30 +51,25 @@ public class MyAccount extends ActivityWithBottomActionBar implements
         ButterKnife.bind(this);
 
         User loggedInUser = _FBHelper.getLoggedInUser();
-        if(loggedInUser.linkedMemberProfile == null){
-            _FBHelper.SubscribeToModelUpdates(this, MemberProfile.class,loggedInUser.memberProfile);
-        }
-        else{
-            updateUIFromModel(loggedInUser.linkedMemberProfile);
-        }
+        updateUIFromModel(loggedInUser);
     }
 
-    private void updateUIFromModel(MemberProfile memberProfile) {
+    private void updateUIFromModel(User user) {
 
-        if (memberProfile.thumbId != null && memberProfile.thumbId.length() > 0) {
+        if (user.thumbId != null && user.thumbId.length() > 0) {
             try {
-                Uri imageUri = Uri.parse(memberProfile.thumbId);
+                Uri imageUri = Uri.parse(user.thumbId);
                 if (imageUri != null) {
-                    new DownloadImageTask(_profilePic).execute(memberProfile.thumbId);
+                    new DownloadImageTask(_profilePic).execute(user.thumbId);
                 }
 
             }
             catch (Exception x){}//ignore loading profile pic for now
         }
-        _memberId.setText("Member: " + memberProfile.number);
+        _memberId.setText("Member: " + user.memberNumber);
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yy");
-        _memberSince.setText("Since: " + dateFormat.format(memberProfile.memberSince));
-        _memberStatus.setText("Status: " + memberProfile.status);
+        _memberSince.setText("Since: " + dateFormat.format(user.memberSince));
+        _memberStatus.setText("Status: " + user.status);
 
     }
 
@@ -99,7 +85,7 @@ public class MyAccount extends ActivityWithBottomActionBar implements
 
     @OnClick(R.id.btnMyStatement)
     public void showMyStatement(){
-        showFragment(new AccountStatement(), R.id.myAccountContainer);
+        showFragment(new AccountStatements(), R.id.myAccountContainer);
     }
 
     @Override
@@ -119,11 +105,7 @@ public class MyAccount extends ActivityWithBottomActionBar implements
 
     @Override
     public void onDataChange(FBModelIdentifier identifier, FBModelObject model) {
-        if(identifier.IsIntendedObject(model, MemberProfile.class))
-        {
-            MemberProfile profile = (MemberProfile)model;
-            updateUIFromModel(profile);
-        }
+
     }
 
     @Override

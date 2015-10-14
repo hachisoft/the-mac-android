@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        style="@style/MediumRowHeaderText"
+        android:id="@+id/date"
+        android:layout_alignParentLeft="true"
+        android:padding="10dp"/>
+
+    <TextView
+        style="@style/MediumRowHeaderText"
+        android:id="@+id/amount"
+        android:layout_toLeftOf="@+id/details"
+        android:padding="10dp"
+        android:textAlignment="textEnd" />
+
+    <TextView
+        style="@style/MediumRowHeaderText"
+        android:id="@+id/details"
+        android:layout_gravity="right"
+        android:gravity="right"
+        android:layout_alignParentRight="true"
+        android:padding="10dp"
+        android:text=">"/>
+</RelativeLayout>
