@@ -10,6 +10,7 @@ import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 import com.mac.themac.model.Address;
 import com.mac.themac.model.Closure;
+import com.mac.themac.model.Department;
 import com.mac.themac.model.EmergencyContact;
 import com.mac.themac.model.EmployeeProfile;
 import com.mac.themac.model.Event;
@@ -63,7 +64,7 @@ public class FirebaseHelper {
     public enum FBRootContainerNames{
         logins, users, sessions, interests, events, reservations, reservationRules, registrations,
         fees, closures, locations, memberProfilePublics, employeeProfiles,
-        addresses, vehicles, emergencyContacts, invitations, rules, transactions, statements
+        addresses, vehicles, emergencyContacts, invitations, rules, transactions, statements, departments
     }
 
     public FirebaseHelper(String firebaseUrl) {
@@ -220,6 +221,9 @@ public class FirebaseHelper {
         }
         else if(classType.equals(Transaction.class)){
             return getRootKeyedObjectRef(FBRootContainerNames.transactions, key);
+        }
+        else if(classType.equals(Department.class)){
+            return getRootKeyedObjectRef(FBRootContainerNames.departments, key);
         }
         else{
             throw new InvalidParameterException("No container found for class type: " + classType.toString());

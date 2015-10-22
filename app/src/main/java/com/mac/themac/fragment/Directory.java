@@ -7,39 +7,46 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
+import com.firebase.client.FirebaseError;
 import com.mac.themac.R;
+import com.mac.themac.TheMACApplication;
+import com.mac.themac.activity.ActivityWithBottomActionBar;
+import com.mac.themac.adapter.DirectoryAdapter;
+import com.mac.themac.model.Department;
+import com.mac.themac.model.DirectoryData;
+import com.mac.themac.model.EmployeeProfile;
+import com.mac.themac.model.Location;
+import com.mac.themac.model.Session;
+import com.mac.themac.model.firebase.FBChildListener;
+import com.mac.themac.model.firebase.FBModelIdentifier;
+import com.mac.themac.model.firebase.FBModelObject;
+import com.mac.themac.model.firebase.FBQueryIdentifier;
+import com.mac.themac.utility.FirebaseHelper;
+
+import java.util.ArrayList;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Directory extends FragmentWithTopActionBar {
-
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
+public class Directory extends FragmentWithTopActionBar implements FBChildListener {
+    @Bind(R.id.list_view) ListView listView;
+    private FirebaseHelper _FBHelper;
+    private DirectoryAdapter mAdapter;
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment Profile.
      */
-    // TODO: Rename and change types and number of parameters
-    public static Directory newInstance(String param1, String param2) {
+    public static Directory newInstance() {
         Directory fragment = new Directory();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -62,8 +69,6 @@ public class Directory extends FragmentWithTopActionBar {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -74,6 +79,61 @@ public class Directory extends FragmentWithTopActionBar {
         }
     }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = super.onCreateView(inflater, container, savedInstanceState);
+        ButterKnife.bind(this, view);
+        mAdapter = new DirectoryAdapter(getActivity());
+        listView.setAdapter(mAdapter);
+        return view;
+    }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        _FBHelper = TheMACApplication.theApp.getFirebaseHelper();
+        _FBHelper.SubscribeToChildUpdates(this, Department.class, new FBQueryIdentifier(FBQueryIdentifier.OrderBy.Child, "name"));
+        _FBHelper.SubscribeToChildUpdates(this, EmployeeProfile.class, new FBQueryIdentifier(FBQueryIdentifier.OrderBy.Child, "department"));
+    }
 
+    @Override
+    public void onChildAdded(FBModelIdentifier modelIdentifier, FBQueryIdentifier queryIdentifier, FBModelObject model, String prevChild) {
+        if(modelIdentifier.IsIntendedObject(model, Department.class)) {
+            Department department = (Department) model;
+            mAdapter.addObject(department);
+        } else if(modelIdentifier.IsIntendedObject(model, EmployeeProfile.class)) {
+            EmployeeProfile ep = (EmployeeProfile) model;
+            mAdapter.addObject(ep);
+        }
+    }
+
+    @Override
+    public void onChildChanged(FBModelIdentifier modelIdentifier, FBQueryIdentifier queryIdentifier, FBModelObject model, String key) {
+
+    }
+
+    @Override
+    public void onChildRemoved(FBModelIdentifier modelIdentifier, FBQueryIdentifier queryIdentifier, FBModelObject model) {
+
+    }
+
+    @Override
+    public void onChildMoved(FBModelIdentifier modelIdentifier, FBQueryIdentifier queryIdentifier, FBModelObject model, String key) {
+
+    }
+
+    @Override
+    public void onCancel(FBModelIdentifier identifier, FirebaseError error) {
+
+    }
+
+    @Override
+    public void onNullData(FBModelIdentifier identifier, String key) {
+
+    }
+
+    @Override
+    public void onException(Exception x) {
+
+    }
 }

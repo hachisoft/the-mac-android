@@ -6,45 +6,41 @@ import com.mac.themac.model.firebase.FBModelIdentifier;
 import com.mac.themac.model.firebase.FBModelObject;
 
 /**
- * Created by Samir on 9/9/2015.
+ * Created by Bryan on 10/14/2015.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class EmployeeProfile extends FBModelObject implements IDirectoryData{
-    public String department;
-    public String email;
-    public String firstName;
-    public String lastName;
-    public String phone;
-    public String thumbId;
-    public String title;
-
-    public EmployeeProfile() {
-    }
+public class Department extends FBModelObject implements IDirectoryData {
+    String email;
+    String name;
+    String phone;
 
     @Override
+    @JsonIgnore
     public void loadLinkedObjects() {
 
     }
 
-    @JsonIgnore
     @Override
+    @JsonIgnore
     public void resetLinkedObjects() {
 
     }
 
     @Override
+    @JsonIgnore
     protected void setLinkedObject(FBModelIdentifier fbModelIdentifier, FBModelObject modelObject) {
 
     }
 
     @Override
     public String getName() {
-        return firstName + " " + lastName;
+        return name;
     }
 
     @Override
+    @JsonIgnore
     public String getTitle() {
-        return title;
+        return "Department";
     }
 
     @Override
@@ -58,12 +54,14 @@ public class EmployeeProfile extends FBModelObject implements IDirectoryData{
     }
 
     @Override
+    @JsonIgnore
     public String getImg() {
-        return thumbId;
+        return null;
     }
 
     @Override
+    @JsonIgnore
     public boolean isDepartment() {
-        return false;
+        return true;
     }
 }
