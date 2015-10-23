@@ -1,9 +1,29 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" tools:context="com.mac.themac.fragment.Parking">
+    android:layout_height="match_parent" tools:context="com.mac.themac.fragment.Parking"
+    android:background="@color/light_gray">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-        android:text="Parking" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp">
+        <TableLayout android:id="@+id/table_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:padding="5dp"
+            android:layout_marginBottom="10dp">
+            <TableRow android:id="@+id/table_row" android:layout_gravity="center">
+            </TableRow>
+        </TableLayout>
 
-</FrameLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:text="@string/parking_text"
+            android:padding="5dp"/>
+    </LinearLayout>
+
+</ScrollView>

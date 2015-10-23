@@ -82,7 +82,7 @@
     <string name="event_results">Event Results</string>
     <string name="register">REGISTER</string>
     <string name="cancel_registration">CANCEL REGISTRATION</string>
-    <string name="about_mac_text">The Multnomah Athletic Club is open everyday, except Christmas. Normal hours are listed below but may change on holidays. Staff are available during regular business hours. If Members don\'t know who to contact for assistance, call the main switchboard at 503-223-6251</string>
+    <string name="about_mac_text">The Multnomah Athletic Club is open everyday, except Christmas. Normal hours are listed below but may change on holidays. Staff are available during regular business hours. If Members don\'t know who to contact for assistance, call the main switchboard at 503–223-6251</string>
     <string name="hours_label">Club Hours</string>
     <string name="m_f">Monday-Friday: 5am - 11pm</string>
     <string name="balance_due">Balance Due</string>
@@ -94,6 +94,6 @@
     <string name="over_60">Over 60</string>
     <string name="over_90">Over 90</string>
     <string name="over_120">Over 120</string>
-
+    <string name="parking_text">Members and guests are permitted to park in the Member Parking Structure only while using club facilities, attending club-sponsored functions or attending an event at Providence Park. Juniors may park in the structure only during junior hours.\n\nIn the event of congestion in the Member Parking Structure, members and guests may be directed to overflow parking facilities by parking attendants. As the Member Parking Structure approaches reaching capacity, remaining parking spaces are reserved for member use, and visitors are directed to other available parking options. Parking attendants are responsible to keep members and visitors advised of current parking conditions and for directing guests to park in one of the auxiliary parking lots.\n\nMembers are required to register all vehicles and display a MAC parking sticker in driver\'s side of the windshield. For more information about registering a vehicle, see vehicle registration.\n\nThe Turnaround in front of the main clubhouse is for loading and unloading only. Drivers must remain with their vehicles in the Turnaround at all times. Vehicles parked in violation of this policy may be towed at the owner\'s expense and liability.\n\nParking for the disabled is available in the Parking Structure and Turnaround. Members must display a valid state-issued disabled parking permit. Temporary or special disabled requests should be directed to the club\'s security manager.\n\nMembers who cycle to the club may use their own locks to secure their bikes to one of two bike racks. One is located off the Turnaround in front of the Athletic Entrance, and another is situated outside the bike cage on the first level of the Parking Structure. If a member would prefer to store his or her bicycle in the bike cage in the Member Parking Structure, they may obtain a bike cage key from the manager on duty. The bike cage is for day-use only.\n\nMotorcycle parking is available in the southwest corner of the fourth floor of the Parking Structure.</string>
 
 </resources>
