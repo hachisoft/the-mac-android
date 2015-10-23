@@ -52,12 +52,6 @@
                     android:drawableLeft="@drawable/ic_closures"/>
 
                 <Button
-                    android:id="@+id/btnMensBar"
-                    style="@style/RowButton"
-                    android:text="@string/mens_bar"
-                    android:drawableLeft="@drawable/ic_closures"/>
-
-                <Button
                     android:id="@+id/btnParking"
                     style="@style/RowButton"
                     android:text="@string/parking"

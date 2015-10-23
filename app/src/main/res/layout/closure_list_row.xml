@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/UIEntryLayout">
+        <ImageView android:id="@+id/indicator"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/status_unavailable"
+            android:layout_alignTop="@+id/tv_title"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"/>
+        <TextView android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:layout_toRightOf="@id/indicator"
+            android:text="Kinder 2 Gymnastics - GY057FA14"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"/>
+        <TextView android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small"
+            android:textColor="@color/red"
+            android:layout_below="@id/tv_title"
+            android:layout_alignLeft="@id/tv_title"
+            android:text="Closed 09/14 12:00 AM to 10/26 12:00 AM"/>
+        <TextView android:id="@+id/tv_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/tv_time"
+            android:layout_alignLeft="@id/tv_title"
+            android:text="General Seating is available 90 minutes before kickoff on a first-come, first-served basis. If reserved seating is needed for a physical limitation, please indicate in the comment box.  There is a limit of four tickets per game per membership account. Exceptions are granted for family accounts on which there are more than four members who would like to attend the game together; no exceptions are granted for guests."/>
+    </RelativeLayout>
+</FrameLayout>
