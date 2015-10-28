@@ -172,6 +172,8 @@ public class CourtReservationTimeBlockWidget extends LinearLayout implements FBM
         courtButtons.add(court7);
         courtButtons.add(court8);
         courtButtons.add(court9);
+        buttonContainer.setVisibility(View.VISIBLE);
+        setOrientation(VERTICAL);
     }
 
     public void setTimeLabel(Long time){

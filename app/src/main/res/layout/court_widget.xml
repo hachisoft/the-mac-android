@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content" android:background="@color/white"
@@ -47,39 +47,39 @@
         <com.mac.themac.widget.CourtButton
             android:id="@+id/court1"
             custom:courtNumber="1"
-            style="@style/CourtButton"></com.mac.themac.widget.CourtButton>
+            style="@style/CourtButton"/>
         <com.mac.themac.widget.CourtButton
             android:id="@+id/court2"
             custom:courtNumber="2"
-            style="@style/CourtButton"></com.mac.themac.widget.CourtButton>
+            style="@style/CourtButton"/>
         <com.mac.themac.widget.CourtButton
             android:id="@+id/court3"
             custom:courtNumber="3"
-            style="@style/CourtButton"></com.mac.themac.widget.CourtButton>
+            style="@style/CourtButton"/>
         <com.mac.themac.widget.CourtButton
             android:id="@+id/court4"
             custom:courtNumber="4"
-            style="@style/CourtButton"></com.mac.themac.widget.CourtButton>
+            style="@style/CourtButton"/>
         <com.mac.themac.widget.CourtButton
             android:id="@+id/court5"
             custom:courtNumber="5"
-            style="@style/CourtButton"></com.mac.themac.widget.CourtButton>
+            style="@style/CourtButton"/>
         <com.mac.themac.widget.CourtButton
             android:id="@+id/court6"
             custom:courtNumber="6"
-            style="@style/CourtButton"></com.mac.themac.widget.CourtButton>
+            style="@style/CourtButton"/>
         <com.mac.themac.widget.CourtButton
             android:id="@+id/court7"
             custom:courtNumber="7"
-            style="@style/CourtButton"></com.mac.themac.widget.CourtButton>
+            style="@style/CourtButton"/>
         <com.mac.themac.widget.CourtButton
             android:id="@+id/court8"
             custom:courtNumber="8"
-            style="@style/CourtButton"></com.mac.themac.widget.CourtButton>
+            style="@style/CourtButton"/>
         <com.mac.themac.widget.CourtButton
             android:id="@+id/court9"
             custom:courtNumber="9"
-            style="@style/CourtButton"></com.mac.themac.widget.CourtButton>
+            style="@style/CourtButton"/>
     </LinearLayout>
 
-</merge>
+</LinearLayout>

@@ -57,11 +57,9 @@ public class TennisCourts extends ActivityWithBottomActionBar
     private ReservationAdapter mAdapter;
     private ArrayList<ArrayList<Session>> sessions = new ArrayList<>();
 
-    @Bind(R.id.date_label)
-    TextView dateLabel;
+    @Bind(R.id.date_label) TextView dateLabel;
     @Bind(R.id.count_label) TextView countLabel;
-    @Bind(R.id.list_view)
-    ListView widgetList;
+    @Bind(R.id.list_view) ListView widgetList;
 
     @OnClick(R.id.prev)
     public void backOneDay(){
@@ -194,6 +192,7 @@ public class TennisCourts extends ActivityWithBottomActionBar
             for(Session session: sessions.get(i))
                 assignSessionToTimeSlot(session, i);
         }
+        widgetList.setDivider(null);
         widgetList.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();
     }
