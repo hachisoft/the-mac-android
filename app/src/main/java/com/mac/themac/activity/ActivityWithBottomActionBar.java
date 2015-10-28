@@ -149,7 +149,7 @@ public abstract class ActivityWithBottomActionBar extends AppCompatActivity impl
                 default:
         }
 
-        fragmentTransaction.replace(replacingResourceId, fragment);
+        fragmentTransaction.add(replacingResourceId, fragment);
         fragmentTransaction.addToBackStack(null);
         //fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         fragmentTransaction.commit();
