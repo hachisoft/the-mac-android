@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.RadioButton;
 
 import com.firebase.client.FirebaseError;
 import com.mac.themac.R;
@@ -29,14 +30,27 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class Directory extends FragmentWithTopActionBar implements FBChildListener {
     @Bind(R.id.list_view) ListView listView;
+    @Bind(R.id.rb_alphabetical) RadioButton alphabetical;
+    @Bind(R.id.rb_departments) RadioButton departments;
     private FirebaseHelper _FBHelper;
     private DirectoryAdapter mAdapter;
+
+    @OnClick(R.id.rb_departments)
+    public void onDepartmentsSelected(){
+        mAdapter.setSortType(DirectoryAdapter.SortType.department);
+    }
+
+    @OnClick(R.id.rb_alphabetical)
+    public void onAlphabeticalSelected(){
+        mAdapter.setSortType(DirectoryAdapter.SortType.alphabetical);
+    }
 
     /**
      * Use this factory method to create a new instance of
@@ -84,6 +98,7 @@ public class Directory extends FragmentWithTopActionBar implements FBChildListen
         View view = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, view);
         mAdapter = new DirectoryAdapter(getActivity());
+        departments.setChecked(true);
         listView.setAdapter(mAdapter);
         return view;
     }

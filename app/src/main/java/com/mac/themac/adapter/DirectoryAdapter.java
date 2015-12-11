@@ -26,6 +26,10 @@ import butterknife.ButterKnife;
  * Created by Bryan on 10/14/2015.
  */
 public class DirectoryAdapter extends ArrayAdapter<DirectoryData>{
+    public enum SortType{
+        alphabetical, department;
+    }
+    private SortType sortType = SortType.department;
     class ViewHolder{
         @Bind(R.id.department_label) TextView departmentLabel;
         @Bind(R.id.name) TextView name;
@@ -38,39 +42,66 @@ public class DirectoryAdapter extends ArrayAdapter<DirectoryData>{
         }
     }
     private ArrayList<DirectoryData> directoryDatas = new ArrayList<>();
+    private ArrayList<DirectoryData> employeeDatas = new ArrayList<>();
+    private ArrayList<DirectoryData> displayList = new ArrayList<>();
     public DirectoryAdapter(Context context) {
         super(context, -1);
     }
 
     public void addObject(Department dept){
         directoryDatas.add(new DirectoryData(dept));
+        if(sortType == SortType.department)
+            displayList.add(new DirectoryData(dept));
         sortData();
     }
 
     public void addObject(EmployeeProfile prof){
-        directoryDatas.add(new DirectoryData(prof));
+        employeeDatas.add(new DirectoryData(prof));
+        displayList.add(new DirectoryData(prof));
+        sortData();
+    }
+
+    public void setSortType(SortType type){
+        sortType = type;
+        displayList.clear();
+        switch(sortType){
+            case department:
+                displayList.addAll(directoryDatas);
+            case alphabetical:
+                displayList.addAll(employeeDatas);
+        }
         sortData();
     }
 
     public void sortData(){
-        Collections.sort(directoryDatas, new Comparator<DirectoryData>() {
-            @Override
-            public int compare(DirectoryData lhs, DirectoryData rhs) {
-                return new CompareToBuilder().append(lhs.department, rhs.department).append(!lhs.isDepartment(), !rhs.isDepartment())
-                        .append(lhs.last, rhs.last).append(lhs.first, rhs.first).toComparison();
-            }
-        });
+        switch(sortType){
+            case department:
+                Collections.sort(displayList, new Comparator<DirectoryData>() {
+                    @Override
+                    public int compare(DirectoryData lhs, DirectoryData rhs) {
+                        return new CompareToBuilder().append(lhs.department, rhs.department).append(!lhs.isDepartment(), !rhs.isDepartment())
+                                .append(lhs.last, rhs.last).append(lhs.first, rhs.first).toComparison();
+                    }});
+                break;
+            case alphabetical:
+                Collections.sort(displayList, new Comparator<DirectoryData>() {
+                    @Override
+                    public int compare(DirectoryData lhs, DirectoryData rhs) {
+                        return new CompareToBuilder().append(lhs.last, rhs.last).append(lhs.first, rhs.first).toComparison();
+                    }
+                });
+        }
         notifyDataSetChanged();
     }
 
     @Override
     public int getCount() {
-        return directoryDatas.size();
+        return displayList.size();
     }
 
     @Override
     public DirectoryData getItem(int position) {
-        return directoryDatas.get(position);
+        return displayList.get(position);
     }
 
     @Override
@@ -92,7 +123,7 @@ public class DirectoryAdapter extends ArrayAdapter<DirectoryData>{
         holder.title.setText(getItem(position).getTitle());
         holder.email.setText(getItem(position).getEmail());
         holder.phone.setText(getItem(position).getPhone());
-        Picasso.with(getContext()).load(getItem(position).getImg()).into(holder.profile);
+        Picasso.with(getContext()).load(getItem(position).getImg()).placeholder(getItem(position).isDepartment()?R.drawable.ic_mac_wing_white:R.drawable.ic_directory).into(holder.profile);
         return convertView;
     }
 }

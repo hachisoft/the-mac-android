@@ -35,6 +35,7 @@ public class Event extends FBModelObject{
     String number;
     String imageId;
     String billingId;
+    String survey;
     HashMap<String, Boolean> sessions;
     HashMap<String, Boolean> fees;
     HashMap<String, Boolean> interests;
@@ -117,6 +118,10 @@ public class Event extends FBModelObject{
 
     public String getNumber() {
         return number;
+    }
+
+    public String getSurvey() {
+        return survey;
     }
 
     public HashMap<String, Boolean> getFees() {
