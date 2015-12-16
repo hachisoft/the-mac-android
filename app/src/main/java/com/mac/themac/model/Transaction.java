@@ -32,7 +32,7 @@ public class Transaction extends FBModelObject{
     public String statement;
     public Date date; //date of transaction
     public Date processedDate;
-    public String status;
+    public STATUS status;
     public float amount;
     public String user;
     public String registration;

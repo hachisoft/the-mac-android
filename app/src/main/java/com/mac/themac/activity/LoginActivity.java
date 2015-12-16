@@ -12,8 +12,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.ToggleButton;
 import android.widget.ViewSwitcher;
 
@@ -74,13 +78,15 @@ public class LoginActivity extends AppCompatActivity implements
         Firebase.AuthStateListener,
         FBModelListener, FBChildListener {
 
+    private int _developerShortcutCount = 0;
     private static final String TAG = LoginActivity.class.getSimpleName();
 
     /* *************************************
      *              GENERAL                *
      ***************************************/
-    /* TextView that is used to display information about the logged in user
-    @Bind(R.id.login_status) TextView mLoggedInStatusTextView;*/
+    /* TextView that is used to display information about the logged in user*/
+    @Bind(R.id.login_status)
+    TextView mLoggedInStatusTextView;
 
     /* A dialog that is presented until the Firebase authentication finished. */
     private ProgressDialog mAuthProgressDialog;
@@ -143,6 +149,8 @@ public class LoginActivity extends AppCompatActivity implements
     @Bind(R.id.txtEmail) EditText mFBLoginEmail;
     @Bind(R.id.txtPassword) EditText mFBLoginPassword;
 
+    @Bind(R.id.firebaseUrlView) LinearLayout mFirebaseUrlLayout;
+    @Bind(R.id.firebaseUrlTextView) AutoCompleteTextView mFirebaseUrlTextView;
     @Bind(R.id.login_viewSwitcher) ViewSwitcher mLoginViewSwitcher;
     @Bind(R.id.logged_in_viewSwitcher) ViewSwitcher mLoggedinViewSwitcher;
     @Bind(R.id.log_in_options_viewSwitcher) ViewSwitcher mLoginOptionsViewSwitcher;
@@ -187,6 +195,38 @@ public class LoginActivity extends AppCompatActivity implements
     @OnClick(R.id.btnCancelMemberId)
     public void cancelMemberId(){
         onClickLogout();
+    }
+
+    @OnClick(R.id.btnUpdateFirebaseUrl)
+    public void UpdateFirebaseUrl(){
+
+        // if changing configurations, stop tracking firebase session.
+        mFBHelper.unauth();
+        mFBHelper.removeAuthStateListener(mAuthStateListener);
+
+        TheMACApplication.theApp.resetFirebaseUrl(mFirebaseUrlTextView.getText().toString());
+        mFBHelper = ((TheMACApplication)getApplication()).getFirebaseHelper();
+
+        /* Check if the user is authenticated with Firebase already. If this is the case we can set the authenticated
+         * user and hide hide any login buttons */
+        mFBHelper.addAuthStateListener(mAuthStateListener);
+
+        _developerShortcutCount = 0;
+        mFirebaseUrlLayout.setVisibility(View.INVISIBLE);
+    }
+
+    @OnClick(R.id.login_view1)
+    public void developerShortcutToSwitchServer(){
+        if(_developerShortcutCount == 10){
+            //show switch server text view
+            mFirebaseUrlTextView.setText(mFBHelper.getFBUrl());
+            String[] firebaseUrls = getResources().getStringArray(R.array.firebase_url_array);
+            mFirebaseUrlTextView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, firebaseUrls));
+            mFirebaseUrlLayout.setVisibility(View.VISIBLE);
+        }
+        else{
+            _developerShortcutCount++;
+        }
     }
 
 
@@ -476,7 +516,7 @@ public class LoginActivity extends AppCompatActivity implements
             mGoogleLoginButton.setVisibility(View.GONE);
             mTwitterLoginButton.setVisibility(View.GONE);
             mPasswordLoginButton.setVisibility(View.GONE);
-            //mLoggedInStatusTextView.setVisibility(View.VISIBLE);
+            mLoggedInStatusTextView.setVisibility(View.VISIBLE);
 
             /* show a provider specific status text */
             String name = null;
@@ -491,7 +531,7 @@ public class LoginActivity extends AppCompatActivity implements
                 Log.e(TAG, "Invalid provider: " + authData.getProvider());
             }
             if (name != null) {
-                //mLoggedInStatusTextView.setText("Logged in as " + name + " (" + authData.getProvider() + ")");
+                mLoggedInStatusTextView.setText("Logged in as " + name + " (" + authData.getProvider() + ")");
             }
 
             final Firebase loginRef = mFBHelper.getLoginRef(authData.getUid());
@@ -542,7 +582,7 @@ public class LoginActivity extends AppCompatActivity implements
             mGoogleLoginButton.setVisibility(View.VISIBLE);
             mTwitterLoginButton.setVisibility(View.VISIBLE);
             mPasswordLoginButton.setVisibility(View.VISIBLE);
-            //mLoggedInStatusTextView.setVisibility(View.GONE);
+            mLoggedInStatusTextView.setVisibility(View.GONE);
         }
         this.mAuthData = authData;
         /* invalidate options menu to hide/show the logout button */
