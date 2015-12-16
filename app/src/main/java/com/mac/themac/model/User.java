@@ -84,7 +84,7 @@ public class User extends FBModelObject{
     @JsonIgnore
     public List<FBModelObject> linkedReservations = new ArrayList<FBModelObject>();
     @JsonIgnore
-    public List<FBModelObject> linkedAddresses = new ArrayList<FBModelObject>();
+    public List<Address> linkedAddresses = new ArrayList<Address>();
     @JsonIgnore
     public List<FBModelObject> linkedVehicles = new ArrayList<FBModelObject>();
     @JsonIgnore

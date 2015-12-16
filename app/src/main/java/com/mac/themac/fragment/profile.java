@@ -57,7 +57,8 @@ public class Profile extends FragmentWithTopActionBar {
     @Bind(R.id.editPhone) EditText _phone;
     @Bind(R.id.editEmail) EditText _email;
     @Bind(R.id.editOccupation) EditText _occupation;
-    @Bind(R.id.editOfficeAddress) EditText _officeAddress;
+    //@Bind(R.id.editAddress) EditText _address;
+    //@Bind(R.id.editOfficeAddress) EditText _officeAddress;
 
     public void showDOBPicker(){
         Calendar c = Calendar.getInstance();

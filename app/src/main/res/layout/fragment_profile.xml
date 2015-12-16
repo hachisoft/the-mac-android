@@ -6,7 +6,7 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@color/light_gray">
         <LinearLayout
             android:orientation="vertical"
@@ -140,20 +140,20 @@
                         android:id="@+id/editEmail" />
                 </TableRow>
 
-                <TableRow
-                    style="@style/UIEntryLayout">
+                <!--<TableRow-->
+                    <!--style="@style/UIEntryLayout">-->
 
-                    <TextView
-                        style="@style/MediumRowHeaderText"
-                        android:text="@string/address"
-                        android:labelFor="@+id/editAddress" />
+                    <!--<TextView-->
+                        <!--style="@style/MediumRowHeaderText"-->
+                        <!--android:text="@string/address"-->
+                        <!--android:labelFor="@+id/editAddress" />-->
 
-                    <EditText
-                        style="@style/UIGrayColumnBoxDisabled"
-                        android:inputType="textAutoComplete|textPostalAddress"
-                        android:text="@string/address"
-                        android:id="@+id/editAddress" />
-                </TableRow>
+                    <!--<EditText-->
+                        <!--style="@style/UIGrayColumnBoxDisabled"-->
+                        <!--android:inputType="textAutoComplete|textPostalAddress"-->
+                        <!--android:text="@string/address"-->
+                        <!--android:id="@+id/editAddress" />-->
+                <!--</TableRow>-->
                 <TableRow
                     style="@style/UIEntryLayout">
 
@@ -168,20 +168,20 @@
                         android:text="@string/occupation"
                         android:id="@+id/editOccupation" />
                 </TableRow>
-                <TableRow
-                    style="@style/UIEntryLayout">
+                <!--<TableRow-->
+                    <!--style="@style/UIEntryLayout">-->
 
-                    <TextView
-                        style="@style/MediumRowHeaderText"
-                        android:text="@string/office_address"
-                        android:labelFor="@+id/editOfficeAddress" />
+                    <!--<TextView-->
+                        <!--style="@style/MediumRowHeaderText"-->
+                        <!--android:text="@string/office_address"-->
+                        <!--android:labelFor="@+id/editOfficeAddress" />-->
 
-                    <EditText
-                        style="@style/UIGrayColumnBoxDisabled"
-                        android:inputType="textAutoComplete|textPostalAddress"
-                        android:text="@string/office_address"
-                        android:id="@+id/editOfficeAddress" />
-                </TableRow>
+                    <!--<EditText-->
+                        <!--style="@style/UIGrayColumnBoxDisabled"-->
+                        <!--android:inputType="textAutoComplete|textPostalAddress"-->
+                        <!--android:text="@string/office_address"-->
+                        <!--android:id="@+id/editOfficeAddress" />-->
+                <!--</TableRow>-->
             </TableLayout>
             </LinearLayout>
         </ScrollView>
