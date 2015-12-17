@@ -159,12 +159,12 @@ public class EventList extends FragmentWithTopActionBar {
             title.setText(getItem(position).linkedEvent.getTitle());
             Calendar start = Calendar.getInstance();
             Calendar end = Calendar.getInstance();
-            start.setTime(getItem(position).getDate());
-            end.setTime(getItem(position).getDate());
-            end.add(Calendar.MINUTE, getItem(position).getDuration().intValue());
+            start.setTime(getItem(position).date);
+            end.setTime(getItem(position).date);
+            end.add(Calendar.MINUTE, getItem(position).duration.intValue());
             SimpleDateFormat format = new SimpleDateFormat("h:mm a");
             time.setText(format.format(start.getTime()) + " - " + format.format(end.getTime()));
-            view.setTag(getItem(position).getEvent());
+            view.setTag(getItem(position).event);
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

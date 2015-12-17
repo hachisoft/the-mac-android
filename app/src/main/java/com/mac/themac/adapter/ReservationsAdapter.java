@@ -27,6 +27,7 @@ import com.mac.themac.model.firebase.ModelListener;
 import com.mac.themac.utility.FirebaseHelper;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import butterknife.Bind;
@@ -58,28 +59,66 @@ public class ReservationsAdapter extends ArrayAdapter<Reservation> {
         reservation.setModelUpdateListener(new ModelListener() {
             @Override
             public void onDataChange(FBModelIdentifier identifier, FBModelObject model) {
-                if(identifier.IsIntendedObject(model, Location.class)){
-                    Location location = (Location)model;
+                if (identifier.IsIntendedObject(model, Location.class)) {
+                    Location location = (Location) model;
                     holder._reservationTitle.setText(location.name);
-                    holder._reservationTime.setText(DateFormat.getDateInstance(DateFormat.SHORT).format(reservation.dateReserved));
-                    if(reservation.status.equals("Reserved"))
-                        holder._statusImage.setImageResource(R.drawable.status_reserved);
-                    else if(reservation.status.equals("SoldOut"))
-                        holder._statusImage.setImageResource(R.drawable.status_sold_out);
-                    else if(reservation.status.equals("Unavailable"))
-                        holder._statusImage.setImageResource(R.drawable.status_unavailable);
-                    else if(reservation.status.equals("Waitlist"))
-                        holder._statusImage.setImageResource(R.drawable.status_waitlist);
-                    else if(reservation.status.equals("NoRegistrationRequired"))
-                        holder._statusImage.setImageResource(R.drawable.status_no_registration);
 
-                    holder._reservationViewSwitcher.setDisplayedChild(
-                            holder._reservationViewSwitcher.indexOfChild(listView.findViewById(R.id.dataRelativeLayout)));
+                    if (reservation.linkedSession != null && reservation.linkedLocation != null) {
+                        holder._reservationViewSwitcher.setDisplayedChild(
+                                holder._reservationViewSwitcher.indexOfChild(listView.findViewById(R.id.dataRelativeLayout)));
+                    }
+                } else if (identifier.IsIntendedObject(model, Session.class)) {
+                    Session session = (Session) model;
+                    SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+                    holder._reservationTime.setText(
+                            DateFormat.getDateInstance(DateFormat.SHORT).format(session.date) +
+                            " " + timeFormat.format(session.date) + " - " +
+                            " " + timeFormat.format(session.endDate));
+
+                    if (reservation.linkedSession != null && reservation.linkedLocation != null) {
+                        holder._reservationViewSwitcher.setDisplayedChild(
+                                holder._reservationViewSwitcher.indexOfChild(listView.findViewById(R.id.dataRelativeLayout)));
+                    }
                 }
             }
         });
-        reservation.loadLinkedObjects();
+        if(reservation.linkedLocation == null ||
+                reservation.linkedSession == null) {
+            reservation.loadLinkedObjects();
+        }
+        else {
+            if(reservation.linkedLocation != null){
+                holder._reservationTitle.setText(reservation.linkedLocation.name);
+            }
+            if(reservation.linkedSession != null){
+                SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+                holder._reservationTime.setText(
+                        DateFormat.getDateInstance(DateFormat.SHORT).format(reservation.linkedSession.date) +
+                                " " + timeFormat.format(reservation.linkedSession.date) + " - " +
+                                " " + timeFormat.format(reservation.linkedSession.endDate));
+            }
+            holder._reservationViewSwitcher.setDisplayedChild(
+                    holder._reservationViewSwitcher.indexOfChild(listView.findViewById(R.id.dataRelativeLayout)));
+        }
+
+
+        if (reservation.status.equals("Reserved"))
+            holder._statusImage.setImageResource(R.drawable.status_reserved);
+        else if (reservation.status.equals("SoldOut"))
+            holder._statusImage.setImageResource(R.drawable.status_sold_out);
+        else if (reservation.status.equals("Unavailable"))
+            holder._statusImage.setImageResource(R.drawable.status_unavailable);
+        else if (reservation.status.equals("Waitlist"))
+            holder._statusImage.setImageResource(R.drawable.status_waitlist);
+        else if (reservation.status.equals("NoRegistrationRequired"))
+            holder._statusImage.setImageResource(R.drawable.status_no_registration);
         return convertView;
+    }
+
+    private void updateLocationUI(Location location, ReservationViewHolder holder){
+
+
+
     }
 
     public class ReservationViewHolder {

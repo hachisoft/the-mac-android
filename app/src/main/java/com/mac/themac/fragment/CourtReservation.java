@@ -124,9 +124,9 @@ public class CourtReservation extends FragmentWithTopActionBar implements FBMode
     public void createReservation(){
         //TODO this all still needs to be linked to the layout and tested
         session = new Session();
-        session.setDate(date);
-        session.setDuration(duration);
-        session.setLocation(location);
+        session.date = date;
+        session.duration = duration;
+        session.location = location;
         Firebase sessionRef = new Firebase(getString(R.string.firebase_url) + "/sessions");
         Firebase newSessionRef = sessionRef.push();
         newSessionRef.setValue(session);
@@ -158,7 +158,7 @@ public class CourtReservation extends FragmentWithTopActionBar implements FBMode
         newReservationRef.setValue(reservation);
         String reservationKey = newReservationRef.getKey();
         newSessionRef.child("reservation").setValue(reservationKey);
-        session.setReservation(reservationKey);
+        session.reservation = reservationKey;
         FirebaseHelper fbHelper = TheMACApplication.theApp.getFirebaseHelper();
         fbHelper.SubscribeToModelUpdates(this, new FBModelIdentifier(Location.class), location);
         //TODO check on ball machine with caleb
