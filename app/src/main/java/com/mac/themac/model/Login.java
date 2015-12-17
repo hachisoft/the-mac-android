@@ -85,7 +85,7 @@ public class Login extends FBModelObject {
 
             }
 
-            linkedUser.loadMemberProfileInterestsRegistrations();
+            linkedUser.loadMemberProfileLinkedObjects();
         }
     }
 

@@ -1,8 +1,8 @@
 package com.mac.themac.model.firebase;
 
 /**
- * Created by Samir on 9/11/2015.
+ * Created by Samir on 12/17/2015.
  */
-public interface FBModelListener extends FBListener {
+public interface ModelListener {
     void onDataChange(FBModelIdentifier identifier, FBModelObject model);
 }

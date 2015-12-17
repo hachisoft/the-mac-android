@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 import com.mac.themac.TheMACApplication;
 import com.mac.themac.utility.FirebaseHelper;
 
@@ -32,6 +29,34 @@ public abstract class FBModelObject implements FBModelListener{
         return nonMappedProperties;
     }
 
+    @JsonIgnore
+    private List<ModelListener> modelListeners = new ArrayList<ModelListener>();
+    @JsonIgnore
+    private Map<List<? extends FBModelObject>,
+                List<ModelCollectionListener>> collectionListenerMap =
+                            new HashMap<List<? extends FBModelObject>, List<ModelCollectionListener>>();
+
+    @JsonIgnore
+    public void setModelUpdateListener(ModelListener listner){
+        if(!modelListeners.contains(listner))
+            modelListeners.add(listner);
+    }
+
+    @JsonIgnore
+    public void setCollectionUpdateListner(List<? extends FBModelObject> collection, ModelCollectionListener listener){
+        if(collectionListenerMap.containsKey(collection)){
+            List<ModelCollectionListener> list = collectionListenerMap.get(collection);
+            if(!list.contains(listener)) {
+                list.add(listener);
+            }
+        }
+        else{
+            List<ModelCollectionListener> list = new ArrayList<ModelCollectionListener>();
+            list.add(listener);
+            collectionListenerMap.put(collection, list);
+        }
+    }
+
     @JsonAnySetter
     public void set(String name, Object value) {
         nonMappedProperties.put(name, value);
@@ -40,6 +65,8 @@ public abstract class FBModelObject implements FBModelListener{
     @JsonIgnore abstract public void loadLinkedObjects();
 
     @JsonIgnore abstract public void resetLinkedObjects();
+
+    @JsonIgnore abstract protected void setLinkedObject(FBModelIdentifier fbModelIdentifier, FBModelObject modelObject);
 
     @JsonIgnore
     protected void loadLinkedObjects(final Class<? extends FBModelObject> targetObjectType,
@@ -61,8 +88,6 @@ public abstract class FBModelObject implements FBModelListener{
         }
     }
 
-    @JsonIgnore abstract protected void setLinkedObject(FBModelIdentifier fbModelIdentifier, FBModelObject modelObject);
-
     @JsonIgnore
     protected void loadLinkedObject(final Class<? extends FBModelObject> targetObjectType,
                                     FirebaseHelper.FBRootContainerNames containerName,
@@ -82,38 +107,41 @@ public abstract class FBModelObject implements FBModelListener{
 
             final FirebaseHelper fbHelper = TheMACApplication.theApp.getFirebaseHelper();
             fbHelper.SubscribeToModelUpdates(this, fbModelIdentifier, key);
-            /*Firebase fbRef = fbHelper.getRootKeyedObjectRef(containerName, key);
-
-            fbRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.exists()) {
-                        Object modelObject = dataSnapshot.getValue(fbModelIdentifier.getIntendedClass());
-                        if(modelObject instanceof FBModelObject) {
-                            ((FBModelObject) modelObject).FBKey = dataSnapshot.getKey();
-                            setLinkedObject(fbModelIdentifier, (FBModelObject) modelObject);
-                        }
-                    }
-                }
-
-                @Override
-                public void onCancelled(FirebaseError firebaseError) {
-
-                }
-            });*/
         }
     }
 
+    @JsonIgnore
     @Override
     public void onDataChange(FBModelIdentifier identifier, FBModelObject modelObject) {
 
         if(identifier.getPayload() == null) {//Update for parent(this) model object
-            setLinkedObject(identifier, (FBModelObject) modelObject);
+            setLinkedObject(identifier, modelObject);
+
+            for (ModelListener listner : modelListeners) {
+                try {
+                    listner.onDataChange(identifier, modelObject);
+                }
+                catch(Exception e){
+                    //ignore any exception thrown from listner
+                }
+            }
         }
         else{ //Update for child(linked) model object
             if(identifier.getPayload() instanceof List){
                 List<FBModelObject> linkedModels = (List<FBModelObject>)identifier.getPayload();
-                linkedModels.add(modelObject);
+                linkedModels.add((FBModelObject) modelObject);
+
+                if(collectionListenerMap.containsKey(linkedModels)){
+                    for (ModelCollectionListener listner : collectionListenerMap.get(linkedModels)) {
+                        try{
+                            listner.onCollectionUpdated(linkedModels, (FBModelObject)modelObject, true);
+                        }
+                        catch(Exception e){
+                            //ignore any exception thrown from listner
+                        }
+                    }
+                }
+
             }
         }
     }

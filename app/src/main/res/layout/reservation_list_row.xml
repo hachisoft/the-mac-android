@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <ViewSwitcher
+        android:id="@+id/reservationViewSwitcher"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:id="@+id/loadingLinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:layout_gravity="center"/>
+        </LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/UIEntryLayout"
+            android:id="@+id/dataRelativeLayout">
+            <ImageView android:id="@+id/indicator"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/status_available"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"/>
+            <TextView android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:layout_toRightOf="@id/indicator"
+                android:text="Kinder 2 Gymnastics - GY057FA14"
+                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"/>
+            <TextView android:id="@+id/tv_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small"
+                android:textColor="@color/red"
+                android:layout_below="@id/tv_title"
+                android:layout_alignLeft="@id/tv_title"
+                android:text="4:45 PM - 5:45 PM"/>
+        </RelativeLayout>
+    </ViewSwitcher>
+
+</FrameLayout>

@@ -237,8 +237,8 @@ public class CourtReservationTimeBlockWidget extends LinearLayout implements FBM
         }
         else if(identifier.IsIntendedObject(model, Reservation.class)){
             Reservation reservation = (Reservation)model;
-            if(reservation.getName()!=null){
-                detailLabel.setText(reservation.getName());
+            if(reservation.name!=null){
+                detailLabel.setText(reservation.name);
                 detailLabel.setVisibility(View.VISIBLE);
             }
         }
