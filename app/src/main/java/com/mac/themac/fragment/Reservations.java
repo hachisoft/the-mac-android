@@ -93,11 +93,12 @@ public class Reservations extends FragmentWithTopActionBar{
         Collections.sort(loggedInUser.linkedReservations);
         final ReservationsAdapter adapter = new ReservationsAdapter(this.getActivity(), R.layout.reservation_list_row, loggedInUser.linkedReservations);
         _lvReservations.setAdapter(adapter);
+        adapter.getFilter().filter("");
         loggedInUser.setCollectionUpdateListner(loggedInUser.linkedReservations, new ModelCollectionListener() {
             @Override
             public void onCollectionUpdated(List<? extends FBModelObject> linkedCollection, FBModelObject fbObject, boolean isAdded) {
                 Collections.sort(loggedInUser.linkedReservations);
-                adapter.notifyDataSetChanged();
+                adapter.getFilter().filter("");
             }
         });
         return view;
