@@ -12,6 +12,7 @@ import com.mac.themac.fragment.DatePickerFragment;
 import com.mac.themac.fragment.DatePickerFragment.DatePickerFragmentInterface;
 import com.mac.themac.fragment.EventDetails;
 import com.mac.themac.fragment.EventList;
+import com.mac.themac.fragment.EventSurvey;
 import com.mac.themac.fragment.EventTypeSelect;
 import com.mac.themac.fragment.FragmentWithTopActionBar;
 import com.mac.themac.fragment.TimePickerFragment;
@@ -126,7 +127,8 @@ public class FindEvents extends ActivityWithBottomActionBar implements FragmentW
             Session session = (Session) model;
             if(session.getEvent()==null)
                 return;
-            if(session.getDate().before(new Date(fromDate.getTimeInMillis())))
+            Date temp = new Date(fromDate.getTimeInMillis());
+            if(session.getDate().before(temp))
                 return;
             session.loadLinkedObjects();
             sessions.add(session);
@@ -149,7 +151,11 @@ public class FindEvents extends ActivityWithBottomActionBar implements FragmentW
                 withinTimeWindow = minutes >= startTime && minutes <= endTime;
                 String search = tvSearchText.getText().toString();
                 if(!search.isEmpty()){
-                    nameMatch = session.linkedEvent.getTitle().toLowerCase().contains(search.toLowerCase());
+                    try {
+                        nameMatch = session.linkedEvent.getTitle().toLowerCase().contains(search.toLowerCase());
+                    } catch (Exception e){
+                        nameMatch = false;
+                    }
                 }
                 if(typesTest && withinTimeWindow && nameMatch)
                     listFragment.addSession(session);
@@ -159,6 +165,11 @@ public class FindEvents extends ActivityWithBottomActionBar implements FragmentW
 
     public void showEventDetails(String event){
         EventDetails frag = EventDetails.newInstance(event);
+        showFragment(frag, R.id.container);
+    }
+
+    public void showEventSurvey(String survey){
+        EventSurvey frag = EventSurvey.newInstance(survey);
         showFragment(frag, R.id.container);
     }
 

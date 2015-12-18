@@ -4,12 +4,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.firebase.client.FirebaseError;
 import com.mac.themac.R;
 import com.mac.themac.TheMACApplication;
+import com.mac.themac.activity.FindEvents;
 import com.mac.themac.model.Event;
 import com.mac.themac.model.Fee;
 import com.mac.themac.model.firebase.FBModelIdentifier;
@@ -22,6 +24,7 @@ import java.text.SimpleDateFormat;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by Bryan on 9/15/2015.
@@ -123,6 +126,13 @@ public class EventDetails extends FragmentWithTopActionBar implements FBModelLis
             event = (Event) model;
             event.loadLinkedObjects();
             toViews();
+        }
+    }
+
+    @OnClick(R.id.btnRegister)
+    public void onRegisterClicked(){
+        if(event.getSurvey() != null){
+            ((FindEvents)getActivity()).showEventSurvey(event.getSurvey());
         }
     }
 

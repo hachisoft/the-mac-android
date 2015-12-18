@@ -27,6 +27,8 @@ import com.mac.themac.model.ReservationRule;
 import com.mac.themac.model.Rule;
 import com.mac.themac.model.Session;
 import com.mac.themac.model.Statement;
+import com.mac.themac.model.Survey;
+import com.mac.themac.model.SurveyItem;
 import com.mac.themac.model.Transaction;
 import com.mac.themac.model.User;
 import com.mac.themac.model.Vehicle;
@@ -66,7 +68,7 @@ public class FirebaseHelper {
         logins, users, sessions, interests, events, reservations, reservationRules, registrations,
         fees, closures, locations, memberProfilePublics, employeeProfiles,
         addresses, vehicles, emergencyContacts, invitations, rules, transactions,
-        statements, departments, parkingProjections
+        statements, departments, parkingProjections, surveys, surveyItems
     }
 
     public FirebaseHelper(String firebaseUrl) {
@@ -229,6 +231,12 @@ public class FirebaseHelper {
         }
         else if(classType.equals(ParkingProjection.class)){
             return getRootKeyedObjectRef(FBRootContainerNames.parkingProjections, key);
+        }
+        else if(classType.equals(Survey.class)){
+            return getRootKeyedObjectRef(FBRootContainerNames.surveys, key);
+        }
+        else if(classType.equals(SurveyItem.class)){
+            return getRootKeyedObjectRef(FBRootContainerNames.surveyItems, key);
         }
         else{
             throw new InvalidParameterException("No container found for class type: " + classType.toString());

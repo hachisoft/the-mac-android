@@ -40,7 +40,10 @@ public abstract class FragmentWithTopActionBar extends Fragment {
         super.onResume();
         ActivityWithBottomActionBar activity = (ActivityWithBottomActionBar) mListener;
         if(activity != null){
-            activity.setTitle(getTitleResourceId());
+            if(getTitleResourceId()>0)
+                activity.setTitle(getTitleResourceId());
+            else
+                activity.setTitle("");
             activity.showTopActionBar();
         }
     }

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:background="@color/light_gray"
+    android:paddingTop="5dp">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="New Guest"
+        android:gravity="center"/>
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:stretchColumns="1"
+        android:shrinkColumns="0">
+
+        <TableRow
+            style="@style/UIEntryLayout">
+
+            <TextView
+                style="@style/MediumRowHeaderText"
+                android:text="@string/first_name"
+                android:labelFor="@+id/et_first_name" />
+
+            <EditText
+                style="@style/UIGrayColumnBoxDisabled"
+                android:inputType="textCapWords|textPersonName|textAutoComplete"
+                android:id="@+id/et_first_name"
+                />
+        </TableRow>
+        <TableRow
+            style="@style/UIEntryLayout">
+
+            <TextView
+                style="@style/MediumRowHeaderText"
+                android:text="@string/last_name"
+                android:labelFor="@+id/et_last_name" />
+
+            <EditText
+                style="@style/UIGrayColumnBoxDisabled"
+                android:inputType="textCapWords|textPersonName|textAutoComplete"
+                android:id="@+id/et_last_name"
+                />
+        </TableRow>
+        <TableRow
+            style="@style/UIEntryLayout">
+
+            <TextView
+                style="@style/MediumRowHeaderText"
+                android:text="@string/child" />
+            <LinearLayout
+                style="@style/UIGrayColumnBoxDisabled"
+                android:padding="1dp">
+                <CheckBox
+                    android:id="@+id/cb_is_child"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </TableRow>
+    </TableLayout>
+</LinearLayout>

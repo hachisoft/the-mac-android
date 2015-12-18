@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<RelativeLayout
+    android:orientation="vertical" style="@style/UIEntryLayout">
+    <TextView
+        android:id="@+id/tv_question"
+        style="@style/MediumRowHeaderText"
+        android:layout_width="match_parent"
+        android:text="Survey Question?"
+        android:paddingBottom="10dp"
+        android:gravity="left"
+        android:layout_toLeftOf="@+id/cb_checkbox"/>
+    <CheckBox
+        android:id="@+id/cb_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true" />
+    <EditText
+        android:id="@+id/et_answer"
+        style="@style/UIGrayColumnBoxDisabled"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:layout_below="@id/tv_question"
+        android:layout_toLeftOf="@id/cb_checkbox"/>
+</RelativeLayout>
+</LinearLayout>
