@@ -80,11 +80,11 @@ public class User extends FBModelObject{
     public List<FBModelObject> linkedInterests = new ArrayList<FBModelObject>();
     */
     @JsonIgnore
-    public List<FBModelObject> linkedRegistrations = new ArrayList<FBModelObject>();
+    public List<Registration> linkedRegistrations = new ArrayList<Registration>();
     @JsonIgnore
-    public List<FBModelObject> linkedReservations = new ArrayList<FBModelObject>();
+    public List<Reservation> linkedReservations = new ArrayList<Reservation>();
     @JsonIgnore
-    public List<FBModelObject> linkedAddresses = new ArrayList<FBModelObject>();
+    public List<Address> linkedAddresses = new ArrayList<Address>();
     @JsonIgnore
     public List<FBModelObject> linkedVehicles = new ArrayList<FBModelObject>();
     @JsonIgnore
@@ -98,7 +98,7 @@ public class User extends FBModelObject{
     }
 
     @JsonIgnore
-    public void loadMemberProfileInterestsRegistrations(){
+    public void loadMemberProfileLinkedObjects(){
 
         /*if(interests == null){
             interests = new HashMap<String, Boolean>();
@@ -113,6 +113,13 @@ public class User extends FBModelObject{
         if(registrations != null){
             loadLinkedObjects(Registration.class, FirebaseHelper.FBRootContainerNames.registrations,
                     registrations, linkedRegistrations);
+        }
+        if(reservations == null){
+            reservations = new HashMap<String, Boolean>();
+        }
+        if(reservations != null){
+            loadLinkedObjects(Reservation.class, FirebaseHelper.FBRootContainerNames.reservations,
+                    reservations, linkedReservations);
         }
         if(transactions == null){
             transactions = new HashMap<String, Boolean>();

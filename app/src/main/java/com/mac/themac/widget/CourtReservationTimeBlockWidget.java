@@ -61,12 +61,12 @@ public class CourtReservationTimeBlockWidget extends LinearLayout implements FBM
                 } else {
                     actionButton.setVisibility(View.INVISIBLE);
                     Session session = (Session) courtButtons.get(i).getTag();
-                    if(session.getReservation()!=null){
-                        getReservationForLabel(session.getReservation());
-                    } else if(session.getClosure()!=null){
-                        getClosureForLabel(session.getClosure());
-                    } else if(session.getEvent()!=null){
-                        getEventForLabel(session.getEvent());
+                    if(session.reservation!=null){
+                        getReservationForLabel(session.reservation);
+                    } else if(session.closure!=null){
+                        getClosureForLabel(session.closure);
+                    } else if(session.event !=null){
+                        getEventForLabel(session.event);
                     }
                 }
             }
@@ -199,7 +199,7 @@ public class CourtReservationTimeBlockWidget extends LinearLayout implements FBM
 
     public void setButtonStatus(int court, Session session){
         CourtButton cb = courtButtons.get(court);
-        if(session.getReservation()!=null)
+        if(session.reservation!=null)
             cb.setCourtState(CourtButton.CourtState.reserved);
         else{
             cb.setCourtState(CourtButton.CourtState.mac_reserved);
@@ -237,8 +237,8 @@ public class CourtReservationTimeBlockWidget extends LinearLayout implements FBM
         }
         else if(identifier.IsIntendedObject(model, Reservation.class)){
             Reservation reservation = (Reservation)model;
-            if(reservation.getName()!=null){
-                detailLabel.setText(reservation.getName());
+            if(reservation.name!=null){
+                detailLabel.setText(reservation.name);
                 detailLabel.setVisibility(View.VISIBLE);
             }
         }

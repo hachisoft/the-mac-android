@@ -76,6 +76,10 @@ public class FirebaseHelper {
         this._firebaseRef = new Firebase(firebaseUrl);
     }
 
+    public String getFBUrl(){
+        return _fbUrl;
+    }
+
     public FirebaseHelper(Firebase _firebaseRef) {
         this._firebaseRef = _firebaseRef;
     }

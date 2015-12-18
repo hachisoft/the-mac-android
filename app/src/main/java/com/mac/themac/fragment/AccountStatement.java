@@ -141,7 +141,7 @@ public class AccountStatement extends FragmentWithTopActionBar {
             Collections.sort(mStatement.linkedTransactions, new Comparator<Transaction>() {
                 @Override
                 public int compare(Transaction lhs, Transaction rhs) {
-                    return rhs.date.compareTo(lhs.date);
+                    return lhs.date.compareTo(rhs.date);
                 }
             });
 

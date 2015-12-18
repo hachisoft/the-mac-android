@@ -125,10 +125,14 @@ public class FindEvents extends ActivityWithBottomActionBar implements FragmentW
     public void onChildAdded(FBModelIdentifier modelIdentifier, FBQueryIdentifier queryIdentifier, FBModelObject model, String prevChild) {
         if(modelIdentifier.IsIntendedObject(model, Session.class)){
             Session session = (Session) model;
-            if(session.getEvent()==null)
+            if(session.event ==null)
                 return;
+<<<<<<< HEAD
             Date temp = new Date(fromDate.getTimeInMillis());
             if(session.getDate().before(temp))
+=======
+            if(session.date.before(new Date(fromDate.getTimeInMillis())))
+>>>>>>> bf155daa80596a169bc6eb58cc8a1076dc261426
                 return;
             session.loadLinkedObjects();
             sessions.add(session);
@@ -138,7 +142,7 @@ public class FindEvents extends ActivityWithBottomActionBar implements FragmentW
     public void loadSessionsForDate(Calendar date){
         Calendar temp = Calendar.getInstance();
         for(Session session: sessions){
-            temp.setTime(session.getDate());
+            temp.setTime(session.date);
             if(temp.get(Calendar.DAY_OF_YEAR) == date.get(Calendar.DAY_OF_YEAR)){
                 //TODO assess other filters here
                 boolean typesTest = true;

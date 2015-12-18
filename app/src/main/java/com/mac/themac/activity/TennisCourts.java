@@ -266,7 +266,7 @@ public class TennisCourts extends ActivityWithBottomActionBar
 
     private void assignSessionToTimeSlot(Session session, int pos){
         Calendar cal = Calendar.getInstance();
-        cal.setTime(session.getDate());
+        cal.setTime(session.date);
         if(cal.get(Calendar.MONTH) == calendar.get(Calendar.MONTH) &&
                 cal.get(Calendar.DAY_OF_MONTH) == calendar.get(Calendar.DAY_OF_MONTH)){
             long mins = cal.get(Calendar.MINUTE) + (cal.get(Calendar.HOUR_OF_DAY) * 60);
@@ -418,7 +418,7 @@ public class TennisCourts extends ActivityWithBottomActionBar
 
     public void addSession(Session session){
         for(int i = 0; i < locations.size(); i ++){
-            if(locations.get(i).FBKey.equals(session.getLocation())){
+            if(locations.get(i).FBKey.equals(session.location)){
                 assignSessionToTimeSlot(session, i);
                 break;
             }

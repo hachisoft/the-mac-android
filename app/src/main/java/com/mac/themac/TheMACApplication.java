@@ -50,6 +50,10 @@ public class TheMACApplication extends Application {
         return mFirebaseHelper;
     }
 
+    public void resetFirebaseUrl(String newFirebaseUrl ){
+        mFirebaseHelper = new FirebaseHelper(newFirebaseUrl);
+    }
+
     public static void startActivity(Activity currentActivity, Class activityClass){
 
         startActivity(currentActivity, activityClass, 0, true);

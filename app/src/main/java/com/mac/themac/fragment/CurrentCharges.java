@@ -72,7 +72,7 @@ public class CurrentCharges extends FragmentWithTopActionBar implements FBChildL
 
             double dAmount = 0;
             for(Transaction t : mFBHelper.getLoggedInUser().linkedTransactions) {
-                if (t.status.compareTo(Transaction.STATUS.Pending.name()) == 0) {
+                if (t.status == Transaction.STATUS.Pending) {
                     dAmount += t.amount;
                 }
             }
@@ -149,7 +149,7 @@ public class CurrentCharges extends FragmentWithTopActionBar implements FBChildL
             mFBHelper.getLoggedInUser().linkedTransactions.add(transaction);
             double dAmount = 0;
             for(Transaction t : mFBHelper.getLoggedInUser().linkedTransactions) {
-                if (t.status.compareTo(Transaction.STATUS.Pending.name()) == 0) {
+                if (t.status == Transaction.STATUS.Pending) {
                     dAmount += t.amount;
                 }
             }
