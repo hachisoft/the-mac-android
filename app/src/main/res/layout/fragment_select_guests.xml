@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:background="@color/light_gray">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Members"
+        android:layout_margin="5dp"/>
+    <ListView
+        android:id="@+id/lv_members"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"></ListView>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_centerVertical="true"
+
+            android:text="Guests"/>
+        <Button
+            android:id="@+id/btn_add_guest"
+            style="@style/UIButton"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:padding="5dp"
+            android:text="Add Guest"
+            android:layout_alignParentRight="true" />
+        <Button
+            android:id="@+id/btn_edit"
+            style="@style/UIButton"
+            android:layout_toLeftOf="@+id/btn_add_guest"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:padding="5dp"
+            android:text="Edit"
+            android:layout_marginRight="5dp" />
+    </RelativeLayout>
+    <ListView
+        android:id="@+id/lv_guests"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"></ListView>
+</LinearLayout>
