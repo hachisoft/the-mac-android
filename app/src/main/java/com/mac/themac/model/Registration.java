@@ -37,6 +37,14 @@ public class Registration extends FBModelObject{
     public Registration() {
     }
 
+    @JsonIgnore
+    public void loadLinkedEvent(){
+        if(event != null && !event.isEmpty()) {
+            loadLinkedObject(Event.class, FirebaseHelper.FBRootContainerNames.events, event,
+                    linkedEvent);
+        }
+    }
+
     @Override
     @JsonIgnore
     public void loadLinkedObjects() {

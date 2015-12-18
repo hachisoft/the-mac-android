@@ -12,7 +12,7 @@ import com.mac.themac.utility.FirebaseHelper;
  * Created by Samir on 9/9/2015.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Reservation extends FBModelObject implements Comparable<Reservation>{
+public class Reservation extends FBModelObject{
 
     public Date dateReserved;
     public String firstName;
@@ -42,6 +42,18 @@ public class Reservation extends FBModelObject implements Comparable<Reservation
     public Location linkedLocation;
 
     public Reservation(){}
+
+    @JsonIgnore
+    public void loadLinkedLocationAndSession(){
+        if(location != null && !location.isEmpty()) {
+            loadLinkedObject(Location.class, FirebaseHelper.FBRootContainerNames.locations,
+                    location, linkedLocation);
+        }
+        if(session != null && !session.isEmpty()) {
+            loadLinkedObject(Session.class,
+                    FirebaseHelper.FBRootContainerNames.sessions, session, linkedSession);
+        }
+    }
 
     @Override
     @JsonIgnore
@@ -97,15 +109,5 @@ public class Reservation extends FBModelObject implements Comparable<Reservation
         linkedReservingUser = null;
         linkedSession = null;
 
-    }
-
-    @Override
-    public int compareTo(Reservation another) {
-        if(another.dateReserved.after(dateReserved)){
-            return -1;
-        }
-        else {
-            return 1;
-        }
     }
 }

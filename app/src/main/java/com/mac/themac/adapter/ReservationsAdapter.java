@@ -32,6 +32,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -83,6 +85,16 @@ public class ReservationsAdapter extends ArrayAdapter<Reservation> implements Fi
                 FilterResults results = new FilterResults();
 
                 final List<Reservation> list = allReservations;
+
+                Collections.sort(allReservations, new Comparator<Reservation>() {
+                    @Override
+                    public int compare(Reservation lhs, Reservation rhs) {
+                        if(lhs.linkedSession != null && rhs.linkedSession != null){
+                            return lhs.linkedSession.date.before(rhs.linkedSession.date) ? -1 : 1;
+                        }
+                        return 0;
+                    }
+                });
 
                 int count = list.size();
                 final ArrayList<Reservation> nlist = new ArrayList<Reservation>(count);
@@ -142,16 +154,13 @@ public class ReservationsAdapter extends ArrayAdapter<Reservation> implements Fi
                     if (reservation.linkedSession != null && reservation.linkedLocation != null) {
                         holder._reservationViewSwitcher.setDisplayedChild(
                                 holder._reservationViewSwitcher.indexOfChild(listView.findViewById(R.id.dataRelativeLayout)));
-                        getFilter().filter("");
                     }
                 }
             }
         });
-        if(reservation.linkedLocation == null ||
-                reservation.linkedSession == null) {
-            reservation.loadLinkedObjects();
-        }
-        else {
+        if(reservation.linkedLocation != null &&
+                reservation.linkedSession != null){
+
             if(reservation.linkedLocation != null){
                 holder._reservationTitle.setText(reservation.linkedLocation.name);
             }
@@ -164,7 +173,6 @@ public class ReservationsAdapter extends ArrayAdapter<Reservation> implements Fi
             }
             holder._reservationViewSwitcher.setDisplayedChild(
                     holder._reservationViewSwitcher.indexOfChild(listView.findViewById(R.id.dataRelativeLayout)));
-            getFilter().filter("");
         }
 
 
@@ -180,12 +188,6 @@ public class ReservationsAdapter extends ArrayAdapter<Reservation> implements Fi
             holder._statusImage.setImageResource(R.drawable.status_no_registration);
 
         return convertView;
-    }
-
-    private void updateLocationUI(Location location, ReservationViewHolder holder){
-
-
-
     }
 
     public class ReservationViewHolder {

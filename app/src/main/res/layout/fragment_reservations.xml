@@ -1,11 +1,28 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/swipe_container"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" tools:context="com.mac.themac.fragment.Reservations"
     android:background="@color/light_gray"
     android:orientation="vertical">
 
-    <ListView android:id="@+id/lv_reservation"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></ListView>
+        android:layout_height="match_parent">
 
-</LinearLayout>
+        <LinearLayout android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ListView android:id="@+id/lv_reservation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></ListView>
+
+            <ListView android:id="@+id/lv_registrations"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></ListView>
+
+        </LinearLayout>
+
+    </ScrollView>
+</android.support.v4.widget.SwipeRefreshLayout>
