@@ -4,11 +4,13 @@ package com.mac.themac.fragment;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.renderscript.RenderScript;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mac.themac.R;
 import com.mac.themac.adapter.ReservationsAdapter;
 import com.mac.themac.model.Reservation;
@@ -19,6 +21,8 @@ import com.mac.themac.utility.DownloadImageTask;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import butterknife.Bind;
@@ -27,7 +31,7 @@ import butterknife.ButterKnife;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Reservations extends FragmentWithTopActionBar {
+public class Reservations extends FragmentWithTopActionBar{
 
     @Bind(R.id.lv_reservation)ListView _lvReservations;
     // TODO: Rename parameter arguments, choose names that match
@@ -85,15 +89,15 @@ public class Reservations extends FragmentWithTopActionBar {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, view);
-        User loggedInUser = mFBHelper.getLoggedInUser();
+        final User loggedInUser = mFBHelper.getLoggedInUser();
+        Collections.sort(loggedInUser.linkedReservations);
         final ReservationsAdapter adapter = new ReservationsAdapter(this.getActivity(), R.layout.reservation_list_row, loggedInUser.linkedReservations);
         _lvReservations.setAdapter(adapter);
         loggedInUser.setCollectionUpdateListner(loggedInUser.linkedReservations, new ModelCollectionListener() {
             @Override
             public void onCollectionUpdated(List<? extends FBModelObject> linkedCollection, FBModelObject fbObject, boolean isAdded) {
-                if(isAdded){
-                    adapter.add((Reservation)fbObject);
-                }
+                Collections.sort(loggedInUser.linkedReservations);
+                adapter.notifyDataSetChanged();
             }
         });
         return view;
@@ -105,5 +109,4 @@ public class Reservations extends FragmentWithTopActionBar {
             mListener.onFragmentInteraction(uri);
         }
     }
-
 }
