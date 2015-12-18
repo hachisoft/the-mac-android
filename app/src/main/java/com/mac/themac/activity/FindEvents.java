@@ -127,12 +127,8 @@ public class FindEvents extends ActivityWithBottomActionBar implements FragmentW
             Session session = (Session) model;
             if(session.event ==null)
                 return;
-<<<<<<< HEAD
             Date temp = new Date(fromDate.getTimeInMillis());
-            if(session.getDate().before(temp))
-=======
-            if(session.date.before(new Date(fromDate.getTimeInMillis())))
->>>>>>> bf155daa80596a169bc6eb58cc8a1076dc261426
+            if(session.date.before(temp))
                 return;
             session.loadLinkedObjects();
             sessions.add(session);
