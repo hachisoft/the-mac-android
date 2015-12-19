@@ -353,7 +353,7 @@ public class FirebaseHelper {
         Firebase fbRef = getRootKeyedObjectRef(fbModelIdentifier.getIntendedClass(), key);
 
         if(fbRef != null){
-            fbRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            fbRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     try {
@@ -361,7 +361,7 @@ public class FirebaseHelper {
                             FBModelObject fbModelObject = dataSnapshot.getValue(fbModelIdentifier.getIntendedClass());
                             fbModelObject.FBKey = key;
 
-                            if(loadLinkedObjects)
+                            if (loadLinkedObjects)
                                 fbModelObject.loadLinkedObjects();
 
                             if (!keyToModelMap.containsKey(key)) {
@@ -502,7 +502,7 @@ public class FirebaseHelper {
                                 modelListenerPair.second.add(listener);
                             }
 
-                            listener.onChildAdded(fbModelIdentifier, fbQueryIdentifier, fbModelObject, prevChild);
+                            listener.onChildChanged(fbModelIdentifier, fbQueryIdentifier, fbModelObject, prevChild);
 
                         } else
                             listener.onNullData(fbModelIdentifier, dataSnapshot.getKey());

@@ -31,6 +31,7 @@ public class Reservation extends FBModelObject{
     public String status;
     public String type;
     public boolean wantsPartner;
+    public String asset;
 
     @JsonIgnore
     public User linkedReservingUser;
@@ -40,6 +41,8 @@ public class Reservation extends FBModelObject{
     public Session linkedSession;
     @JsonIgnore
     public Location linkedLocation;
+    @JsonIgnore
+    public ReservationAsset linkedAsset;
 
     public Reservation(){}
 

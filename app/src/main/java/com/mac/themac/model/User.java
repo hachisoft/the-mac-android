@@ -137,6 +137,28 @@ public class User extends FBModelObject{
         }
     }
 
+    @JsonIgnore
+    public void reloadMyReservations(){
+        linkedRegistrations.clear();
+        linkedReservations.clear();
+
+        if(registrations == null){
+            registrations = new HashMap<String, Boolean>();
+        }
+        if(registrations != null){
+            loadLinkedObjects(Registration.class, FirebaseHelper.FBRootContainerNames.registrations,
+                    registrations, linkedRegistrations);
+        }
+
+        if(reservations == null){
+            reservations = new HashMap<String, Boolean>();
+        }
+        if(reservations != null){
+            loadLinkedObjects(Reservation.class, FirebaseHelper.FBRootContainerNames.reservations,
+                    reservations, linkedReservations);
+        }
+    }
+
     @Override
     @JsonIgnore
     public void loadLinkedObjects() {
