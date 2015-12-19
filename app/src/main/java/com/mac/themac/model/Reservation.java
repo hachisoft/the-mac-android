@@ -58,6 +58,14 @@ public class Reservation extends FBModelObject{
         }
     }
 
+    @JsonIgnore
+    public void loadLinkedAsset(){
+        if(asset != null && !asset.isEmpty()){
+            loadLinkedObject(ReservationAsset.class,
+                    FirebaseHelper.FBRootContainerNames.reservationAssets, asset, linkedAsset);
+        }
+    }
+
     @Override
     @JsonIgnore
     public void loadLinkedObjects() {
@@ -82,6 +90,11 @@ public class Reservation extends FBModelObject{
                     FirebaseHelper.FBRootContainerNames.sessions, session, linkedSession);
         }
 
+        if(asset != null && !asset.isEmpty()){
+            loadLinkedObject(ReservationAsset.class,
+                    FirebaseHelper.FBRootContainerNames.reservationAssets, asset, linkedAsset);
+        }
+
     }
 
     @JsonIgnore
@@ -100,6 +113,9 @@ public class Reservation extends FBModelObject{
         }
         else if(fbModelIdentifier.IsIntendedObject(modelObject, Session.class)) {
             linkedSession = (Session) modelObject;
+        }
+        else if(fbModelIdentifier.IsIntendedObject(modelObject, ReservationAsset.class)){
+            linkedAsset = (ReservationAsset) modelObject;
         }
     }
 

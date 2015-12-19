@@ -12,9 +12,11 @@ import com.mac.themac.R;
 import com.mac.themac.TheMACApplication;
 import com.mac.themac.activity.FindEvents;
 import com.mac.themac.model.Reservation;
+import com.mac.themac.model.ReservationAsset;
 import com.mac.themac.model.firebase.FBModelIdentifier;
 import com.mac.themac.model.firebase.FBModelListener;
 import com.mac.themac.model.firebase.FBModelObject;
+import com.mac.themac.model.firebase.ModelListener;
 import com.mac.themac.utility.FirebaseHelper;
 
 import java.text.DateFormat;
@@ -73,7 +75,26 @@ public class ReservationDetails extends FragmentWithTopActionBar implements FBMo
         else if(reservation.status.equals("NoRegistrationRequired"))
             ivIndicator.setImageResource(R.drawable.status_no_registration);
 
-        tvBallMachine.setText(reservation.linkedAsset == null? "No Ball Machine" : reservation.linkedAsset.name);
+        if(reservation.asset != null && !reservation.asset.isEmpty()) {
+            reservation.setModelUpdateListener(new ModelListener() {
+                @Override
+                public void onDataChange(FBModelIdentifier identifier, FBModelObject model) {
+                    if(model instanceof ReservationAsset) {
+                        tvBallMachine.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                tvBallMachine.setText(reservation.linkedAsset == null ? "No Ball Machine" : reservation.linkedAsset.name);
+                            }
+                        });
+                    }
+                }
+            });
+            reservation.loadLinkedAsset();
+        }
+        else{
+            tvBallMachine.setText("No Ball Machine");
+        }
+
 
     }
 
