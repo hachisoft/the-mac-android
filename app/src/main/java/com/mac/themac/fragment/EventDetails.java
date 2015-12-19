@@ -1,6 +1,7 @@
 package com.mac.themac.fragment;
 
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import com.mac.themac.TheMACApplication;
 import com.mac.themac.activity.FindEvents;
 import com.mac.themac.model.Event;
 import com.mac.themac.model.Fee;
+import com.mac.themac.model.User;
 import com.mac.themac.model.firebase.FBModelIdentifier;
 import com.mac.themac.model.firebase.FBModelListener;
 import com.mac.themac.model.firebase.FBModelObject;
@@ -38,7 +40,8 @@ public class EventDetails extends FragmentWithTopActionBar implements FBModelLis
     @Bind(R.id.tv_dates) TextView tvDates;
     @Bind(R.id.tv_description) TextView tvDescription;
     @Bind(R.id.indicator) ImageView ivIndicator;
-
+    @Bind(R.id.btnRegister) Button btnRegister;
+    @Bind(R.id.btnCancelRegistration) Button btnCancelRegistration;
     private static String ARG_EVENT_KEY = "event_key";
     private String eventKey;
     private Event event;
@@ -54,6 +57,18 @@ public class EventDetails extends FragmentWithTopActionBar implements FBModelLis
     public EventDetails(){}
 
     private void toViews(){
+
+        User loggedInUser = mFBHelper.getLoggedInUser();
+        btnRegister.setEnabled(true);
+        btnCancelRegistration.setEnabled(false);
+        for(String s : loggedInUser.registrations.keySet()){
+            if(event.registrations.keySet().contains(s)){
+                btnRegister.setEnabled(false);
+                btnCancelRegistration.setEnabled(true);
+                break;
+            }
+        }
+
         tvTitle.setText(event.getTitle());
         tvCode.setText(event.getNumber());
         tvDescription.setText(event.getDescription());
