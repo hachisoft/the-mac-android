@@ -17,29 +17,29 @@ import com.mac.themac.utility.FirebaseHelper;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Event extends FBModelObject{
 
-    boolean allowGuests;
-    boolean allowJuniors;
-    boolean allowWaitlist;
-    long capacity;
-    String daysOfWeek;
-    String description;
-    Date endDate;
-    String interest;
-    boolean isPromoted;
-    long nsEventId;
-    long nsEventTypeId;
-    long nsLocationId;
-    Date startDate;
-    String status;
-    String title;
-    String number;
-    String imageId;
-    String billingId;
-    String survey;
-    HashMap<String, Boolean> sessions;
-    HashMap<String, Boolean> fees;
-    HashMap<String, Boolean> interests;
-    HashMap<String, Boolean> registrations;
+    public boolean allowGuests;
+    public boolean allowJuniors;
+    public boolean allowWaitlist;
+    public long capacity;
+    public String daysOfWeek;
+    public String description;
+    public Date endDate;
+    public String interest;
+    public boolean isPromoted;
+    public long nsEventId;
+    public long nsEventTypeId;
+    public long nsLocationId;
+    public Date startDate;
+    public String status;
+    public String title;
+    public String number;
+    public String imageId;
+    public String billingId;
+    public String survey;
+    public HashMap<String, Boolean> sessions;
+    public HashMap<String, Boolean> fees;
+    public HashMap<String, Boolean> interests;
+    public HashMap<String, Boolean> registrations;
 
     @JsonIgnore
     public List<FBModelObject> linkedSessions = new ArrayList<FBModelObject>();;

@@ -107,5 +107,6 @@
     <string name="child">Child</string>
     <string name="logout">Logout</string>
     <string name="Update">Update</string>
+    <string name="reservation_info">Reservation Info</string>
 
 </resources>

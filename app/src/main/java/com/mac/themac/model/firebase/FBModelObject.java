@@ -141,7 +141,6 @@ public abstract class FBModelObject implements FBModelListener{
                         }
                     }
                 }
-
             }
         }
     }

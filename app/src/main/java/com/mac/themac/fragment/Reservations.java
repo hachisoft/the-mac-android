@@ -5,15 +5,15 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.os.Handler;
-import android.renderscript.RenderScript;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mac.themac.R;
+import com.mac.themac.adapter.MyReservationsAdapter;
 import com.mac.themac.adapter.RegistrationsAdapter;
 import com.mac.themac.adapter.ReservationsAdapter;
 import com.mac.themac.model.Registration;
@@ -23,12 +23,8 @@ import com.mac.themac.model.firebase.FBModelIdentifier;
 import com.mac.themac.model.firebase.FBModelObject;
 import com.mac.themac.model.firebase.ModelCollectionListener;
 import com.mac.themac.model.firebase.ModelListener;
-import com.mac.themac.utility.DownloadImageTask;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -39,9 +35,10 @@ import butterknife.ButterKnife;
  */
 public class Reservations extends FragmentWithTopActionBar implements SwipeRefreshLayout.OnRefreshListener {
 
-    @Bind(R.id.lv_reservation)ListView _lvReservations;
-    @Bind(R.id.lv_registrations)ListView _lvRegistrations;
+    @Bind(R.id.lv_myreservations)ListView _lvMyReservations;
     @Bind(R.id.swipe_container)SwipeRefreshLayout _swipeRefreshLayout;
+
+    List<FBModelObject> _myReservations = new ArrayList<FBModelObject>();
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -102,43 +99,58 @@ public class Reservations extends FragmentWithTopActionBar implements SwipeRefre
         _swipeRefreshLayout.setOnRefreshListener(this);
         final User loggedInUser = mFBHelper.getLoggedInUser();
 
+        //Setup My Reservations
+        _myReservations.clear();
+        _myReservations.addAll(loggedInUser.linkedReservations);
+        _myReservations.addAll(loggedInUser.linkedRegistrations);
+        final MyReservationsAdapter myReservationsAdapter = new MyReservationsAdapter(this.getActivity(), R.layout.myreservation_list_row, _myReservations);
+        _lvMyReservations.setAdapter(myReservationsAdapter);
+        myReservationsAdapter.getFilter().filter("");
+        final List<FBModelObject> reservations = _myReservations;
+        for (int i = 0; i < reservations.size(); i++){
+
+            FBModelObject r = reservations.get(i);
+            if(r instanceof Reservation) {
+                r.setModelUpdateListener(new ModelListener() {
+                    @Override
+                    public void onDataChange(FBModelIdentifier identifier, FBModelObject model) {
+                        myReservationsAdapter.getFilter().filter("");
+                    }
+                });
+                ((Reservation)r).loadLinkedLocationAndSession();
+            }
+            else if(r instanceof Registration){
+                r.setModelUpdateListener(new ModelListener() {
+                    @Override
+                    public void onDataChange(FBModelIdentifier identifier, FBModelObject model) {
+                        myReservationsAdapter.getFilter().filter("");
+                    }
+                });
+                ((Registration)r).loadLinkedEvent();
+            }
+        }
+
         //Setup Reservations
-        final ReservationsAdapter reservationsAdapter = new ReservationsAdapter(this.getActivity(), R.layout.reservation_list_row, loggedInUser.linkedReservations);
-        _lvReservations.setAdapter(reservationsAdapter);
-        reservationsAdapter.getFilter().filter("");
         loggedInUser.setCollectionUpdateListner(loggedInUser.linkedReservations, new ModelCollectionListener() {
             @Override
             public void onCollectionUpdated(List<? extends FBModelObject> linkedCollection, FBModelObject fbObject, boolean isAdded) {
-                Reservation r = (Reservation)fbObject;
-                if(r != null){
-                    r.setModelUpdateListener(new ModelListener() {
-                        @Override
-                        public void onDataChange(FBModelIdentifier identifier, FBModelObject model) {
-                            reservationsAdapter.getFilter().filter("");
-                        }
-                    });
-                    r.loadLinkedLocationAndSession();
+                if (isAdded) {
+                    Reservation r = (Reservation) fbObject;
+                    if (r != null) {
+                        r.setModelUpdateListener(new ModelListener() {
+                            @Override
+                            public void onDataChange(FBModelIdentifier identifier, FBModelObject model) {
+                                myReservationsAdapter.getFilter().filter("");
+                            }
+                        });
+                        r.loadLinkedLocationAndSession();
+                        _myReservations.add(r);
+                    }
                 }
-                reservationsAdapter.getFilter().filter("");
             }
         });
 
-        final List<Reservation> reservations = loggedInUser.linkedReservations;
-        for (int i = 0; i < reservations.size(); i++){
-            Reservation r = reservations.get(i);
-            r.setModelUpdateListener(new ModelListener() {
-                @Override
-                public void onDataChange(FBModelIdentifier identifier, FBModelObject model) {
-                    reservationsAdapter.getFilter().filter("");
-                }
-            });
-            r.loadLinkedLocationAndSession();
-        }
-
         //Setup Registrations
-        final RegistrationsAdapter registrationsAdapter = new RegistrationsAdapter(this.getActivity(), R.layout.registration_list_row, loggedInUser.linkedRegistrations);
-        _lvRegistrations.setAdapter(registrationsAdapter);
-        registrationsAdapter.getFilter().filter("");
         loggedInUser.setCollectionUpdateListner(loggedInUser.linkedRegistrations, new ModelCollectionListener() {
             @Override
             public void onCollectionUpdated(List<? extends FBModelObject> linkedCollection, FBModelObject fbObject, boolean isAdded) {
@@ -147,26 +159,14 @@ public class Reservations extends FragmentWithTopActionBar implements SwipeRefre
                     r.setModelUpdateListener(new ModelListener() {
                         @Override
                         public void onDataChange(FBModelIdentifier identifier, FBModelObject model) {
-                            reservationsAdapter.getFilter().filter("");
+                            myReservationsAdapter.getFilter().filter("");
                         }
                     });
                     r.loadLinkedEvent();
+                    _myReservations.add(r);
                 }
-                registrationsAdapter.getFilter().filter("");
             }
         });
-
-        final List<Registration> registrations = loggedInUser.linkedRegistrations;
-        for (int i = 0; i < registrations.size(); i++){
-            Registration r = registrations.get(i);
-            r.setModelUpdateListener(new ModelListener() {
-                @Override
-                public void onDataChange(FBModelIdentifier identifier, FBModelObject model) {
-                    registrationsAdapter.getFilter().filter("");
-                }
-            });
-            r.loadLinkedEvent();
-        }
 
         return view;
     }
@@ -180,10 +180,15 @@ public class Reservations extends FragmentWithTopActionBar implements SwipeRefre
 
     @Override
     public void onRefresh() {
+
+        final User loggedInUser = mFBHelper.getLoggedInUser();
         new Handler().postDelayed(new Runnable() {
             @Override public void run() {
                 _swipeRefreshLayout.setRefreshing(false);
             }
         }, 5000);
+        _myReservations.clear();
+        loggedInUser.reloadMyReservations();
+
     }
 }

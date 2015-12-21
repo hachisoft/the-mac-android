@@ -23,6 +23,7 @@ import com.mac.themac.model.MemberProfilePublic;
 import com.mac.themac.model.ParkingProjection;
 import com.mac.themac.model.Registration;
 import com.mac.themac.model.Reservation;
+import com.mac.themac.model.ReservationAsset;
 import com.mac.themac.model.ReservationRule;
 import com.mac.themac.model.Rule;
 import com.mac.themac.model.Session;
@@ -69,7 +70,7 @@ public class FirebaseHelper {
         logins, users, sessions, interests, events, reservations, reservationRules, registrations,
         fees, closures, locations, memberProfilePublics, employeeProfiles,
         addresses, vehicles, emergencyContacts, invitations, rules, transactions,
-        statements, departments, parkingProjections, surveys, surveyItems, surveyResponses
+        statements, departments, parkingProjections, surveys, surveyItems, surveyResponses, reservationAssets
     }
 
     public FirebaseHelper(String firebaseUrl) {
@@ -244,8 +245,11 @@ public class FirebaseHelper {
         else if(classType.equals(SurveyItem.class)){
             return getRootKeyedObjectRef(FBRootContainerNames.surveyItems, key);
         }
-        else if(classType.equals(SurveyResponse.class)){
+        else if(classType.equals(SurveyResponse.class)) {
             return getRootKeyedObjectRef(FBRootContainerNames.surveyResponses, key);
+        }
+        else if(classType.equals(ReservationAsset.class)){
+            return getRootKeyedObjectRef(FBRootContainerNames.reservationAssets, key);
         }
         else{
             throw new InvalidParameterException("No container found for class type: " + classType.toString());
@@ -358,7 +362,7 @@ public class FirebaseHelper {
         Firebase fbRef = getRootKeyedObjectRef(fbModelIdentifier.getIntendedClass(), key);
 
         if(fbRef != null){
-            fbRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            fbRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     try {
@@ -366,7 +370,7 @@ public class FirebaseHelper {
                             FBModelObject fbModelObject = dataSnapshot.getValue(fbModelIdentifier.getIntendedClass());
                             fbModelObject.FBKey = key;
 
-                            if(loadLinkedObjects)
+                            if (loadLinkedObjects)
                                 fbModelObject.loadLinkedObjects();
 
                             if (!keyToModelMap.containsKey(key)) {
@@ -507,7 +511,7 @@ public class FirebaseHelper {
                                 modelListenerPair.second.add(listener);
                             }
 
-                            listener.onChildAdded(fbModelIdentifier, fbQueryIdentifier, fbModelObject, prevChild);
+                            listener.onChildChanged(fbModelIdentifier, fbQueryIdentifier, fbModelObject, prevChild);
 
                         } else
                             listener.onNullData(fbModelIdentifier, dataSnapshot.getKey());

@@ -51,8 +51,10 @@ public abstract class FragmentWithTopActionBar extends Fragment {
     @Override
     public void onPause() {
         ActivityWithBottomActionBar activity = (ActivityWithBottomActionBar) mListener;
-        if(activity != null){
-//            activity.hideTopActionBar();
+        if(getFragmentManager().getBackStackEntryCount() < 1) {
+            if (activity != null) {
+                activity.hideTopActionBar();
+            }
         }
         super.onPause();
     }
