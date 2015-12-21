@@ -32,15 +32,6 @@
             android:padding="5dp"
             android:text="Add Guest"
             android:layout_alignParentRight="true" />
-        <Button
-            android:id="@+id/btn_edit"
-            style="@style/UIButton"
-            android:layout_toLeftOf="@+id/btn_add_guest"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:padding="5dp"
-            android:text="Edit"
-            android:layout_marginRight="5dp" />
     </RelativeLayout>
     <ListView
         android:id="@+id/lv_guests"

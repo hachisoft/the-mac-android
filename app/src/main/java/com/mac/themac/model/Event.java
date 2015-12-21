@@ -44,7 +44,7 @@ public class Event extends FBModelObject{
     @JsonIgnore
     public List<FBModelObject> linkedSessions = new ArrayList<FBModelObject>();;
     @JsonIgnore
-    public List<FBModelObject> linkedFees = new ArrayList<FBModelObject>();;
+    public List<Fee> linkedFees = new ArrayList<>();
     @JsonIgnore
     public List<FBModelObject> linkedInterests = new ArrayList<FBModelObject>();;
     @JsonIgnore
@@ -126,6 +126,10 @@ public class Event extends FBModelObject{
 
     public HashMap<String, Boolean> getFees() {
         return fees;
+    }
+
+    public HashMap<String, Boolean> getRegistrations() {
+        return registrations;
     }
 
     @Override

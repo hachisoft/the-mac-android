@@ -29,6 +29,7 @@ import com.mac.themac.model.Session;
 import com.mac.themac.model.Statement;
 import com.mac.themac.model.Survey;
 import com.mac.themac.model.SurveyItem;
+import com.mac.themac.model.SurveyResponse;
 import com.mac.themac.model.Transaction;
 import com.mac.themac.model.User;
 import com.mac.themac.model.Vehicle;
@@ -68,7 +69,7 @@ public class FirebaseHelper {
         logins, users, sessions, interests, events, reservations, reservationRules, registrations,
         fees, closures, locations, memberProfilePublics, employeeProfiles,
         addresses, vehicles, emergencyContacts, invitations, rules, transactions,
-        statements, departments, parkingProjections, surveys, surveyItems
+        statements, departments, parkingProjections, surveys, surveyItems, surveyResponses
     }
 
     public FirebaseHelper(String firebaseUrl) {
@@ -106,6 +107,7 @@ public class FirebaseHelper {
 
     public void set_loggedInUser(User _loggedInUser) {
         this._loggedInUser = _loggedInUser;
+        this._loggedInUser.loadDependents();
     }
 
     public void addAuthStateListener(Firebase.AuthStateListener listener) {
@@ -241,6 +243,9 @@ public class FirebaseHelper {
         }
         else if(classType.equals(SurveyItem.class)){
             return getRootKeyedObjectRef(FBRootContainerNames.surveyItems, key);
+        }
+        else if(classType.equals(SurveyResponse.class)){
+            return getRootKeyedObjectRef(FBRootContainerNames.surveyResponses, key);
         }
         else{
             throw new InvalidParameterException("No container found for class type: " + classType.toString());

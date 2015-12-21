@@ -127,7 +127,7 @@ public class CourtReservation extends FragmentWithTopActionBar implements FBMode
         session.date = date;
         session.duration = duration;
         session.location = location;
-        Firebase sessionRef = new Firebase(getString(R.string.firebase_url) + "/sessions");
+        Firebase sessionRef = TheMACApplication.theApp.getFirebaseHelper().getRootKeyedObjectRef(FirebaseHelper.FBRootContainerNames.sessions);
         Firebase newSessionRef = sessionRef.push();
         newSessionRef.setValue(session);
         String sessionKey = newSessionRef.getKey();
@@ -146,14 +146,13 @@ public class CourtReservation extends FragmentWithTopActionBar implements FBMode
         reservation.memberNumber = user.memberNumber;
         reservation.name = user.firstName + " " + user.lastName;
         reservation.note = notes.getText().toString();
-        //TODO check with Caleb on this
         reservation.reservationUser = user.FBKey;
         reservation.reservingUser = user.FBKey;
         reservation.session = sessionKey;
         reservation.status = "Reserved";
         reservation.type = "Reservation";
         reservation.wantsPartner = false;
-        Firebase reservationRef = new Firebase(getString(R.string.firebase_url) + "/reservations");
+        Firebase reservationRef = TheMACApplication.theApp.getFirebaseHelper().getRootKeyedObjectRef(FirebaseHelper.FBRootContainerNames.reservations);
         Firebase newReservationRef = reservationRef.push();
         newReservationRef.setValue(reservation);
         String reservationKey = newReservationRef.getKey();
@@ -178,7 +177,7 @@ public class CourtReservation extends FragmentWithTopActionBar implements FBMode
             if(loc.sessions==null)
                 loc.sessions = new HashMap<>();
             loc.sessions.put(session.FBKey, true);
-            Firebase locationRef = new Firebase(getString(R.string.firebase_url)+ "/locations").child(location);
+            Firebase locationRef = TheMACApplication.theApp.getFirebaseHelper().getRootKeyedObjectRef(FirebaseHelper.FBRootContainerNames.locations).child(location);
             locationRef.setValue(loc);
             ((TennisCourts)getActivity()).addSession(session);
             ((TennisCourts)getActivity()).onBackPressed();

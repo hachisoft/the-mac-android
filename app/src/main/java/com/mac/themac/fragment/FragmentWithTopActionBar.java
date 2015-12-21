@@ -52,7 +52,7 @@ public abstract class FragmentWithTopActionBar extends Fragment {
     public void onPause() {
         ActivityWithBottomActionBar activity = (ActivityWithBottomActionBar) mListener;
         if(activity != null){
-            activity.hideTopActionBar();
+//            activity.hideTopActionBar();
         }
         super.onPause();
     }

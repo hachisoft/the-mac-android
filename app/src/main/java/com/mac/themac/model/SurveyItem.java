@@ -1,10 +1,12 @@
 package com.mac.themac.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mac.themac.model.firebase.FBModelIdentifier;
 import com.mac.themac.model.firebase.FBModelObject;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Bryan on 12/10/2015.
@@ -15,7 +17,7 @@ public class SurveyItem extends FBModelObject {
     public String question;
     public String survey;
     public String type;
-    public HashMap<Integer, String> options;
+    public Map<String, String> options;
 
     public SurveyItem() {
     }

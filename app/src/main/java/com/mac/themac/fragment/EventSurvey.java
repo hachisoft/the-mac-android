@@ -3,30 +3,29 @@ package com.mac.themac.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.amazonaws.mobileconnectors.apigateway.ApiClientFactory;
 import com.firebase.client.FirebaseError;
-import com.hachisoft.macapi.ThemacClient;
 import com.mac.themac.R;
 import com.mac.themac.TheMACApplication;
 import com.mac.themac.activity.ActivityWithBottomActionBar;
-import com.mac.themac.model.Event;
+import com.mac.themac.activity.FindEvents;
 import com.mac.themac.model.Survey;
 import com.mac.themac.model.SurveyItem;
 import com.mac.themac.model.SurveyResponse;
-import com.mac.themac.model.firebase.FBChildListener;
 import com.mac.themac.model.firebase.FBModelIdentifier;
 import com.mac.themac.model.firebase.FBModelListener;
 import com.mac.themac.model.firebase.FBModelObject;
-import com.mac.themac.model.firebase.FBQueryIdentifier;
+import com.mac.themac.model.firebase.ModelCollectionListener;
 import com.mac.themac.utility.FirebaseHelper;
 
 import java.util.ArrayList;
@@ -34,56 +33,25 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by Bryan on 12/10/2015.
  */
 public class EventSurvey extends FragmentWithTopActionBar implements FBModelListener{
     private static final String ARG_SURVEY_KEY = "survey_key";
+    private static final String ARG_IS_MEMBER= "is_member";
+    private static final String ARG_POS = "pos";
     private Survey survey;
     private String surveyKey;
     private SurveyResponse surveyResponse = new SurveyResponse();
     @Bind(R.id.list) ListView list;
-    //TODO: need to add code to parse boolean array from multichoice response into string
 
-    @OnClick(R.id.btnSave)
-    public void onSaveClicked(){
-        if(surveyResponse.multiChoiceResponses.size()>0){
-            for(Long l: surveyResponse.multiChoiceResponses.keySet()){
-                //TODO need to grab boolean array and generate JSON string
-                String jsonString = "{";
-                int responses = 0;
-                for(int i = 0; i < surveyResponse.multiChoiceResponses.get(l).length; i++){
-                    SurveyItem si = null;
-                    for(SurveyItem s: survey.linkedSurveyItems){
-                        if(s.index == l){
-                            si = s;
-                            break;
-                        }
-                    }
-                    if(surveyResponse.multiChoiceResponses.get(l)[i]){
-                        if(responses >= 1)
-                            jsonString +=",";
-                        jsonString += Integer.toString(i) + ": '";
-                        if(si!=null)
-                            jsonString += si.options.get(i) + "'";
-                        responses ++;
-                    }
-                }
-                if(responses > 0) {
-                    jsonString += "}";
-                    surveyResponse.getResponses().put(l, jsonString);
-                }
-            }
-        }
-        //TODO: need to save surveyResponse to server
-    }
-
-    public static EventSurvey newInstance(String surveyKey){
+    public static EventSurvey newInstance(String surveyKey, boolean isMember, int pos){
         EventSurvey frag = new EventSurvey();
         Bundle args = new Bundle();
         args.putString(ARG_SURVEY_KEY, surveyKey);
+        args.putBoolean(ARG_IS_MEMBER, isMember);
+        args.putInt(ARG_POS, pos);
         frag.setArguments(args);
         return frag;
     }
@@ -118,10 +86,7 @@ public class EventSurvey extends FragmentWithTopActionBar implements FBModelList
         super.onActivityCreated(savedInstanceState);
         FirebaseHelper fbHelper = TheMACApplication.theApp.getFirebaseHelper();
         fbHelper.SubscribeToModelUpdates(this, new FBModelIdentifier(Survey.class), surveyKey);
-//        if(mAdapter == null) {
-//            mAdapter = new SurveyItemsAdapter(getActivity(), -1);
-//            list.setAdapter(mAdapter);
-//        }
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -137,11 +102,17 @@ public class EventSurvey extends FragmentWithTopActionBar implements FBModelList
     public void onDataChange(FBModelIdentifier identifier, FBModelObject model) {
         if(identifier.IsIntendedObject(model, Survey.class)){
             survey = (Survey) model;
+            survey.setCollectionUpdateListner(survey.linkedSurveyItems, new ModelCollectionListener() {
+                @Override
+                public void onCollectionUpdated(List<? extends FBModelObject> linkedCollection, FBModelObject fbObject, boolean isAdded) {
+                    mAdapter.notifyDataSetChanged();
+                }
+            });
             survey.loadLinkedObjects();
+            ((FindEvents)getActivity()).setCurrentSurvey(survey);
             if(mAdapter==null){
                 mAdapter = new SurveyItemsAdapter(getActivity(), -1, survey.linkedSurveyItems);
                 list.setAdapter(mAdapter);
-                survey.setSurveyItemsAdapter(mAdapter);
             }
             ((ActivityWithBottomActionBar) mListener).setTitle(survey.getName());
         }
@@ -165,6 +136,60 @@ public class EventSurvey extends FragmentWithTopActionBar implements FBModelList
     public void onException(Exception x) {
         if(mAdapter!=null)
             mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        menu.clear();
+        getActivity().getMenuInflater().inflate(R.menu.menu_survey_fragment_continue, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.menu_continue_survey){
+            saveAndClose();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void saveAndClose(){
+        surveyResponse.survey = surveyKey;
+        if(surveyResponse.multiChoiceResponses.size()>0){
+            for(Long l: surveyResponse.multiChoiceResponses.keySet()){
+                String jsonString = "{";
+                int responses = 0;
+                for(int i = 0; i < surveyResponse.multiChoiceResponses.get(l).length; i++){
+                    SurveyItem si = null;
+                    for(SurveyItem s: survey.linkedSurveyItems){
+                        if(s.index == l){
+                            si = s;
+                            break;
+                        }
+                    }
+                    if(surveyResponse.multiChoiceResponses.get(l)[i]){
+                        if(responses >= 1)
+                            jsonString +=",";
+                        jsonString += Integer.toString(i) + ": '";
+                        if(si!=null)
+                            jsonString += si.options.get(i) + "'";
+                        responses ++;
+                    }
+                }
+                if(responses > 0) {
+                    jsonString += "}";
+                    surveyResponse.getResponses().put(l, jsonString);
+                }
+            }
+        }
+        for(int i = 0; i < mAdapter.getCount(); i++){
+            if(mAdapter.getItem(i).type.equals("text")){
+                surveyResponse.responses.put(mAdapter.getItem(i).index, ((EditText) list.getChildAt(i).findViewById(R.id.et_answer)).getText().toString());
+            } else if(mAdapter.getItem(i).type.equals("checkbox")){
+                surveyResponse.responses.put(mAdapter.getItem(i).index, ((CheckBox)list.getChildAt(i).findViewById(R.id.cb_checkbox)).isChecked()?"true":"false");
+            }
+        }
+        ((FindEvents)getActivity()).saveSurveyResponse(surveyResponse, getArguments().getBoolean(ARG_IS_MEMBER), getArguments().getInt(ARG_POS));
+        getActivity().getSupportFragmentManager().popBackStack();
     }
 
     private SurveyItemsAdapter mAdapter;

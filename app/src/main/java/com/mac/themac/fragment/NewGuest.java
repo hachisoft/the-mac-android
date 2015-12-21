@@ -2,12 +2,15 @@ package com.mac.themac.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.mac.themac.R;
+import com.mac.themac.activity.FindEvents;
 import com.mac.themac.model.Guest;
 
 import butterknife.Bind;
@@ -36,6 +39,31 @@ public class NewGuest extends FragmentWithTopActionBar {
         View view = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, view);
         return view;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        menu.clear();
+        getActivity().getMenuInflater().inflate(R.menu.menu_new_guest_fragment_continue, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.menu_continue_guest){
+            if(etFirstName.getText().length()>0 && etLastName.getText().length()>0) {
+                Guest guest = fromViews();
+                ((FindEvents) getActivity()).addGuest(guest);
+                getActivity().getSupportFragmentManager().popBackStack();
+                ((FindEvents)getActivity()).showEventSurvey(false, ((FindEvents)getActivity()).guests.size()-1);
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public Guest fromViews(){

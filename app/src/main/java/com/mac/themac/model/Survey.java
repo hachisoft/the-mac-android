@@ -18,13 +18,11 @@ import java.util.List;
 public class Survey extends FBModelObject {
     String event;
     String name;
-    HashMap<String, Boolean> responses;
+    public HashMap<String, Boolean> responses;
     HashMap<String, Boolean> surveyItems;
 
     @JsonIgnore
     public List<SurveyItem> linkedSurveyItems = new ArrayList<>();
-    @JsonIgnore
-    public EventSurvey.SurveyItemsAdapter mAdapter;
 
     public Survey() {
     }
@@ -45,17 +43,6 @@ public class Survey extends FBModelObject {
     @Override
     protected void setLinkedObject(FBModelIdentifier fbModelIdentifier, FBModelObject modelObject) {
 
-    }
-
-    public void setSurveyItemsAdapter(EventSurvey.SurveyItemsAdapter mAdapter) {
-        this.mAdapter = mAdapter;
-    }
-
-    @Override
-    public void onDataChange(FBModelIdentifier identifier, FBModelObject modelObject) {
-        super.onDataChange(identifier, modelObject);
-        if(mAdapter!=null)
-            mAdapter.notifyDataSetChanged();
     }
 
     public String getEvent() {

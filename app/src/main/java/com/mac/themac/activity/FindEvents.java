@@ -2,6 +2,7 @@ package com.mac.themac.activity;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.SparseArray;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -15,8 +16,15 @@ import com.mac.themac.fragment.EventList;
 import com.mac.themac.fragment.EventSurvey;
 import com.mac.themac.fragment.EventTypeSelect;
 import com.mac.themac.fragment.FragmentWithTopActionBar;
+import com.mac.themac.fragment.NewGuest;
+import com.mac.themac.fragment.ReviewRegistration;
+import com.mac.themac.fragment.SelectEventGuests;
 import com.mac.themac.fragment.TimePickerFragment;
+import com.mac.themac.model.Event;
+import com.mac.themac.model.Guest;
 import com.mac.themac.model.Session;
+import com.mac.themac.model.Survey;
+import com.mac.themac.model.SurveyResponse;
 import com.mac.themac.model.firebase.FBChildListener;
 import com.mac.themac.model.firebase.FBModelIdentifier;
 import com.mac.themac.model.firebase.FBModelObject;
@@ -139,7 +147,7 @@ public class FindEvents extends ActivityWithBottomActionBar implements FragmentW
         Calendar temp = Calendar.getInstance();
         for(Session session: sessions){
             temp.setTime(session.date);
-            if(temp.get(Calendar.DAY_OF_YEAR) == date.get(Calendar.DAY_OF_YEAR)){
+            if(temp.get(Calendar.DAY_OF_YEAR) == date.get(Calendar.DAY_OF_YEAR) && temp.get(Calendar.YEAR) == date.get(Calendar.YEAR)){
                 //TODO assess other filters here
                 boolean typesTest = true;
                 boolean withinTimeWindow = true;
@@ -163,13 +171,65 @@ public class FindEvents extends ActivityWithBottomActionBar implements FragmentW
         }
     }
 
+    public ArrayList<Guest> guests = new ArrayList<>();
+    public SparseArray<SurveyResponse> membersSurveys = new SparseArray<>();
+
+    public void saveSurveyResponse(SurveyResponse sr, boolean isMember, int pos){
+        if(isMember)
+            membersSurveys.put(pos, sr);
+        else
+            guests.get(pos).surveyResponse = sr;
+    }
+
+    private Event event;
+
+    public void setCurrentEvent(Event event){
+        this.event = event;
+    }
+
     public void showEventDetails(String event){
         EventDetails frag = EventDetails.newInstance(event);
         showFragment(frag, R.id.container);
     }
 
-    public void showEventSurvey(String survey){
-        EventSurvey frag = EventSurvey.newInstance(survey);
+    public Event getCurrentEvent(){
+        return event;
+    }
+
+    private Survey survey;
+
+    public void setCurrentSurvey(Survey survey){
+        this.survey = survey;
+    }
+
+    public Survey getCurrentSurvey(){
+        return survey;
+    }
+
+    public void showNewGuest(){
+        NewGuest frag = new NewGuest();
+        showFragment(frag, R.id.container);
+    }
+
+    public void addGuest(Guest guest){
+        guests.add(guest);
+    }
+
+    public void showSelectEventGuests(){
+        guests.clear();
+        SelectEventGuests frag = new SelectEventGuests();
+        showFragment(frag, R.id.container);
+    }
+
+    public void showEventSurvey(boolean isMember, int pos){
+        if(event.getSurvey() != null) {
+            EventSurvey frag = EventSurvey.newInstance(event.getSurvey(), isMember, pos);
+            showFragment(frag, R.id.container);
+        }
+    }
+
+    public void showReviewRegistration(ArrayList<String> members, ArrayList<Integer> indices){
+        ReviewRegistration frag = ReviewRegistration.newInstance(members, indices);
         showFragment(frag, R.id.container);
     }
 
