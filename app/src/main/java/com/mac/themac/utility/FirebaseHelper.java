@@ -373,15 +373,36 @@ public class FirebaseHelper {
                                 List<FBListener> list = new ArrayList<FBListener>();
                                 list.add(listener);
                                 keyToModelMap.put(key, new Pair<FBModelObject, List<FBListener>>(fbModelObject, list));
-                            } else {//Theoretically, should never come here
+                                listener.onDataChange(fbModelIdentifier, fbModelObject);
+
+                            } else {
                                 Pair<FBModelObject, List<FBListener>> modelListenerPair = keyToModelMap.get(key);
-                                modelListenerPair.second.add(listener);
+                                if(!modelListenerPair.second.contains(listener)) {
+                                    modelListenerPair.second.add(listener);
+                                }
+                                for(FBListener l : modelListenerPair.second){
+                                    if(l instanceof FBModelListener){
+                                        ((FBModelListener)l).onDataChange(fbModelIdentifier, fbModelObject);
+                                    }
+                                }
                             }
+                        } else {
 
-                            listener.onDataChange(fbModelIdentifier, fbModelObject);
-
-                        } else
-                            listener.onNullData(fbModelIdentifier, key);
+                            if (keyToModelMap.containsKey(key)) {
+                                Pair<FBModelObject, List<FBListener>> modelListenerPair = keyToModelMap.get(key);
+                                if(!modelListenerPair.second.contains(listener)) {
+                                    modelListenerPair.second.add(listener);
+                                }
+                                for(FBListener l : modelListenerPair.second){
+                                    if(l instanceof FBModelListener){
+                                        ((FBModelListener)l).onNullData(fbModelIdentifier, key);
+                                    }
+                                }
+                            }
+                            else {
+                                listener.onNullData(fbModelIdentifier, key);
+                            }
+                        }
                     } catch (Exception x) {
                         listener.onException(x);
                     }
@@ -471,18 +492,41 @@ public class FirebaseHelper {
                                 fbModelObject.loadLinkedObjects();
 
                             if (!keyToModelMap.containsKey(fbModelObject.FBKey)) {
+
                                 List<FBListener> list = new ArrayList<FBListener>();
                                 list.add(listener);
                                 keyToModelMap.put(fbModelObject.FBKey, new Pair<FBModelObject, List<FBListener>>(fbModelObject, list));
+                                listener.onChildAdded(fbModelIdentifier, fbQueryIdentifier, fbModelObject, prevChild);
+
                             } else {
+
                                 Pair<FBModelObject, List<FBListener>> modelListenerPair = keyToModelMap.get(fbModelObject.FBKey);
-                                modelListenerPair.second.add(listener);
+                                if(!modelListenerPair.second.contains(listener)) {
+                                    modelListenerPair.second.add(listener);
+                                }
+                                for(FBListener l : modelListenerPair.second){
+                                    if(l instanceof FBChildListener){
+                                        ((FBChildListener)l).onChildAdded(fbModelIdentifier, fbQueryIdentifier, fbModelObject, prevChild);
+                                    }
+                                }
                             }
 
-                        listener.onChildAdded(fbModelIdentifier, fbQueryIdentifier, fbModelObject, prevChild);
-
-                        } else
-                            listener.onNullData(fbModelIdentifier, dataSnapshot.getKey());
+                        } else {
+                            if (keyToModelMap.containsKey(key)) {
+                                Pair<FBModelObject, List<FBListener>> modelListenerPair = keyToModelMap.get(key);
+                                if(!modelListenerPair.second.contains(listener)) {
+                                    modelListenerPair.second.add(listener);
+                                }
+                                for(FBListener l : modelListenerPair.second){
+                                    if(l instanceof FBChildListener){
+                                        ((FBChildListener)l).onNullData(fbModelIdentifier, key);
+                                    }
+                                }
+                            }
+                            else {
+                                listener.onNullData(fbModelIdentifier, key);
+                            }
+                        }
                     }catch (Exception x) {
                         listener.onException(x);
                     }
