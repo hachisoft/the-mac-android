@@ -15,7 +15,7 @@ import java.util.List;
  * Created by Samir on 9/9/2015.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class User extends FBModelObject{
+public class User extends FBModelObject {
 
     public Date created;
     public String firstName;

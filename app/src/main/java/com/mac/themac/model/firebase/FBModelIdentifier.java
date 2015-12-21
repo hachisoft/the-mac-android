@@ -1,7 +1,5 @@
 package com.mac.themac.model.firebase;
 
-import com.mac.themac.model.firebase.FBModelObject;
-
 /**
  * Created by Samir on 9/11/2015.
  */

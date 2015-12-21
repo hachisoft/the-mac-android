@@ -1,11 +1,9 @@
 package com.mac.themac.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.mac.themac.model.firebase.FBModelIdentifier;
 import com.mac.themac.model.firebase.FBModelObject;
+import com.mac.themac.model.firebase.FBModelIdentifier;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**

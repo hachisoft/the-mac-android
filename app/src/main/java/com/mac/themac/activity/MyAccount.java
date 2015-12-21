@@ -9,16 +9,14 @@ import android.widget.ToggleButton;
 
 import com.firebase.client.FirebaseError;
 import com.mac.themac.R;
-import com.mac.themac.fragment.AccountStatement;
 import com.mac.themac.fragment.AccountStatements;
 import com.mac.themac.fragment.CurrentCharges;
 import com.mac.themac.fragment.FragmentWithTopActionBar;
-import com.mac.themac.fragment.Interests;
 import com.mac.themac.fragment.Profile;
 import com.mac.themac.fragment.Reservations;
 import com.mac.themac.model.User;
-import com.mac.themac.model.firebase.FBModelIdentifier;
 import com.mac.themac.model.firebase.FBModelListener;
+import com.mac.themac.model.firebase.FBModelIdentifier;
 import com.mac.themac.model.firebase.FBModelObject;
 import com.mac.themac.utility.DownloadImageTask;
 
@@ -30,7 +28,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MyAccount extends ActivityWithBottomActionBar implements
-        FragmentWithTopActionBar.OnFragmentInteractionListener, FBModelListener{
+        FragmentWithTopActionBar.OnFragmentInteractionListener, FBModelListener {
 
     @Bind(R.id.profileImg) ImageView _profilePic;
     @Bind(R.id.txtMemberId) TextView _memberId;

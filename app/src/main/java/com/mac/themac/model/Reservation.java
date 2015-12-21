@@ -12,7 +12,7 @@ import com.mac.themac.utility.FirebaseHelper;
  * Created by Samir on 9/9/2015.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Reservation extends FBModelObject{
+public class Reservation extends FBModelObject {
 
     public Date dateReserved;
     public String firstName;

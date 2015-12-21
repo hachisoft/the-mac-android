@@ -1,12 +1,9 @@
 package com.mac.themac.model;
 
-import android.util.Pair;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.mac.themac.model.ReservationRule;
-import com.mac.themac.model.firebase.FBModelIdentifier;
 import com.mac.themac.model.firebase.FBModelObject;
+import com.mac.themac.model.firebase.FBModelIdentifier;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,7 +13,7 @@ import java.util.List;
  * Created by Samir on 9/9/2015.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Interest extends FBModelObject{
+public class Interest extends FBModelObject {
 
     public Boolean hasReservation;
     public String name;

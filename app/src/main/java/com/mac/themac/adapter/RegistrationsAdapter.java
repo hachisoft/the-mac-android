@@ -13,15 +13,12 @@ import android.widget.ViewSwitcher;
 
 import com.mac.themac.R;
 import com.mac.themac.model.Event;
-import com.mac.themac.model.Location;
 import com.mac.themac.model.Registration;
-import com.mac.themac.model.Session;
-import com.mac.themac.model.firebase.FBModelIdentifier;
+import com.mac.themac.model.firebase.FBDataChangeListener;
 import com.mac.themac.model.firebase.FBModelObject;
-import com.mac.themac.model.firebase.ModelListener;
+import com.mac.themac.model.firebase.FBModelIdentifier;
 
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -123,7 +120,7 @@ public class RegistrationsAdapter extends ArrayAdapter<Registration> implements 
         }
 
         final View listView = convertView;
-        registration.setModelUpdateListener(new ModelListener() {
+        registration.setModelUpdateListener(new FBDataChangeListener() {
             @Override
             public void onDataChange(FBModelIdentifier identifier, FBModelObject model) {
                 if (identifier.IsIntendedObject(model, Event.class)) {

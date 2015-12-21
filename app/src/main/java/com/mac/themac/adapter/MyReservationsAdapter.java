@@ -14,19 +14,16 @@ import android.widget.ViewSwitcher;
 import com.mac.themac.R;
 import com.mac.themac.activity.ActivityWithBottomActionBar;
 import com.mac.themac.activity.MyAccount;
-import com.mac.themac.fragment.AccountStatement;
-import com.mac.themac.fragment.CourtReservation;
 import com.mac.themac.fragment.EventDetails;
 import com.mac.themac.fragment.ReservationDetails;
-import com.mac.themac.fragment.Reservations;
 import com.mac.themac.model.Event;
 import com.mac.themac.model.Location;
 import com.mac.themac.model.Registration;
 import com.mac.themac.model.Reservation;
 import com.mac.themac.model.Session;
-import com.mac.themac.model.firebase.FBModelIdentifier;
 import com.mac.themac.model.firebase.FBModelObject;
-import com.mac.themac.model.firebase.ModelListener;
+import com.mac.themac.model.firebase.FBModelIdentifier;
+import com.mac.themac.model.firebase.FBDataChangeListener;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -176,7 +173,7 @@ public class MyReservationsAdapter extends ArrayAdapter<FBModelObject> implement
         }
 
         final View listView = convertView;
-        registration.setModelUpdateListener(new ModelListener() {
+        registration.setModelUpdateListener(new FBDataChangeListener() {
             @Override
             public void onDataChange(FBModelIdentifier identifier, FBModelObject model) {
                 if (identifier.IsIntendedObject(model, Event.class)) {
@@ -249,7 +246,7 @@ public class MyReservationsAdapter extends ArrayAdapter<FBModelObject> implement
         }
 
         final View listView = convertView;
-        reservation.setModelUpdateListener(new ModelListener() {
+        reservation.setModelUpdateListener(new FBDataChangeListener() {
             @Override
             public void onDataChange(FBModelIdentifier identifier, FBModelObject model) {
                 if (identifier.IsIntendedObject(model, Location.class)) {

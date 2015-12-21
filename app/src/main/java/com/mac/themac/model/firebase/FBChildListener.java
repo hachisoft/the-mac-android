@@ -10,4 +10,8 @@ public interface FBChildListener extends FBListener{
     void onChildChanged(FBModelIdentifier modelIdentifier, FBQueryIdentifier queryIdentifier, FBModelObject model, String key);
     void onChildRemoved(FBModelIdentifier modelIdentifier, FBQueryIdentifier queryIdentifier, FBModelObject model);
     void onChildMoved(FBModelIdentifier modelIdentifier, FBQueryIdentifier queryIdentifier, FBModelObject model, String key);
+    void onCancel(FBModelIdentifier identifier, FirebaseError error);
+    //Gets called when DataSnapshot do not have a value(dataSnapshot.exists() == false)
+    void onNullData(FBModelIdentifier identifier, String key);
+    void onException(Exception x);
 }

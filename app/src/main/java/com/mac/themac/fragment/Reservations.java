@@ -9,20 +9,17 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.mac.themac.R;
 import com.mac.themac.adapter.MyReservationsAdapter;
-import com.mac.themac.adapter.RegistrationsAdapter;
-import com.mac.themac.adapter.ReservationsAdapter;
 import com.mac.themac.model.Registration;
 import com.mac.themac.model.Reservation;
 import com.mac.themac.model.User;
-import com.mac.themac.model.firebase.FBModelIdentifier;
 import com.mac.themac.model.firebase.FBModelObject;
+import com.mac.themac.model.firebase.FBModelIdentifier;
 import com.mac.themac.model.firebase.ModelCollectionListener;
-import com.mac.themac.model.firebase.ModelListener;
+import com.mac.themac.model.firebase.FBDataChangeListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -111,7 +108,7 @@ public class Reservations extends FragmentWithTopActionBar implements SwipeRefre
 
             FBModelObject r = reservations.get(i);
             if(r instanceof Reservation) {
-                r.setModelUpdateListener(new ModelListener() {
+                r.setModelUpdateListener(new FBDataChangeListener() {
                     @Override
                     public void onDataChange(FBModelIdentifier identifier, FBModelObject model) {
                         myReservationsAdapter.getFilter().filter("");
@@ -120,7 +117,7 @@ public class Reservations extends FragmentWithTopActionBar implements SwipeRefre
                 ((Reservation)r).loadLinkedLocationAndSession();
             }
             else if(r instanceof Registration){
-                r.setModelUpdateListener(new ModelListener() {
+                r.setModelUpdateListener(new FBDataChangeListener() {
                     @Override
                     public void onDataChange(FBModelIdentifier identifier, FBModelObject model) {
                         myReservationsAdapter.getFilter().filter("");
@@ -137,7 +134,7 @@ public class Reservations extends FragmentWithTopActionBar implements SwipeRefre
                 if (isAdded) {
                     Reservation r = (Reservation) fbObject;
                     if (r != null) {
-                        r.setModelUpdateListener(new ModelListener() {
+                        r.setModelUpdateListener(new FBDataChangeListener() {
                             @Override
                             public void onDataChange(FBModelIdentifier identifier, FBModelObject model) {
                                 myReservationsAdapter.getFilter().filter("");
@@ -156,7 +153,7 @@ public class Reservations extends FragmentWithTopActionBar implements SwipeRefre
             public void onCollectionUpdated(List<? extends FBModelObject> linkedCollection, FBModelObject fbObject, boolean isAdded) {
                 Registration r = (Registration)fbObject;
                 if(r != null){
-                    r.setModelUpdateListener(new ModelListener() {
+                    r.setModelUpdateListener(new FBDataChangeListener() {
                         @Override
                         public void onDataChange(FBModelIdentifier identifier, FBModelObject model) {
                             myReservationsAdapter.getFilter().filter("");

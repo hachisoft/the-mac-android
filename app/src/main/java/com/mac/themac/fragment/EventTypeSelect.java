@@ -15,15 +15,12 @@ import com.firebase.client.FirebaseError;
 import com.mac.themac.R;
 import com.mac.themac.TheMACApplication;
 import com.mac.themac.model.Interest;
-import com.mac.themac.model.Location;
 import com.mac.themac.model.firebase.FBChildListener;
 import com.mac.themac.model.firebase.FBModelIdentifier;
-import com.mac.themac.model.firebase.FBModelListener;
 import com.mac.themac.model.firebase.FBModelObject;
 import com.mac.themac.model.firebase.FBQueryIdentifier;
 
 import java.util.ArrayList;
-import java.util.zip.Inflater;
 
 /**
  * Created by Bryan on 9/14/2015.

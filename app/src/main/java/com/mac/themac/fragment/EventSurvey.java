@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -22,9 +21,9 @@ import com.mac.themac.activity.FindEvents;
 import com.mac.themac.model.Survey;
 import com.mac.themac.model.SurveyItem;
 import com.mac.themac.model.SurveyResponse;
+import com.mac.themac.model.firebase.FBModelObject;
 import com.mac.themac.model.firebase.FBModelIdentifier;
 import com.mac.themac.model.firebase.FBModelListener;
-import com.mac.themac.model.firebase.FBModelObject;
 import com.mac.themac.model.firebase.ModelCollectionListener;
 import com.mac.themac.utility.FirebaseHelper;
 
@@ -37,7 +36,7 @@ import butterknife.ButterKnife;
 /**
  * Created by Bryan on 12/10/2015.
  */
-public class EventSurvey extends FragmentWithTopActionBar implements FBModelListener{
+public class EventSurvey extends FragmentWithTopActionBar implements FBModelListener {
     private static final String ARG_SURVEY_KEY = "survey_key";
     private static final String ARG_IS_MEMBER= "is_member";
     private static final String ARG_POS = "pos";

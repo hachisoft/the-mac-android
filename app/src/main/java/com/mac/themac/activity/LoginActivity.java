@@ -44,9 +44,9 @@ import com.mac.themac.TheMACApplication;
 import com.mac.themac.model.Login;
 import com.mac.themac.model.User;
 import com.mac.themac.model.firebase.FBChildListener;
+import com.mac.themac.model.firebase.FBModelObject;
 import com.mac.themac.model.firebase.FBModelIdentifier;
 import com.mac.themac.model.firebase.FBModelListener;
-import com.mac.themac.model.firebase.FBModelObject;
 import com.mac.themac.model.firebase.FBQueryIdentifier;
 import com.mac.themac.utility.FirebaseHelper;
 

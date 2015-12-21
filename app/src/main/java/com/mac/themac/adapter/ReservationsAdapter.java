@@ -1,9 +1,6 @@
 package com.mac.themac.adapter;
 
 import android.content.Context;
-import android.media.Image;
-import android.net.Uri;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,19 +11,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
-import com.firebase.client.FirebaseError;
 import com.mac.themac.R;
-import com.mac.themac.TheMACApplication;
 import com.mac.themac.model.Location;
 import com.mac.themac.model.Reservation;
 import com.mac.themac.model.Session;
-import com.mac.themac.model.firebase.FBChildListener;
-import com.mac.themac.model.firebase.FBModelIdentifier;
-import com.mac.themac.model.firebase.FBModelListener;
+import com.mac.themac.model.firebase.FBDataChangeListener;
 import com.mac.themac.model.firebase.FBModelObject;
-import com.mac.themac.model.firebase.FBQueryIdentifier;
-import com.mac.themac.model.firebase.ModelListener;
-import com.mac.themac.utility.FirebaseHelper;
+import com.mac.themac.model.firebase.FBModelIdentifier;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -34,7 +25,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
@@ -132,7 +122,7 @@ public class ReservationsAdapter extends ArrayAdapter<Reservation> implements Fi
         }
 
         final View listView = convertView;
-        reservation.setModelUpdateListener(new ModelListener() {
+        reservation.setModelUpdateListener(new FBDataChangeListener() {
             @Override
             public void onDataChange(FBModelIdentifier identifier, FBModelObject model) {
                 if (identifier.IsIntendedObject(model, Location.class)) {

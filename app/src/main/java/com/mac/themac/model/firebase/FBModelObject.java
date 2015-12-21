@@ -17,7 +17,7 @@ import java.util.Map;
  * Created by Samir on 9/9/2015.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public abstract class FBModelObject implements FBModelListener{
+public abstract class FBModelObject implements FBModelListener {
 
     protected Map<String , Object> nonMappedProperties = new HashMap<String , Object>();
 
@@ -30,16 +30,14 @@ public abstract class FBModelObject implements FBModelListener{
     }
 
     @JsonIgnore
-    private List<ModelListener> modelListeners = new ArrayList<ModelListener>();
-    @JsonIgnore
     private Map<List<? extends FBModelObject>,
                 List<ModelCollectionListener>> collectionListenerMap =
                             new HashMap<List<? extends FBModelObject>, List<ModelCollectionListener>>();
 
     @JsonIgnore
-    public void setModelUpdateListener(ModelListener listner){
-        if(!modelListeners.contains(listner))
-            modelListeners.add(listner);
+    public void setModelUpdateListener(FBDataChangeListener listner){
+        final FirebaseHelper fbHelper = TheMACApplication.theApp.getFirebaseHelper();
+        fbHelper.SubscribeToModelUpdates(listner, this.getClass(), FBKey);
     }
 
     @JsonIgnore
@@ -116,15 +114,6 @@ public abstract class FBModelObject implements FBModelListener{
 
         if(identifier.getPayload() == null) {//Update for parent(this) model object
             setLinkedObject(identifier, modelObject);
-
-            for (ModelListener listner : modelListeners) {
-                try {
-                    listner.onDataChange(identifier, modelObject);
-                }
-                catch(Exception e){
-                    //ignore any exception thrown from listner
-                }
-            }
         }
         else{ //Update for child(linked) model object
             if(identifier.getPayload() instanceof List){

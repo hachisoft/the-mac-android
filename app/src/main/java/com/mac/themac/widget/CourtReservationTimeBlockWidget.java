@@ -3,24 +3,20 @@ package com.mac.themac.widget;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 import com.mac.themac.R;
 import com.mac.themac.TheMACApplication;
 import com.mac.themac.model.Closure;
 import com.mac.themac.model.Event;
 import com.mac.themac.model.Reservation;
 import com.mac.themac.model.Session;
-import com.mac.themac.model.firebase.FBModelIdentifier;
 import com.mac.themac.model.firebase.FBModelListener;
 import com.mac.themac.model.firebase.FBModelObject;
+import com.mac.themac.model.firebase.FBModelIdentifier;
 import com.mac.themac.utility.FirebaseHelper;
 
 import java.util.ArrayList;

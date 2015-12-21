@@ -10,13 +10,12 @@ import android.widget.TextView;
 import com.firebase.client.FirebaseError;
 import com.mac.themac.R;
 import com.mac.themac.TheMACApplication;
-import com.mac.themac.activity.FindEvents;
 import com.mac.themac.model.Reservation;
 import com.mac.themac.model.ReservationAsset;
+import com.mac.themac.model.firebase.FBModelObject;
 import com.mac.themac.model.firebase.FBModelIdentifier;
 import com.mac.themac.model.firebase.FBModelListener;
-import com.mac.themac.model.firebase.FBModelObject;
-import com.mac.themac.model.firebase.ModelListener;
+import com.mac.themac.model.firebase.FBDataChangeListener;
 import com.mac.themac.utility.FirebaseHelper;
 
 import java.text.DateFormat;
@@ -76,7 +75,7 @@ public class ReservationDetails extends FragmentWithTopActionBar implements FBMo
             ivIndicator.setImageResource(R.drawable.status_no_registration);
 
         if(reservation.asset != null && !reservation.asset.isEmpty()) {
-            reservation.setModelUpdateListener(new ModelListener() {
+            reservation.setModelUpdateListener(new FBDataChangeListener() {
                 @Override
                 public void onDataChange(FBModelIdentifier identifier, FBModelObject model) {
                     if(model instanceof ReservationAsset) {

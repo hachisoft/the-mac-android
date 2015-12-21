@@ -2,8 +2,8 @@ package com.mac.themac.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.mac.themac.model.firebase.FBModelIdentifier;
 import com.mac.themac.model.firebase.FBModelObject;
+import com.mac.themac.model.firebase.FBModelIdentifier;
 import com.mac.themac.utility.FirebaseHelper;
 
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ import java.util.List;
  * Created by Samir on 9/11/2015.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Rule extends FBModelObject{
+public class Rule extends FBModelObject {
 
     public long nsRuleId;
     public String name;

@@ -1,6 +1,5 @@
 package com.mac.themac.activity;
 
-import android.app.backup.FileBackupHelper;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,14 +11,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import com.firebase.client.ChildEventListener;
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.firebase.client.Query;
-import com.firebase.client.ValueEventListener;
 import com.mac.themac.R;
-import com.mac.themac.TheMACApplication;
 import com.mac.themac.fragment.CourtReservation;
 import com.mac.themac.fragment.FragmentWithTopActionBar;
 import com.mac.themac.model.Interest;
@@ -27,9 +20,9 @@ import com.mac.themac.model.Location;
 import com.mac.themac.model.ReservationRule;
 import com.mac.themac.model.Session;
 import com.mac.themac.model.firebase.FBChildListener;
+import com.mac.themac.model.firebase.FBModelObject;
 import com.mac.themac.model.firebase.FBModelIdentifier;
 import com.mac.themac.model.firebase.FBModelListener;
-import com.mac.themac.model.firebase.FBModelObject;
 import com.mac.themac.model.firebase.FBQueryIdentifier;
 import com.mac.themac.utility.FirebaseHelper;
 import com.mac.themac.widget.CourtReservationTimeBlockWidget;

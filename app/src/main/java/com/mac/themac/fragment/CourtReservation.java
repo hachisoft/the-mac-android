@@ -15,14 +15,13 @@ import com.firebase.client.FirebaseError;
 import com.mac.themac.R;
 import com.mac.themac.TheMACApplication;
 import com.mac.themac.activity.TennisCourts;
-import com.mac.themac.model.Closure;
 import com.mac.themac.model.Location;
 import com.mac.themac.model.Reservation;
 import com.mac.themac.model.Session;
 import com.mac.themac.model.User;
-import com.mac.themac.model.firebase.FBModelIdentifier;
 import com.mac.themac.model.firebase.FBModelListener;
 import com.mac.themac.model.firebase.FBModelObject;
+import com.mac.themac.model.firebase.FBModelIdentifier;
 import com.mac.themac.utility.FirebaseHelper;
 
 import java.text.SimpleDateFormat;

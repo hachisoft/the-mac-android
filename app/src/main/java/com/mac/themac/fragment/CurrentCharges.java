@@ -14,8 +14,6 @@ import com.firebase.client.FirebaseError;
 import com.mac.themac.R;
 import com.mac.themac.adapter.TransactionsAdapter;
 import com.mac.themac.model.Transaction;
-import com.mac.themac.model.User;
-import com.mac.themac.model.Vehicle;
 import com.mac.themac.model.firebase.FBChildListener;
 import com.mac.themac.model.firebase.FBModelIdentifier;
 import com.mac.themac.model.firebase.FBModelObject;

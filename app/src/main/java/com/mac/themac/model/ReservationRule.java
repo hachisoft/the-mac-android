@@ -10,7 +10,7 @@ import com.mac.themac.utility.FirebaseHelper;
  * Created by Samir on 9/9/2015.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ReservationRule extends FBModelObject{
+public class ReservationRule extends FBModelObject {
 
     public long weekdayPlayBegins;
     public long saturdayPlayBegins;

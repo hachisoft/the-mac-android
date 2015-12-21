@@ -9,7 +9,7 @@ import com.mac.themac.model.firebase.FBModelObject;
  * Created by Samir on 9/9/2015.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Tidbit extends FBModelObject{
+public class Tidbit extends FBModelObject {
     public Tidbit() {
     }
 

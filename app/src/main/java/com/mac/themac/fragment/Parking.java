@@ -1,7 +1,6 @@
 package com.mac.themac.fragment;
 
 
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -17,8 +16,8 @@ import com.mac.themac.R;
 import com.mac.themac.TheMACApplication;
 import com.mac.themac.model.ParkingProjection;
 import com.mac.themac.model.firebase.FBChildListener;
-import com.mac.themac.model.firebase.FBModelIdentifier;
 import com.mac.themac.model.firebase.FBModelObject;
+import com.mac.themac.model.firebase.FBModelIdentifier;
 import com.mac.themac.model.firebase.FBQueryIdentifier;
 import com.mac.themac.utility.FirebaseHelper;
 import com.mac.themac.widget.ParkingWidgetDay;

@@ -13,20 +13,14 @@ import android.widget.RadioButton;
 import com.firebase.client.FirebaseError;
 import com.mac.themac.R;
 import com.mac.themac.TheMACApplication;
-import com.mac.themac.activity.ActivityWithBottomActionBar;
 import com.mac.themac.adapter.DirectoryAdapter;
 import com.mac.themac.model.Department;
-import com.mac.themac.model.DirectoryData;
 import com.mac.themac.model.EmployeeProfile;
-import com.mac.themac.model.Location;
-import com.mac.themac.model.Session;
 import com.mac.themac.model.firebase.FBChildListener;
-import com.mac.themac.model.firebase.FBModelIdentifier;
 import com.mac.themac.model.firebase.FBModelObject;
+import com.mac.themac.model.firebase.FBModelIdentifier;
 import com.mac.themac.model.firebase.FBQueryIdentifier;
 import com.mac.themac.utility.FirebaseHelper;
-
-import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

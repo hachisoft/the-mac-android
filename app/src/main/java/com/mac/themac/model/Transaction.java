@@ -1,14 +1,11 @@
 package com.mac.themac.model;
 
-import android.net.NetworkInfo;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mac.themac.model.firebase.FBModelIdentifier;
 import com.mac.themac.model.firebase.FBModelObject;
 import com.mac.themac.utility.FirebaseHelper;
 
-import java.util.Comparator;
 import java.util.Date;
 
 
@@ -16,7 +13,7 @@ import java.util.Date;
  * Created by Samir on 10/12/2015.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Transaction extends FBModelObject{
+public class Transaction extends FBModelObject {
 
     public enum STATUS{
         Pending, Processed, Cancelled

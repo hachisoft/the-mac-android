@@ -35,10 +35,11 @@ import com.mac.themac.model.Transaction;
 import com.mac.themac.model.User;
 import com.mac.themac.model.Vehicle;
 import com.mac.themac.model.firebase.FBChildListener;
-import com.mac.themac.model.firebase.FBListener;
-import com.mac.themac.model.firebase.FBModelIdentifier;
+import com.mac.themac.model.firebase.FBDataChangeListener;
 import com.mac.themac.model.firebase.FBModelListener;
 import com.mac.themac.model.firebase.FBModelObject;
+import com.mac.themac.model.firebase.FBListener;
+import com.mac.themac.model.firebase.FBModelIdentifier;
 import com.mac.themac.model.firebase.FBQueryIdentifier;
 
 import java.security.InvalidParameterException;
@@ -317,21 +318,21 @@ public class FirebaseHelper {
 
     }
 
-    public void SubscribeToModelUpdates(FBModelListener listener,
+    public void SubscribeToModelUpdates(FBDataChangeListener listener,
                                         Class<? extends FBModelObject> classType,
                                         final String key) throws InvalidParameterException {
 
         SubscribeToModelUpdates(listener, new FBModelIdentifier(classType), key, false);
     }
 
-    public void SubscribeToModelUpdates(final FBModelListener listener,
+    public void SubscribeToModelUpdates(final FBDataChangeListener listener,
                                         final FBModelIdentifier fbModelIdentifier,
                                         final String key) throws InvalidParameterException {
 
         SubscribeToModelUpdates(listener, fbModelIdentifier, key, false);
     }
 
-    public void SubscribeToModelUpdates(final FBModelListener listener,
+    public void SubscribeToModelUpdates(final FBDataChangeListener listener,
                                         final FBModelIdentifier fbModelIdentifier,
                                         final String key,
                                         final boolean loadLinkedObjects) throws InvalidParameterException{
@@ -385,8 +386,8 @@ public class FirebaseHelper {
                                     modelListenerPair.second.add(listener);
                                 }
                                 for(FBListener l : modelListenerPair.second){
-                                    if(l instanceof FBModelListener){
-                                        ((FBModelListener)l).onDataChange(fbModelIdentifier, fbModelObject);
+                                    if(l instanceof FBDataChangeListener){
+                                        ((FBDataChangeListener)l).onDataChange(fbModelIdentifier, fbModelObject);
                                     }
                                 }
                             }
@@ -404,17 +405,28 @@ public class FirebaseHelper {
                                 }
                             }
                             else {
-                                listener.onNullData(fbModelIdentifier, key);
+                                if(listener instanceof FBModelListener)
+                                    ((FBModelListener)listener).onNullData(fbModelIdentifier, key);
                             }
                         }
                     } catch (Exception x) {
-                        listener.onException(x);
+                        if(listener instanceof FBModelListener)
+                            ((FBModelListener)listener).onException(x);
                     }
                 }
 
                 @Override
                 public void onCancelled(FirebaseError firebaseError) {
-                    listener.onCancel(fbModelIdentifier, firebaseError);
+                    if (keyToModelMap.containsKey(key)) {
+                        Pair<FBModelObject, List<FBListener>> modelListenerPair = keyToModelMap.get(key);
+                        for(FBListener l : modelListenerPair.second){
+                            if(l instanceof FBModelListener){
+                                ((FBModelListener)l).onCancel(fbModelIdentifier, firebaseError);
+                            }
+                        }
+                    }
+                    if(listener instanceof FBModelListener)
+                        ((FBModelListener)listener).onCancel(fbModelIdentifier, firebaseError);
                 }
             });
         }

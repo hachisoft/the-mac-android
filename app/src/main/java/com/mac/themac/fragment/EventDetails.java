@@ -1,7 +1,6 @@
 package com.mac.themac.fragment;
 
 import android.os.Bundle;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +15,9 @@ import com.mac.themac.activity.FindEvents;
 import com.mac.themac.model.Event;
 import com.mac.themac.model.Fee;
 import com.mac.themac.model.User;
-import com.mac.themac.model.firebase.FBModelIdentifier;
 import com.mac.themac.model.firebase.FBModelListener;
 import com.mac.themac.model.firebase.FBModelObject;
-import com.mac.themac.model.firebase.FBQueryIdentifier;
+import com.mac.themac.model.firebase.FBModelIdentifier;
 import com.mac.themac.utility.FirebaseHelper;
 
 import java.text.SimpleDateFormat;
