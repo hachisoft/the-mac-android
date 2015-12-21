@@ -23,6 +23,8 @@ import com.mac.themac.model.firebase.FBQueryIdentifier;
 import com.mac.themac.utility.FirebaseHelper;
 import com.mac.themac.widget.ParkingWidgetDay;
 
+import java.util.Calendar;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -91,11 +93,16 @@ public class Parking extends FragmentWithTopActionBar implements FBChildListener
     public void onChildAdded(FBModelIdentifier modelIdentifier, FBQueryIdentifier queryIdentifier, FBModelObject model, String prevChild) {
         if(modelIdentifier.IsIntendedObject(model, ParkingProjection.class)){
             ParkingProjection pp = (ParkingProjection) model;
-            ParkingWidgetDay widget = new ParkingWidgetDay(getActivity());
-            widget.setParkingProjection(pp);
-            widget.setGravity(Gravity.CENTER);
-            parkingWidgetRow.addView(widget);
-            parkingLayout.setStretchAllColumns(true);
+            Calendar c = Calendar.getInstance();
+            c.setTime(pp.date);
+            c.add(Calendar.DATE, 1);
+            if( c.after(Calendar.getInstance()) && parkingWidgetRow.getChildCount() <7 ) {
+                ParkingWidgetDay widget = new ParkingWidgetDay(getActivity());
+                widget.setParkingProjection(pp);
+                widget.setGravity(Gravity.CENTER);
+                parkingWidgetRow.addView(widget);
+                parkingLayout.setStretchAllColumns(true);
+            }
         }
     }
 
