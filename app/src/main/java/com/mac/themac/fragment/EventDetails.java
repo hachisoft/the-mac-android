@@ -140,14 +140,16 @@ public class EventDetails extends FragmentWithTopActionBar implements FBModelLis
         if(identifier.IsIntendedObject(model, Event.class)) {
             event = (Event) model;
             event.loadLinkedObjects();
+            ((FindEvents)getActivity()).setCurrentEvent(event);
             toViews();
         }
     }
 
     @OnClick(R.id.btnRegister)
     public void onRegisterClicked(){
+        ((FindEvents)getActivity()).showSelectEventGuests();
         if(event.getSurvey() != null){
-            ((FindEvents)getActivity()).showEventSurvey(event.getSurvey());
+
         }
     }
 

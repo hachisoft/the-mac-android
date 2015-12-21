@@ -71,7 +71,7 @@ public class User extends FBModelObject{
     @JsonIgnore
     public EmployeeProfile linkedEmployeeProfile;
     @JsonIgnore
-    public List<FBModelObject> linkedDependents = new ArrayList<FBModelObject>();
+    public List<User> linkedDependents = new ArrayList<>();
     @JsonIgnore
     public List<FBModelObject> linkedLogins = new ArrayList<FBModelObject>() ;
     @JsonIgnore
@@ -95,6 +95,17 @@ public class User extends FBModelObject{
     public List<Statement> linkedStatements = new ArrayList<Statement>();
 
     public User() {
+    }
+
+    @JsonIgnore
+    public void loadDependents(){
+        if(dependents == null){
+            dependents = new HashMap<String, Boolean>();
+        }
+        if (dependents != null) {
+            loadLinkedObjects(User.class, FirebaseHelper.FBRootContainerNames.users,
+                    dependents, linkedDependents);
+        }
     }
 
     @JsonIgnore

@@ -7,4 +7,5 @@ public class Guest {
     public String first;
     public String last;
     public boolean isChild;
+    public SurveyResponse surveyResponse;
 }
